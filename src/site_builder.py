@@ -1151,6 +1151,10 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
         alt = "".join(
             f'\n  <link rel="alternate" hreflang="{h}" href="{_esc(base + p)}">' for h, p in alternates.items()
         )
+    p_verify = (cfg.get("site", {}).get("pinterest_verify_code") or "").strip()
+    p_meta = f'\n  <meta name="p:domain_verify" content="{_esc(p_verify)}">' if p_verify else ""
+    rss_href = f"{base}/ko/feed.xml" if lang == "ko" else f"{base}/en/pinterest-feed.xml"
+    rss_link = f'\n  <link rel="alternate" type="application/rss+xml" title="{_esc(cfg["site"]["brand_name"])} RSS" href="{_esc(rss_href)}">'
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
 <head>
@@ -1158,7 +1162,7 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{_esc(title)}</title>
   <meta name="description" content="{_esc(description)}">
-  <meta name="theme-color" content="#FFFFFF">
+  <meta name="theme-color" content="#FFFFFF">{p_meta}{rss_link}
   <script>document.documentElement.classList.add('js')</script>
   <link rel="canonical" href="{_esc(base + path)}">{alt}
   <meta property="og:title" content="{_esc(title)}">

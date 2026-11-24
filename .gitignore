@@ -9,3 +9,4 @@ data/candidates_staged.json
 data/audit_log.json
 data/discovery_queue.json
 data/rejected_leads.json
+data/sent_deals_history.json

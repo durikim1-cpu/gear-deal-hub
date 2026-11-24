@@ -40,6 +40,8 @@ def load_config(project_root: Path) -> dict:
         cfg["affiliate"]["aliexpress_tracking_id"] = os.environ["ALIEXPRESS_TRACKING_ID"]
     if os.getenv("SITE_BASE_URL"):
         cfg["site"]["base_url"] = os.environ["SITE_BASE_URL"].rstrip("/")
+    if os.getenv("PINTEREST_VERIFY_CODE"):
+        cfg["site"]["pinterest_verify_code"] = os.environ["PINTEREST_VERIFY_CODE"].strip()
     return cfg
 
 

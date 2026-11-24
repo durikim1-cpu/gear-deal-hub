@@ -3,7 +3,8 @@
     "brand_name": "GearCompare Hub",
     "base_url": "https://durikim1-cpu.github.io/gear-deal-hub",
     "telegram_channel_ko": "https://t.me/your_kr_deal_channel",
-    "telegram_channel_en": "https://t.me/your_global_deal_channel"
+    "telegram_channel_en": "https://t.me/your_global_deal_channel",
+    "pinterest_verify_code": ""
   },
   "affiliate": {
     "coupang_partners_id": "AF0000000",
