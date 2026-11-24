@@ -1,0 +1,35 @@
+{
+  "site": {
+    "brand_name": "GearCompare Hub",
+    "base_url": "https://YOUR_GITHUB_ID.github.io/gear-deal-hub",
+    "telegram_channel_ko": "https://t.me/your_kr_deal_channel",
+    "telegram_channel_en": "https://t.me/your_global_deal_channel"
+  },
+  "affiliate": {
+    "coupang_partners_id": "AF0000000",
+    "coupang_sub_id": "gearhub_ko",
+    "aliexpress_tracking_id": "gearhub_global",
+    "amazon_associate_tag": "gearhub-20"
+  },
+  "telegram": {
+    "bot_token": "",
+    "chat_id_ko": "@your_kr_deal_channel",
+    "chat_id_en": "@your_global_deal_channel"
+  },
+  "gatekeeper": {
+    "min_price_ratio_vs_msrp": 0.35,
+    "alert_min_savings_pct": 15.0,
+    "forbidden_accessory_keywords": [
+      "케이스 단품",
+      "실리콘 케이스만",
+      "보호필름",
+      "전용 파우치",
+      "키캡 단품",
+      "case only",
+      "silicone cover only",
+      "screen protector",
+      "carrying pouch only",
+      "replacement cable only"
+    ]
+  }
+}

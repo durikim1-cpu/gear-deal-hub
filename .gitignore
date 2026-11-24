@@ -1,0 +1,9 @@
+# Secrets & local overrides (NEVER commit)
+config.local.json
+.env
+__pycache__/
+*.pyc
+.DS_Store
+dist/
+data/candidates_staged.json
+data/audit_log.json

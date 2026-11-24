@@ -1,0 +1,494 @@
+[
+  {
+    "id": "ugreen-nexode-100w-4port",
+    "category": "chargers",
+    "brand": "UGREEN",
+    "model": "Nexode 100W 4-Port GaN Charger (CD226)",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 69000,
+    "msrp_usd": 59.99,
+    "prices": {
+      "coupang_krw": 48900,
+      "ali_krw": 34200,
+      "amazon_usd": 44.99,
+      "ali_usd": 25.40
+    },
+    "urls": {
+      "coupang_query": "UGREEN 넥소드 100W GaN 충전기 CD226",
+      "ali_query": "UGREEN Nexode 100W GaN CD226",
+      "amazon_query": "UGREEN Nexode 100W USB C Charger 4-Port"
+    },
+    "specs": {
+      "max_output": "100W PD 3.0",
+      "ports": "3x USB-C + 1x USB-A",
+      "weight": "320g",
+      "size": "69 x 69 x 33 mm"
+    },
+    "ko": {
+      "title": "유그린 넥소드 100W 4포트 GaN 접지/비접지 멀티 충전기",
+      "summary": "맥북 프로 14인치와 스마트폰·태블릿을 동시에 커버하는 스테디셀러 100W 데스크 충전기.",
+      "pros": ["단일 포트 최대 100W 출력 안정성 우수", "4포트 구성으로 출장·데스크 공용 활용도 높음"],
+      "cons": ["새 기기를 꽂을 때 순간 재분배(리셋) 현상이 약 1초 발생함", "벽면 콘센트에 수직 장착 시 무게감으로 살짝 처질 수 있음"],
+      "verdict": "급하면 쿠팡 로켓배송, 1만 4천 원 이상 아끼려면 알리 코인/초이스 직구가 유리합니다."
+    },
+    "en": {
+      "title": "UGREEN Nexode 100W 4-Port USB-C GaN Desktop Wall Charger",
+      "summary": "Compact 4-port GaN charger capable of driving a 14-inch MacBook Pro at full speed or splitting power across four daily devices.",
+      "pros": ["Reliable sustained 100W single-port PD output", "Compact footprint with foldable prongs (US plug)"],
+      "cons": ["Brief 1-second power renegotiation drop when plugging in a new device", "Runs warm (~52C) under full 100W continuous load"],
+      "verdict": "Grab Amazon if you need fast warranty replacement; pick AliExpress when savings exceed 35%."
+    }
+  },
+  {
+    "id": "aula-f75-wireless-keyboard",
+    "category": "keyboards",
+    "brand": "AULA",
+    "model": "AULA F75 75% Tri-Mode Gasket Mechanical Keyboard",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 89000,
+    "msrp_usd": 69.99,
+    "prices": {
+      "coupang_krw": 64900,
+      "ali_krw": 43500,
+      "amazon_usd": 62.99,
+      "ali_usd": 33.80
+    },
+    "urls": {
+      "coupang_query": "독거미 키보드 AULA F75 무선 기계식",
+      "ali_query": "AULA F75 75% Wireless Gasket Mechanical Keyboard",
+      "amazon_query": "AULA F75 75% Wireless Mechanical Keyboard"
+    },
+    "specs": {
+      "layout": "75% (80 Keys + Knob)",
+      "connectivity": "2.4GHz / BT 5.0 / USB-C",
+      "battery": "4000mAh",
+      "mount": "Gasket + 5-Layer Foam"
+    },
+    "ko": {
+      "title": "독거미 AULA F75 유무선 가스켓 기계식 키보드 (노브 탑재)",
+      "summary": "입문용 커스텀 키보드 시장을 평정한 가성비 도각도각(로우피치) 타건감의 75% 배열 무선 키보드.",
+      "pros": ["순정 상태에서 윤활·흡음재 완성도가 매우 높음", "볼륨 노브 및 3모드 무선 연결 기본 지원"],
+      "cons": ["전용 소프트웨어 UI가 투박하고 맥(macOS) 전용 키캡이 기본 미포함", "내장 4000mAh 배터리는 RGB 최대 밝기 시 소모가 빠름"],
+      "verdict": "한글 각인 정발·빠른 교환은 쿠팡, 영문 각인 가성비 극대화는 알리 직구 추천."
+    },
+    "en": {
+      "title": "AULA F75 75% Wireless Gasket Mechanical Keyboard with Knob",
+      "summary": "Budget king 75% tri-mode keyboard famous on Reddit for deep 'creamy/thocky' out-of-the-box acoustics without modding.",
+      "pros": ["Pre-lubed linear switches and 5-layer dampening sound great stock", "Solid 2.4GHz wireless latency for casual gaming"],
+      "cons": ["Proprietary Windows-only remapping software (no QMK/VIA)", "Plastic case clips are tight and tricky to open for mods"],
+      "verdict": "AliExpress saves nearly half the price if you can wait 7-10 days; Amazon is best for instant returns."
+    }
+  },
+  {
+    "id": "anker-prime-20000-200w",
+    "category": "powerbanks",
+    "brand": "Anker",
+    "model": "Anker Prime 20,000mAh Power Bank (200W, A1336)",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 169000,
+    "msrp_usd": 129.99,
+    "prices": {
+      "coupang_krw": 139000,
+      "ali_krw": 108000,
+      "amazon_usd": 99.99,
+      "ali_usd": 82.50
+    },
+    "urls": {
+      "coupang_query": "앤커 프라임 20000mAh 200W 보조배터리 A1336",
+      "ali_query": "Anker Prime 20000mAh 200W Power Bank A1336",
+      "amazon_query": "Anker Prime Power Bank 20000mAh 200W"
+    },
+    "specs": {
+      "capacity": "20,000mAh (72Wh, 기내 반입 가능)",
+      "max_output": "200W Total (100W + 100W)",
+      "input": "100W USB-C Fast Recharge",
+      "weight": "544g"
+    },
+    "ko": {
+      "title": "앤커 프라임 20000mAh 200W 초고속 노트북 보조배터리 (스마트 디스플레이)",
+      "summary": "실시간 입출력 와트(W)와 잔여 시간을 LCD로 보여주는 고출력 노트북용 프리미엄 보조배터리.",
+      "pros": ["노트북 2대 동시 100W+100W 출력 및 100W 초고속 재충전", "기내 반입 기준(100Wh 이하) 충족 및 직관적인 컬러 화면"],
+      "cons": ["544g으로 일반 스마트폰용 보조배터리보다 묵직함", "리튬배터리 특성상 직구 시 통관·배송이 일반 공산품보다 느림"],
+      "verdict": "배터리류는 통관 지연과 초기 불량 교환 편의성 때문에 가격 차이가 2만 원 이내면 쿠팡이 유리합니다."
+    },
+    "en": {
+      "title": "Anker Prime 20,000mAh 200W Laptop Power Bank with Smart Display",
+      "summary": "Airline-safe 72Wh powerhouse capable of dual 100W laptop charging with real-time per-port wattage telemetry.",
+      "pros": ["100W USB-C input recharges fully in ~75 minutes", "Crisp smart display shows exact watt draw and battery health"],
+      "cons": ["Brick-shaped 544g chassis feels heavy in small sling bags", "Battery shipping via overseas air mail takes longer on AliExpress"],
+      "verdict": "Amazon is strongly preferred for Anker's 18-month warranty and fast domestic battery shipping."
+    }
+  },
+  {
+    "id": "beelink-ser8-8745hs-minipc",
+    "category": "minipc",
+    "brand": "Beelink",
+    "model": "Beelink SER8 Ryzen 7 8745HS Mini PC (32GB / 1TB)",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 820000,
+    "msrp_usd": 649.00,
+    "prices": {
+      "coupang_krw": 719000,
+      "ali_krw": 565000,
+      "amazon_usd": 499.00,
+      "ali_usd": 419.00
+    },
+    "urls": {
+      "coupang_query": "Beelink SER8 8745HS 미니PC 32GB 1TB",
+      "ali_query": "Beelink SER8 Ryzen 7 8745HS 32GB 1TB Mini PC",
+      "amazon_query": "Beelink SER8 AMD Ryzen 7 8745HS Mini PC 32GB 1TB"
+    },
+    "specs": {
+      "cpu": "AMD Ryzen 7 8745HS (8C/16T) + Radeon 780M",
+      "memory": "32GB DDR5 5600MHz",
+      "storage": "1TB PCIe 4.0 NVMe SSD",
+      "ports": "USB4 (40Gbps) + HDMI 2.1 + DP 1.4 + 2.5G LAN"
+    },
+    "ko": {
+      "title": "비링크 Beelink SER8 라이젠7 8745HS 저소음 알루미늄 미니 PC",
+      "summary": "베이퍼 챔버 쿨링 구조로 팬 소음을 획기적으로 줄인 고성능 홈서버·사무·캐주얼 게이밍 미니 PC.",
+      "pros": ["풀로드에서도 정숙한 쿨링 설계와 일체형 알루미늄 바디", "Radeon 780M 내장그래픽으로 롤·발로란트·디아블로4 구동 가능"],
+      "cons": ["메탈 하우징 특성상 공유기와 거리가 멀면 Wi-Fi 수신 감도가 다소 약함 (유선 랜 권장)", "150달러 초과 직구 시 관부가세 별도 부과 여부를 반드시 계산해야 함"],
+      "verdict": "알리 할인가에 예상 부가세(10%)를 더해도 쿠팡보다 9만 원 이상 저렴할 때 직구 메리트가 큽니다."
+    },
+    "en": {
+      "title": "Beelink SER8 AMD Ryzen 7 8745HS Mini PC (32GB DDR5, 1TB PCIe 4.0)",
+      "summary": "Whisper-quiet CNC aluminum mini PC featuring vapor-chamber cooling and Radeon 780M iGPU graphics.",
+      "pros": ["Exceptionally quiet under load compared to older mini PCs", "USB4 40Gbps port supports single-cable PD monitor setups and eGPUs"],
+      "cons": ["Internal Wi-Fi antenna range is mediocre through the thick metal shell", "NPU is disabled on the 8745HS variant compared to the pricier 8845HS"],
+      "verdict": "Check import tax rules in your region first; Amazon wins on 30-day hassle-free returns for pricey PC hardware."
+    }
+  },
+  {
+    "id": "keychron-k2-max-qmk",
+    "category": "keyboards",
+    "brand": "Keychron",
+    "model": "Keychron K2 Max QMK/VIA Wireless Mechanical Keyboard",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 158000,
+    "msrp_usd": 119.00,
+    "prices": {
+      "coupang_krw": 134000,
+      "ali_krw": 104500,
+      "amazon_usd": 99.00,
+      "ali_usd": 81.00
+    },
+    "urls": {
+      "coupang_query": "키크론 K2 Max 무선 기계식 키보드",
+      "ali_query": "Keychron K2 Max QMK VIA Wireless Mechanical Keyboard",
+      "amazon_query": "Keychron K2 Max QMK Wireless Mechanical Keyboard"
+    },
+    "specs": {
+      "layout": "75% Compact (84 Keys)",
+      "firmware": "Open-Source QMK / Web VIA",
+      "connectivity": "2.4GHz (1000Hz) / BT 5.1 / Wired",
+      "os_support": "macOS & Windows Switch + Extra Keycaps"
+    },
+    "ko": {
+      "title": "키크론 K2 Max QMK/VIA 유무선 맥·윈도우 겸용 기계식 키보드",
+      "summary": "설치형 프로그램 없이 웹브라우저(VIA)에서 즉시 키 매핑이 가능한 맥북 유저 선호도 1위 라인업.",
+      "pros": ["물리 macOS/Windows 전환 스위치와 맥 전용 교체 키캡 기본 동봉", "기존 K2 대비 2.4GHz 동글 추가 및 흡음재 대폭 보강"],
+      "cons": ["하부 프레임 높이가 다소 높아 팜레스트 없이 장시간 타이핑 시 손목 부담", "불투명 PBT 키캡이라 어두운 방에서 글자 투과가 되지 않음"],
+      "verdict": "국내 정식 AS와 한글 각인이 필요하면 쿠팡, 영문 배열 선호 시 알리 세일가가 유리합니다."
+    },
+    "en": {
+      "title": "Keychron K2 Max QMK/VIA 75% Wireless Mac/Windows Mechanical Keyboard",
+      "summary": "Upgraded classic 75% Mac-friendly board adding 2.4GHz 1000Hz wireless, acoustic foam, and browser-based VIA remapping.",
+      "pros": ["Instant browser-based VIA key remapping with zero bloatware", "Native macOS media row keycaps and physical OS toggle included"],
+      "cons": ["Tall front chin height makes a wrist rest recommended for long sessions", "South-facing RGB does not shine through the stock PBT legends"],
+      "verdict": "Great productivity workhorse; compare Amazon coupon clip price vs AliExpress Official Store."
+    }
+  },
+  {
+    "id": "logitech-mx-master-3s",
+    "category": "mice",
+    "brand": "Logitech",
+    "model": "Logitech MX Master 3S Wireless Performance Mouse",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 139000,
+    "msrp_usd": 99.99,
+    "prices": {
+      "coupang_krw": 114000,
+      "ali_krw": 96500,
+      "amazon_usd": 89.99,
+      "ali_usd": 74.90
+    },
+    "urls": {
+      "coupang_query": "로지텍 MX Master 3S 무선 마우스 정품",
+      "ali_query": "Logitech MX Master 3S Wireless Mouse Original",
+      "amazon_query": "Logitech MX Master 3S Wireless Performance Mouse"
+    },
+    "specs": {
+      "sensor": "8000 DPI Darkfield (유리 표면 인식)",
+      "switches": "90% 소음 감소 무소음 클릭",
+      "scroll": "MagSpeed 전자기 무한 휠 + 가로 썸휠",
+      "weight": "141g"
+    },
+    "ko": {
+      "title": "로지텍 MX Master 3S 무소음 무선 생산성 마우스",
+      "summary": "엑셀 가로 스크롤·영상 편집 타임라인 이동에 독보적인 사무용 플래그십 버티컬급 인체공학 마우스.",
+      "pros": ["초당 1,000줄 이동하는 MagSpeed 전자기 휠과 조용한 클릭음", "유리 책상 위에서도 패드 없이 작동하는 8K 센서"],
+      "cons": ["폴링레이트 125Hz 고정이라 고주사율 FPS 게임용으로는 부적합", "러버 코팅 특성상 1~2년 사용 시 손땀에 의한 변색·번들거림 발생 가능 (라이트그레이 주의)"],
+      "verdict": "로지텍 코리아 1년 무상 보증이 중요하면 쿠팡 정품, 벌크/병행 가성비를 노리면 알리 스토어 선택."
+    },
+    "en": {
+      "title": "Logitech MX Master 3S Quiet-Click Ergonomic Wireless Mouse",
+      "summary": "Gold-standard productivity mouse with electromagnetic MagSpeed scrolling, thumb wheel, and quiet tactile switches.",
+      "pros": ["Effortless MagSpeed free-spin wheel and horizontal thumb scroll", "Quiet clicks and tracks reliably even on bare glass desks"],
+      "cons": ["Locked at 125Hz polling rate (feels choppy on 144Hz+ gaming monitors)", "Soft-touch rubber coating wears over time, especially on Pale Gray"],
+      "verdict": "Stick to Amazon for guaranteed authentic retail packaging and full manufacturer warranty."
+    }
+  },
+  {
+    "id": "baseus-blade-hd-100w",
+    "category": "powerbanks",
+    "brand": "Baseus",
+    "model": "Baseus Blade HD 100W 20,000mAh Ultra-Thin Laptop Power Bank",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 99000,
+    "msrp_usd": 79.99,
+    "prices": {
+      "coupang_krw": 74900,
+      "ali_krw": 51200,
+      "amazon_usd": 59.99,
+      "ali_usd": 39.50
+    },
+    "urls": {
+      "coupang_query": "베이스어스 블레이드 HD 100W 20000mAh 슬림 보조배터리",
+      "ali_query": "Baseus Blade HD 100W 20000mAh Laptop Power Bank",
+      "amazon_query": "Baseus Blade HD Laptop Power Bank 100W 20000mAh"
+    },
+    "specs": {
+      "thickness": "18mm 슬림 평판형",
+      "capacity": "20,000mAh",
+      "max_output": "100W USB-C PD",
+      "ports": "2x USB-C + 2x USB-A"
+    },
+    "ko": {
+      "title": "베이스어스 블레이드 HD 100W 초슬림 노트북 보조배터리",
+      "summary": "벽돌 모양 대신 노트북 파우치 앞주머니에 쏙 들어가는 18mm 두께의 평판형 100W 보조배터리.",
+      "pros": ["서류가방·백팩 노트북 슬리브에 불룩해지지 않고 수납 가능", "입출력 전압·전류·남은 충전 시간을 숫자로 표시하는 전면 디스플레이"],
+      "cons": ["넓은 면적 때문에 카페 좁은 테이블 위에 올려둘 때 자리를 차지함", "고부하 100W 연속 방전 후반부에는 발열 보호로 65W로 스로틀링될 수 있음"],
+      "verdict": "베이스어스 공식 스토어가 입점한 알리 직구 가격 메리트가 약 30% 이상으로 매우 큽니다."
+    },
+    "en": {
+      "title": "Baseus Blade HD 100W 20,000mAh Flat Laptop Power Bank",
+      "summary": "18mm flat-profile 100W laptop battery designed to slide cleanly alongside a MacBook inside slim laptop sleeves.",
+      "pros": ["Flat 18mm form factor eliminates bulky backpack bulges", "Digital status readout shows real-time voltage, amps, and time remaining"],
+      "cons": ["Wider footprint takes up desk space on cramped airplane trays", "Steps down from 100W to 65W below ~20% remaining charge"],
+      "verdict": "Baseus runs aggressive coupons on both Amazon and AliExpress—compare final checkout price."
+    }
+  },
+  {
+    "id": "fifine-am8-dynamic-mic",
+    "category": "audio",
+    "brand": "FIFINE",
+    "model": "FIFINE AmpliGame AM8 USB/XLR Dynamic Microphone",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 79000,
+    "msrp_usd": 56.99,
+    "prices": {
+      "coupang_krw": 58900,
+      "ali_krw": 39800,
+      "amazon_usd": 48.99,
+      "ali_usd": 31.20
+    },
+    "urls": {
+      "coupang_query": "파이파인 FIFINE AM8 다이나믹 마이크 USB XLR",
+      "ali_query": "FIFINE AM8 USB XLR Dynamic Microphone",
+      "amazon_query": "FIFINE Dynamic Microphone XLR USB AM8"
+    },
+    "specs": {
+      "capsule": "Cardioid Dynamic (주변 키보드 소음 억제)",
+      "interface": "USB-C Plug & Play + XLR 듀얼 지원",
+      "controls": "터치 음소거 + 게인 노브 + 3.5mm 모니터링",
+      "mount": "기본 스탠드 + 3/8 & 5/8 암 스탠드 호환"
+    },
+    "ko": {
+      "title": "파이파인 FIFINE AM8 USB/XLR 겸용 가성비 다이나믹 마이크",
+      "summary": "방음 안 된 방에서도 기계식 키보드·에어컨 소음을 적게 수음하는 디스코드·화상회의·입문 방송용 마이크.",
+      "pros": ["콘덴서 마이크 대비 주변 생활 소음 유입이 현저히 적음", "처음엔 USB로 쓰다가 추후 오디오 인터페이스(XLR)로 업그레이드 가능"],
+      "cons": ["입과 마이크 거리가 15cm 이상 멀어지면 수음 볼륨이 급격히 작아짐 (마이크 암 권장)", "플라스틱 바디라 책상 진동에 다소 민감함"],
+      "verdict": "4만 원 언더로 자주 풀리는 알리 직구 최고 인기 품목이며, 당장 방송/회의 세팅이 급하면 쿠팡 추천."
+    },
+    "en": {
+      "title": "FIFINE AM8 USB/XLR Dynamic Streaming & Podcast Microphone",
+      "summary": "Budget dynamic mic rejecting untreated room echo and keyboard clatter, offering both plug-and-play USB-C and upgradeable XLR.",
+      "pros": ["Excellent background noise rejection compared to budget USB condensers", "Dual USB-C + XLR outputs future-proof your audio setup"],
+      "cons": ["Needs close 2-5 inch speaking distance (boom arm highly recommended)", "Lightweight plastic body transmits desk bumps without a shock mount"],
+      "verdict": "Under 35 USD on AliExpress is a steal; Amazon bundles with a boom arm are also worth checking."
+    }
+  },
+  {
+    "id": "samsung-t7-shield-2tb",
+    "category": "storage",
+    "brand": "Samsung",
+    "model": "Samsung T7 Shield 2TB Portable SSD (USB 3.2 Gen 2, MU-PE2T0S)",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 289000,
+    "msrp_usd": 229.99,
+    "prices": {
+      "coupang_krw": 229000,
+      "ali_krw": 218000,
+      "amazon_usd": 159.99,
+      "ali_usd": 168.00
+    },
+    "urls": {
+      "coupang_query": "삼성전자 포터블 SSD T7 Shield 2TB 외장SSD",
+      "ali_query": "Samsung T7 Shield 2TB Portable SSD Original",
+      "amazon_query": "SAMSUNG T7 Shield 2TB Portable SSD"
+    },
+    "specs": {
+      "speed": "Read 1,050 MB/s / Write 1,000 MB/s",
+      "durability": "IP65 방수·방진 + 3m 낙하 보호",
+      "interface": "USB 3.2 Gen 2 (10Gbps)",
+      "weight": "98g"
+    },
+    "ko": {
+      "title": "삼성전자 포터블 T7 Shield 2TB 방수·방진 외장 SSD",
+      "summary": "대용량 4K ProRes 영상 연속 쓰기에서도 속도 저하가 거의 없는 사진·영상 작업자 표준 외장 SSD.",
+      "pros": ["일반 T7 대비 발열 제어 및 지속 쓰기 속도 유지력이 뛰어남", "IP65 방진·생활방수 및 고무 외장으로 휴대 내구성 우수"],
+      "cons": ["고무 재질 표면에 주머니 속 먼지나 보풀이 잘 달라붙음", "저장장치는 알리 가품 위험이 존재하므로 검증 셀러·국내 정품 구분 필수"],
+      "verdict": "메모리·SSD류는 가품 방지 및 삼성 공식 3년 AS를 위해 국내는 쿠팡 정품, 해외는 아마존 직영 구매를 강력 권장합니다."
+    },
+    "en": {
+      "title": "Samsung T7 Shield 2TB Rugged USB 3.2 Gen 2 Portable SSD",
+      "summary": "Sustained-write champ for 4K ProRes video editing and backups with IP65 water/dust resistance.",
+      "pros": ["Maintains ~1,000 MB/s sustained writes without severe thermal throttling", "Ruggedized elastomer shell survives drops and rain"],
+      "cons": ["Rubberized exterior is a lint and dust magnet in pockets", "Avoid unverified third-party sellers due to counterfeit SSD risks"],
+      "verdict": "Buy from Amazon Shipped & Sold by Amazon rather than marketplace/AliExpress for storage authenticity."
+    }
+  },
+  {
+    "id": "xiaomi-mijia-monitor-lightbar-1s",
+    "category": "lighting",
+    "brand": "Xiaomi",
+    "model": "Xiaomi Mi Computer Monitor Light Bar 1S (MJGJD02YL)",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 69000,
+    "msrp_usd": 59.99,
+    "prices": {
+      "coupang_krw": 52900,
+      "ali_krw": 36900,
+      "amazon_usd": 54.99,
+      "ali_usd": 29.90
+    },
+    "urls": {
+      "coupang_query": "샤오미 모니터 라이트바 1S 무선 컨트롤러 스크린바",
+      "ali_query": "Xiaomi Mijia Monitor Light Bar 1S Ra95 Wireless Puck",
+      "amazon_query": "Xiaomi Mi Computer Monitor Light Bar"
+    },
+    "specs": {
+      "cri": "Ra95 고연색성 LED",
+      "control": "2.4GHz 무선 원형 다이얼 리모컨",
+      "color_temp": "2700K ~ 6500K 색온도·밝기 조절",
+      "power": "USB-C 5V 2A"
+    },
+    "ko": {
+      "title": "샤오미 미지아 모니터 라이트바 1S (무선 컨트롤 다이얼 포함)",
+      "summary": "벤큐 스크린바 대비 1/3 가격에 책상 위 무선 다이얼 리모컨까지 제공하는 데스크테리어 필수템.",
+      "pros": ["책상 위에서 돌려서 밝기·색온도를 조절하는 무선 퍽 컨트롤러 감성 우수", "Ra95 연색성 및 비대칭 광학 설계로 모니터 빛 반사 최소화"],
+      "cons": ["곡률이 심한 커브드 모니터(1000R 등)나 상단 베젤이 아주 얇은 모니터는 거치가 불안정할 수 있음", "1S 버전 스마트홈 연동은 중국 내수 지역 설정이 필요함"],
+      "verdict": "초기 불량률이 낮고 가격 차이가 1.5만 원 이상 벌어져 알리 직구 가성비가 가장 빛나는 제품입니다."
+    },
+    "en": {
+      "title": "Xiaomi Mijia Monitor Light Bar 1S with Wireless Control Puck",
+      "summary": "Ra95 high-CRI asymmetric screen bar delivering a desktop wireless rotary dial at a third of BenQ Halo pricing.",
+      "pros": ["Tactile wireless aluminum-style desk puck controls brightness and warmth", "High Ra95 color rendering with minimal screen glare"],
+      "cons": ["Gravity mount struggles on steep 1000R curved monitors or ultra-thick backs", "Mi Home app pairing requires Mainland China server region on 1S"],
+      "verdict": "AliExpress pricing (~30 USD) easily beats Amazon markups on Xiaomi ecosystem gear."
+    }
+  },
+  {
+    "id": "elgato-stream-deck-mk2",
+    "category": "productivity",
+    "brand": "Elgato",
+    "model": "Elgato Stream Deck MK.2 (15 Macro LCD Keys)",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 209000,
+    "msrp_usd": 149.99,
+    "prices": {
+      "coupang_krw": 179000,
+      "ali_krw": 172000,
+      "amazon_usd": 129.99,
+      "ali_usd": 138.00
+    },
+    "urls": {
+      "coupang_query": "엘가토 스트림덱 MK.2 15키 정품",
+      "ali_query": "Elgato Stream Deck MK2 15 Keys",
+      "amazon_query": "Elgato Stream Deck MK.2 15 Macro Keys"
+    },
+    "specs": {
+      "keys": "15x Customizable LCD Keys",
+      "stand": "45도 고정 탈착식 스탠드 + 분리형 USB-C 케이블",
+      "os": "macOS 10.15+ / Windows 10+",
+      "ecosystem": "Elgato Marketplace 플러그인 지원"
+    },
+    "ko": {
+      "title": "엘가토 스트림덱 MK.2 15키 커스텀 LCD 매크로 컨트롤러",
+      "summary": "방송인뿐만 아니라 개발자·디자이너·직장인의 단축키/자동화 매크로 실행기로 사랑받는 정품 스트림덱.",
+      "pros": ["수천 개의 공식 마켓플레이스 플러그인(OBS, Zoom, Figma, VS Code, 주식 시세 등) 생태계", "분리형 C타입 케이블과 교체 가능한 전면 페이스플레이트"],
+      "cons": ["유사 중국산 카피 제품(Ajazz 등) 대비 가격대가 높음", "절전 모드 진입 설정을 따로 안 하면 LCD 번인 방지를 위해 화면 끄기 설정 권장"],
+      "verdict": "엘가토 정품은 알리 직구 가격 이점이 거의 없으므로 국내는 쿠팡 로켓배송, 해외는 아마존 할인가가 정석입니다."
+    },
+    "en": {
+      "title": "Elgato Stream Deck MK.2 – 15 Customizable LCD Macro Keys",
+      "summary": "Unmatched plugin ecosystem turning complex shortcuts, Zoom mute, Home Assistant, and editing macros into one-tap visual buttons.",
+      "pros": ["Massive Elgato Marketplace plugin library beats cheap hardware clones", "Detachable USB-C cable and swappable faceplates"],
+      "cons": ["Fixed 45-degree stand angle (unlike the older adjustable hinge)", "Significantly pricier than budget knockoffs if you only need simple hotkeys"],
+      "verdict": "Buy on Amazon during frequent 129 USD sales; AliExpress offers zero savings on genuine Elgato hardware."
+    }
+  },
+  {
+    "id": "ugreen-revodok-pro-209-dock",
+    "category": "hubs",
+    "brand": "UGREEN",
+    "model": "UGREEN Revodok Pro 209 9-in-1 Dual 4K@60Hz USB-C Docking Station",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 159000,
+    "msrp_usd": 119.99,
+    "prices": {
+      "coupang_krw": 119000,
+      "ali_krw": 84500,
+      "amazon_usd": 89.99,
+      "ali_usd": 64.90
+    },
+    "urls": {
+      "coupang_query": "유그린 Revodok Pro 209 도킹스테이션 듀얼 4K 맥북 M1 M2 M3",
+      "ali_query": "UGREEN Revodok Pro 209 9 in 1 USB C Docking Station DisplayLink",
+      "amazon_query": "UGREEN Revodok Pro 209 USB C Docking Station Dual 4K"
+    },
+    "specs": {
+      "video": "2x HDMI + 2x DP (DisplayLink 지원, M1/M2/M3 듀얼 모니터 확장)",
+      "pd_passthrough": "100W PD 충전 입력",
+      "network": "Gigabit Ethernet (1000Mbps)",
+      "data_ports": "2x USB-C 10Gbps + 2x USB-A 10Gbps"
+    },
+    "ko": {
+      "title": "유그린 Revodok Pro 209 듀얼 4K 60Hz 맥북 M시리즈 호환 도킹스테이션",
+      "summary": "기본형 맥북 에어·프로(M1/M2/M3)의 외장 모니터 1대 제한을 DisplayLink 칩셋으로 해결해 주는 9-in-1 독.",
+      "pros": ["애플 실리콘 기본칩 맥북에서도 서로 다른 화면으로 듀얼 4K@60Hz 출력 가능", "10Gbps 고속 포트 4개와 기가비트 랜포트 탑재"],
+      "cons": ["DisplayLink 드라이버를 별도 설치해야 하며 넷플릭스 등 HDCP 저작권 영상 재생 시 검은 화면 제약 발생 가능 (브라우저 하드웨어 가속 해제 필요)", "100W 충전 어댑터는 박스에 미포함(별매)"],
+      "verdict": "알리 세일 시 8만 원대 초반으로 떨어져 쿠팡 대비 3만 원 이상 절약할 수 있는 대표 직구 꿀템입니다."
+    },
+    "en": {
+      "title": "UGREEN Revodok Pro 209 9-in-1 DisplayLink Dual 4K@60Hz USB-C Dock",
+      "summary": "DisplayLink-equipped dock unlocking dual extended 4K@60Hz monitors on base M1/M2/M3 MacBooks via a single cable.",
+      "pros": ["Bypasses single-monitor limitation on base Apple Silicon MacBooks", "Four 10Gbps USB 3.2 ports plus Gigabit Ethernet"],
+      "cons": ["Requires DisplayLink driver install and can trigger HDCP black screens on DRM streaming unless hardware acceleration is toggled off", "100W power adapter is not included in the box"],
+      "verdict": "AliExpress saves ~25 USD over Amazon on identical UGREEN retail stock."
+    }
+  }
+]

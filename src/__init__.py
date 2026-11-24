@@ -1,0 +1,1 @@
+"""GearCompare Hub automation package."""

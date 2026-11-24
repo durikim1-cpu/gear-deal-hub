@@ -1,0 +1,40 @@
+[
+  {
+    "id": "aula-f75-case-trap-sample",
+    "category": "keyboards",
+    "brand": "Generic",
+    "model": "AULA F75 전용 아크릴 더스트 커버 케이스 단품 (키보드 미포함)",
+    "updated_at": "2026-11-24",
+    "in_stock": true,
+    "msrp_krw": 89000,
+    "msrp_usd": 69.99,
+    "prices": {
+      "coupang_krw": 11900,
+      "ali_krw": 5900,
+      "amazon_usd": 12.99,
+      "ali_usd": 4.50
+    },
+    "urls": {
+      "coupang_query": "독거미 AULA F75 더스트 커버 케이스 단품",
+      "ali_query": "AULA F75 Acrylic Dust Cover Case Only",
+      "amazon_query": "AULA F75 Dust Cover Case Only"
+    },
+    "specs": {
+      "material": "Acrylic"
+    },
+    "ko": {
+      "title": "독거미 AULA F75 키보드 전용 방진 커버 케이스 단품",
+      "summary": "본품 오매칭 테스트용 더미 후보 데이터 (검수기에서 자동 차단되어야 정상).",
+      "pros": ["저렴함"],
+      "cons": ["키보드 본품 아님"],
+      "verdict": "오매칭 샘플"
+    },
+    "en": {
+      "title": "AULA F75 Acrylic Dust Cover Case Only",
+      "summary": "Intentional mismatch test candidate (must be blocked by Gatekeeper).",
+      "pros": ["Cheap"],
+      "cons": ["Not the keyboard"],
+      "verdict": "Mismatch sample"
+    }
+  }
+]
