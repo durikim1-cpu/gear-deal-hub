@@ -1,4 +1,4 @@
-"""End-to-end zero-cost affiliate automation runner: Collect -> Gatekeeper Verify -> Build Site -> Notify."""
+"""End-to-end zero-cost affiliate automation runner: Collect -> Auto-Grow -> Gatekeeper Verify -> Build Site -> Notify."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from src.affiliate import load_config
+from src.auto_discover import auto_grow_catalog
 from src.collector import collect_candidates
 from src.notifier import dispatch_alerts
 from src.site_builder import build_site
@@ -19,7 +20,14 @@ def main() -> int:
     parser.add_argument(
         "--live-network",
         action="store_true",
-        help="Fetch live public Reddit trend JSON feeds during collection.",
+        help="Fetch live public Reddit JSON + Korean hot-deal RSS feeds and queue new model leads.",
+    )
+    parser.add_argument(
+        "--auto-grow",
+        type=int,
+        default=0,
+        metavar="N",
+        help="Automatically enrich, verify, and append up to N newly discovered models to products.json.",
     )
     parser.add_argument(
         "--send-telegram",
@@ -34,8 +42,16 @@ def main() -> int:
 
     cfg = load_config(project_root)
 
-    # Step 1: Collect candidates
+    # Step 1: Collect live signals & stage existing + inbox candidates
     staged = collect_candidates(project_root, live_network=args.live_network)
+
+    # Step 1b: Optional automated catalog growth (discovers & appends new vetted models)
+    grow_stats = {"attempted": 0, "added": 0, "rejected": 0, "added_ids": []}
+    if args.auto_grow > 0:
+        grow_stats = auto_grow_catalog(project_root, cfg, max_new=args.auto_grow)
+        if grow_stats["added"] > 0:
+            staged = collect_candidates(project_root, live_network=False)
+
     candidates = staged["candidates"]
 
     # Step 2: Gatekeeper verification (blocks accessory traps & missing disclosures)
@@ -53,6 +69,8 @@ def main() -> int:
         "total_candidates": len(candidates),
         "approved_count": len(approved),
         "rejected_count": len(rejected),
+        "auto_grow_stats": grow_stats,
+        "new_leads_queued": staged.get("new_model_leads_found", 0),
         "rejected_details": rejected,
         "site_stats": site_stats,
         "alert_stats": alert_stats,
@@ -63,14 +81,16 @@ def main() -> int:
     )
 
     print("=== GearCompare Hub Pipeline Summary ===")
-    print(f"Candidates scanned : {len(candidates)}")
-    print(f"Approved products  : {len(approved)}")
+    print(f"Candidates scanned   : {len(candidates)} (new leads queued: {staged.get('new_model_leads_found', 0)})")
+    if args.auto_grow > 0:
+        print(f"Auto-grow catalog    : +{grow_stats['added']} added {grow_stats['added_ids']}")
+    print(f"Approved products    : {len(approved)}")
     print(f"Blocked by Gatekeeper: {len(rejected)}")
     for r in rejected:
         print(f"  [BLOCKED] {r['product_id']} -> {', '.join(r['reasons'])}")
-    print(f"Static pages built : {site_stats['total_html_pages']} -> {dist_dir}")
+    print(f"Static pages built   : {site_stats['total_html_pages']} -> {dist_dir}")
     print(
-        f"Telegram alerts    : KO={alert_stats['queued_ko']} queued ({alert_stats['sent_ko']} sent), "
+        f"Telegram alerts      : KO={alert_stats['queued_ko']} queued ({alert_stats['sent_ko']} sent), "
         f"EN={alert_stats['queued_en']} queued ({alert_stats['sent_en']} sent)"
     )
     return 0

@@ -38,8 +38,9 @@ jobs:
           COUPANG_PARTNERS_ID: ${{ secrets.COUPANG_PARTNERS_ID }}
           ALIEXPRESS_TRACKING_ID: ${{ secrets.ALIEXPRESS_TRACKING_ID }}
           AMAZON_ASSOCIATE_TAG: ${{ secrets.AMAZON_ASSOCIATE_TAG }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          python run_pipeline.py --live-network
+          python run_pipeline.py --live-network --auto-grow 3
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

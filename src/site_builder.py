@@ -2,8 +2,10 @@
 
 URL map (directory-index URLs, never linked with `.html`):
   /                 -> dist/index.html             (region gateway)
-  /ko/              -> dist/ko/index.html          (Coupang vs AliExpress hub)
-  /en/              -> dist/en/index.html          (Amazon vs AliExpress hub)
+  /ko/              -> dist/ko/index.html          (Coupang vs AliExpress faceted index)
+  /en/              -> dist/en/index.html          (Amazon vs AliExpress faceted index)
+  /ko/c/<cat>/      -> dist/ko/c/<cat>/index.html  (Korean category index)
+  /en/c/<cat>/      -> dist/en/c/<cat>/index.html  (English category index)
   /ko/p/<slug>/     -> dist/ko/p/<slug>/index.html (Korean detail)
   /en/p/<slug>/     -> dist/en/p/<slug>/index.html (English detail)
   /policy/          -> dist/policy/index.html      (privacy & affiliate disclosure)
@@ -12,8 +14,11 @@ URL map (directory-index URLs, never linked with `.html`):
 from __future__ import annotations
 
 import html
+import json
 import re
 import shutil
+import unicodedata
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from src.affiliate import DISCLOSURE_EN, DISCLOSURE_KO
@@ -30,6 +35,7 @@ CATEGORY_LABELS_KO = {
     "lighting": "조명",
     "productivity": "생산성 기어",
     "hubs": "독/허브",
+    "controllers": "컨트롤러/패드",
 }
 
 CATEGORY_LABELS_EN = {
@@ -44,6 +50,7 @@ CATEGORY_LABELS_EN = {
     "lighting": "Desk Lighting",
     "productivity": "Stream & Macros",
     "hubs": "USB-C Docks",
+    "controllers": "Controllers",
 }
 
 SPEC_LABELS_KO = {
@@ -65,6 +72,19 @@ KR_CUSTOMS_LIMIT_USD = 150
 # Minimum AliExpress advantage before we recommend direct import over domestic delivery.
 DIRECT_PICK_MIN_PCT = 15.0
 
+# Index paging: rows revealed per "load more" step.
+PAGE_SIZE = 20
+# Brands listed in the facet before the "all brands" expander.
+TOP_BRANDS = 8
+# The top-spreads strip is skipped for scopes too small for it to say anything the list doesn't.
+TOPS_MIN_ITEMS = 8
+# Price facet brackets on the lowest available price: (upper bound, label). KO bounds are inclusive, EN exclusive.
+_PRICE_BRACKETS = {
+    "ko": ((50_000, "5만 원 이하"), (100_000, "5~10만 원"), (200_000, "10~20만 원"), (None, "20만 원 이상")),
+    "en": ((40, "Under $40"), (80, "$40–$80"), (150, "$80–$150"), (None, "$150+")),
+}
+_SKU_RE = re.compile(r"^(?=.*\d)[A-Z0-9][A-Z0-9\-]{2,15}$")
+
 FONT_CSS_URL = (
     "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/"
     "pretendardvariable-dynamic-subset.min.css"
@@ -77,7 +97,10 @@ FONT_CSS_URL = (
 _ICON_PATHS = {
     "search": '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
     "cards": '<rect x="3.5" y="4" width="7" height="16" rx="1.5"/><rect x="13.5" y="4" width="7" height="16" rx="1.5"/>',
-    "table": '<rect x="3.5" y="4.5" width="17" height="15" rx="1.5"/><path d="M3.5 9.5h17M3.5 14.5h17M9 9.5v10"/>',
+    "list": '<path d="M4 6.5h16M4 12h16M4 17.5h16"/>',
+    "filter": '<path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.5"/><circle cx="8" cy="17" r="2.5"/>',
+    "x": '<path d="m6 6 12 12M18 6 6 18"/>',
+    "down": '<path d="m6 9 6 6 6-6"/>',
     "out": '<path d="M7 17 17 7M9 7h8v8"/>',
     "arrow": '<path d="M5 12h14M13 6l6 6-6 6"/>',
     "send": '<path d="M21 4 3 11l6.5 2.5L12 20l3-5.5L21 4Z"/><path d="m9.5 13.5 5-5"/>',
@@ -91,6 +114,19 @@ def _icon(name: str, size: int = 16) -> str:
         f'<svg class="i" width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
         f'stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{_ICON_PATHS[name]}</svg>'
     )
+
+
+# Icons repeated in every index row are referenced from one per-page sprite to keep 500-row pages light.
+_SPRITE_ICONS = ("out", "down", "arrow")
+ICON_SPRITE = (
+    '<svg width="0" height="0" style="position:absolute" aria-hidden="true">'
+    + "".join(f'<symbol id="i-{n}" viewBox="0 0 24 24">{_ICON_PATHS[n]}</symbol>' for n in _SPRITE_ICONS)
+    + "</svg>"
+)
+
+
+def _use(name: str, size: int = 14) -> str:
+    return f'<svg class="i" width="{size}" height="{size}" aria-hidden="true"><use href="#i-{name}"/></svg>'
 
 
 BRAND_MARK = (
@@ -147,9 +183,9 @@ body {
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 button, input { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--coupang); outline-offset: 2px; border-radius: 6px; }
-.num, .price, .kpi-value, .ledger td.n { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
-.i { flex: none; vertical-align: -0.15em; }
-.wrap { max-width: 1200px; margin: 0 auto; padding: 0 22px; }
+.num, .price, .amt { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+.i { flex: none; vertical-align: -0.15em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.wrap { max-width: var(--wrap, 1200px); margin: 0 auto; padding: 0 22px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ---------- Compliance strip ---------- */
@@ -168,61 +204,11 @@ button, input { font: inherit; color: inherit; }
 .head-nav a.tg { background: var(--ink); color: #fff; margin-left: 6px; }
 .head-nav a.tg:hover { background: #1F2937; color: #fff; }
 
-/* ---------- Hero + KPI ledger ---------- */
-.hero { padding: 24px 0 16px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; }
-.hero h1 { font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.75rem); line-height: 1.25; letter-spacing: -0.025em; font-weight: 760; }
-.stamp { color: var(--muted); font-size: 13px; display: flex; gap: 14px; flex-wrap: wrap; }
-.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 30px; }
-.kpi { padding: 18px 20px 17px; border-left: 1px solid var(--line); min-width: 0; }
-.kpi:first-child { border-left: 0; }
-.kpi-label { font-size: 12.5px; color: var(--muted); font-weight: 600; }
-.kpi-value { margin-top: 4px; font-size: 1.5rem; font-weight: 760; letter-spacing: -0.025em; line-height: 1.25; }
-.kpi-value small { font-size: 0.95rem; font-weight: 650; margin-left: 1px; }
-.kpi-value a { text-decoration: none; }
-.kpi-value a:hover { text-decoration: underline; }
-.kpi-sub { margin-top: 2px; font-size: 13px; color: var(--ink-2); }
-.kpi-sub b { color: var(--save-ink); font-weight: 700; }
-.gk { display: inline-flex; align-items: center; gap: 7px; margin-top: 7px; font-size: 13.5px; font-weight: 650; color: var(--save-ink); background: var(--save-bg); border-radius: 8px; padding: 5px 10px 5px 8px; line-height: 1.35; }
-.gk .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--save); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18); flex: none; }
-
-/* ---------- Toolbar ---------- */
-.toolbar { position: sticky; top: 62px; z-index: 10; background: rgba(246, 247, 249, 0.94); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 12px 0 12px; margin: 0 -22px; padding-left: 22px; padding-right: 22px; border-bottom: 1px solid transparent; }
-.toolbar-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.search { position: relative; flex: 1 1 280px; }
-.search .i { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); }
-.search input { width: 100%; height: 42px; border: 1px solid var(--line-2); border-radius: 11px; background: var(--surface); padding: 0 44px 0 38px; font-size: 15px; transition: border-color 0.2s, box-shadow 0.2s; }
-.search input::placeholder { color: #6B7280; }
-.search input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08); }
-.search kbd { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); font: 600 11px/1 inherit; color: var(--muted); border: 1px solid var(--line-2); border-radius: 5px; padding: 3px 6px; background: var(--sunk); }
-.seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line-2); border-radius: 11px; padding: 3px; gap: 2px; height: 42px; }
-.seg button { display: inline-flex; align-items: center; gap: 6px; border: 0; background: transparent; padding: 0 12px; border-radius: 8px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; transition: background 0.2s var(--ease), color 0.2s; }
-.seg button:hover { color: var(--ink); background: var(--sunk); }
-.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
-.seg-label { font-size: 12.5px; color: var(--muted); font-weight: 600; margin-right: 2px; }
-.cats { display: flex; gap: 6px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-.cats::-webkit-scrollbar { display: none; }
-.cat { flex: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line-2); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; transition: border-color 0.2s, background 0.2s; }
-.cat:hover { border-color: var(--ink); color: var(--ink); }
-.cat .num { font-size: 12px; color: var(--muted); font-weight: 600; }
-.cat[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
-.cat[aria-pressed="true"] .num { color: #C9CED6; }
-.cat:disabled { opacity: 0.45; cursor: default; border-color: var(--line); color: var(--muted); }
-.result-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 16px 0 12px; font-size: 13.5px; color: var(--muted); }
-.result-line strong { color: var(--ink); }
-
-/* ---------- Deal cards ---------- */
-.deal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-.deal { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 20px 16px; display: flex; flex-direction: column; gap: 14px; transition: box-shadow 0.35s var(--ease), border-color 0.35s var(--ease); }
-.deal:hover { box-shadow: var(--shadow-hi); border-color: var(--line-2); }
-.deal-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+/* ---------- Shared deal primitives (detail, related) ---------- */
 .tag { flex: none; font-size: 12.5px; font-weight: 600; color: var(--ink-2); background: var(--sunk); border-radius: 6px; padding: 3px 8px; white-space: nowrap; }
 .pick { display: inline-flex; align-items: center; font-size: 12.5px; font-weight: 700; border-radius: 7px; padding: 4px 9px; line-height: 1.4; text-align: right; }
 .pick.is-ali { color: var(--save-ink); background: var(--save-bg); }
 .pick.is-local { color: var(--local); background: var(--local-bg); }
-.deal-title { font-size: 1.14rem; line-height: 1.38; letter-spacing: -0.02em; font-weight: 720; text-wrap: balance; }
-.deal-title a { text-decoration: none; }
-.deal-title a:hover { text-decoration: underline; }
-.deal-sum { margin-top: 6px; color: var(--ink-2); font-size: 14.5px; line-height: 1.6; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; }
 .chips li { font-size: 12.5px; font-weight: 550; color: var(--ink-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; background: var(--surface); }
 
@@ -234,22 +220,16 @@ button, input { font: inherit; color: inherit; }
 .side:last-child.is-win { border-radius: 0 11px 11px 0; }
 .side-head { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .store { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; }
-.store::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--c, var(--ink)); }
-.store.coupang { --c: var(--coupang); }
-.store.amazon { --c: var(--amazon); }
-.store.ali { --c: var(--ali); }
+.store::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--c, var(--ink)); flex: none; }
+.coupang { --c: var(--coupang); }
+.amazon { --c: var(--amazon); }
+.ali { --c: var(--ali); }
 .perk { font-size: 12px; color: var(--muted); }
 .price { font-size: 1.42rem; font-weight: 780; letter-spacing: -0.025em; line-height: 1.25; margin-top: 3px; }
 .price small { font-size: 0.85rem; font-weight: 650; margin-left: 1px; }
 .side-meta { font-size: 12.5px; color: var(--muted); }
 .win-tag { font-size: 11px; font-weight: 750; color: #fff; background: var(--save); border-radius: 4px; padding: 0 5px; line-height: 1.6; }
 .customs { align-self: flex-start; margin-top: 5px; font-size: 12px; font-weight: 650; color: var(--warn-ink); background: var(--warn-bg); border-radius: 6px; padding: 2px 7px; }
-
-.callout { display: grid; gap: 0; border-top: 1px solid var(--line); }
-.callout > div { display: grid; grid-template-columns: 5.6em 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; line-height: 1.55; }
-.callout dt { font-weight: 700; color: var(--ink); white-space: nowrap; }
-.callout dd { color: var(--ink-2); }
-.en .callout > div { grid-template-columns: 6.6em 1fr; }
 
 .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 10px 14px; border-radius: 10px; font-weight: 700; font-size: 14.5px; text-decoration: none; color: #fff; transition: filter 0.2s, transform 0.2s var(--ease); text-align: center; line-height: 1.3; }
@@ -258,42 +238,199 @@ button, input { font: inherit; color: inherit; }
 .btn-coupang { background: var(--coupang); }
 .btn-amazon { background: var(--amazon); color: #111827; }
 .btn-ali { background: var(--ali); }
-.more { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; font-size: 14px; font-weight: 650; color: var(--ink); text-decoration: none; padding: 2px 0; }
-.more:hover { text-decoration: underline; }
-.more .i { transition: transform 0.25s var(--ease); }
-.more:hover .i { transform: translateX(3px); }
+.kpi-label { font-size: 12.5px; color: var(--muted); font-weight: 600; }
 
-/* ---------- Dense ledger table ---------- */
-.ledger-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
-.ledger { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; min-width: 980px; }
-.ledger th { position: sticky; top: 0; text-align: left; font-size: 12px; font-weight: 650; color: var(--muted); background: var(--sunk); padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-.ledger td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-.ledger tr:last-child td { border-bottom: 0; }
-.ledger tbody tr:hover td { background: #FAFBFC; }
-.ledger th.n, .ledger td.n { text-align: right; white-space: nowrap; }
-.ledger td.n { font-weight: 650; }
-.ledger td.n.win { color: var(--save-ink); font-weight: 780; }
-.ledger td.n.win::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--save); margin-right: 6px; vertical-align: 0.15em; }
-.ledger .model { position: sticky; left: 0; background: inherit; min-width: 230px; max-width: 290px; }
-.ledger tbody .model { background: var(--surface); }
-.ledger thead .model { background: var(--sunk); z-index: 1; }
-.ledger .model a { font-weight: 700; text-decoration: none; line-height: 1.4; display: block; }
-.ledger .model a:hover { text-decoration: underline; }
-.ledger .model span { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-.ledger .chips li { font-size: 12px; }
-.ledger .spread { font-size: 12.5px; color: var(--muted); font-weight: 550; display: block; }
-.ledger .pick { font-size: 12px; white-space: nowrap; }
-.ledger .buy { white-space: nowrap; }
-.ledger td.n .customs { display: block; width: fit-content; margin: 6px 0 0 auto; font-weight: 650; }
-.ledger td.n.win .customs::before { content: none; }
-.ledger .buy a { display: inline-flex; align-items: center; gap: 3px; font-size: 13px; font-weight: 700; text-decoration: none; padding: 5px 9px; border-radius: 7px; color: #fff; }
-.ledger .buy a + a { margin-left: 4px; }
-.hub[data-view="cards"] .ledger-wrap { display: none; }
-.hub[data-view="table"] .deal-grid { display: none; }
+/* ---------- Index: title + summary strip ---------- */
+.is-hub { --wrap: 1336px; }
+.idx-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 20px; padding: 20px 0 12px; }
+.idx-head h1 { font-size: 1.375rem; line-height: 1.3; letter-spacing: -0.022em; font-weight: 760; }
+.hub .crumbs { padding-top: 16px; }
+.hub .crumbs + .idx-head { padding-top: 6px; }
+.stamp { color: var(--muted); font-size: 13px; display: flex; gap: 2px 14px; flex-wrap: wrap; }
+.stamp b { color: var(--ink-2); font-weight: 650; }
 
-.empty { background: var(--surface); border: 1px dashed var(--line-2); border-radius: var(--radius); padding: 40px 20px; text-align: center; color: var(--ink-2); }
-.empty strong { display: block; font-size: 1.05rem; color: var(--ink); margin-bottom: 4px; }
-.empty button { margin-top: 14px; border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 9px; padding: 8px 14px; font-weight: 650; cursor: pointer; }
+.summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.sm { padding: 10px 16px 11px; border-left: 1px solid var(--line); min-width: 0; }
+.sm:first-child { border-left: 0; }
+.sm dt { font-size: 12px; font-weight: 650; color: var(--muted); }
+.sm dt .store { font-size: 12px; font-weight: 650; }
+.sm-v { display: inline-block; font-size: 1.125rem; font-weight: 760; letter-spacing: -0.02em; line-height: 1.4; }
+.sm-v small { font-size: 0.8125rem; font-weight: 650; color: var(--ink-2); margin-left: 3px; letter-spacing: 0; }
+.sm-v.is-text { font-size: 0.9375rem; font-weight: 700; line-height: 1.68; }
+.sm-s { display: block; font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
+.sm a { text-decoration: none; border-radius: 4px; }
+.sm a:hover .sm-v { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+
+/* ---------- Index: top spreads strip ---------- */
+.tops { display: grid; grid-template-columns: auto repeat(var(--n, 4), minmax(0, 1fr)); margin-top: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.tops h2 { display: flex; flex-direction: column; justify-content: center; padding: 8px 16px; font-size: 12.5px; font-weight: 700; line-height: 1.4; white-space: nowrap; background: var(--sunk); border-radius: 11px 0 0 11px; }
+.tops h2 small { font-size: 12px; font-weight: 550; color: var(--muted); }
+.tops ol { display: contents; list-style: none; }
+.tops li { border-left: 1px solid var(--line); min-width: 0; }
+.tops a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; align-items: center; height: 100%; padding: 8px 14px 9px; text-decoration: none; transition: background 0.15s; }
+.tops li:last-child a { border-radius: 0 11px 11px 0; }
+.tops a:hover { background: #FAFBFC; }
+.tops a:hover .tops-name { text-decoration: underline; }
+.tops-name { font-size: 13.5px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tops-pct { grid-row: span 2; font-size: 15px; font-weight: 760; letter-spacing: -0.01em; }
+.tops-pct.is-ali { color: var(--save-ink); }
+.tops-pct.is-local { color: var(--local); }
+.tops-sub { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- Index: faceted workspace ---------- */
+.work { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 0 28px; margin-top: 8px; align-items: start; }
+.side-col { position: sticky; top: 72px; max-height: calc(100dvh - 84px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; margin-top: 10px; padding: 0 6px 20px 0; }
+.facet-h, .facet legend { display: flex; align-items: baseline; gap: 6px; padding: 0 8px 4px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.facet legend small { font-size: 11.5px; font-weight: 550; }
+.catnav ul { list-style: none; }
+.catnav a { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 30px; padding: 4px 8px; border-radius: 7px; font-size: 14px; font-weight: 550; color: var(--ink-2); text-decoration: none; transition: background 0.15s; }
+.catnav a:hover { background: #E9ECF0; color: var(--ink); }
+.catnav .num, .opt .num { font-size: 12.5px; font-weight: 550; color: var(--muted); }
+.catnav a[aria-current] { background: var(--ink); color: #fff; font-weight: 650; }
+.catnav a[aria-current] .num { color: #C9CED6; }
+.catnav a.is-zero, .opt.is-zero { opacity: 0.45; }
+.facet { border: 0; margin-top: 20px; padding: 0; min-width: 0; }
+.opt { display: flex; align-items: center; gap: 8px; min-height: 30px; padding: 4px 8px; border-radius: 7px; font-size: 14px; color: var(--ink-2); cursor: pointer; transition: background 0.15s; }
+.opt:hover { background: #E9ECF0; color: var(--ink); }
+.opt input { flex: none; width: 15px; height: 15px; margin: 0; cursor: pointer; }
+.opt .lbl { flex: 1; min-width: 0; }
+.opt .lbl small { font-size: 12px; color: var(--muted); margin-left: 2px; }
+.opt:has(input:checked) { color: var(--ink); font-weight: 650; }
+.opt:has(input:focus-visible) { outline: 2px solid var(--coupang); outline-offset: -2px; }
+.opt input:focus-visible { outline: none; }
+.opt-sep { margin-top: 6px; }
+.facet[data-brands]:not([data-expanded]) .opt.is-extra:not(:has(input:checked)) { display: none; }
+.facet-more { display: inline-flex; align-items: center; gap: 4px; margin: 4px 0 0 8px; border: 0; background: none; padding: 4px 0; font-size: 13px; font-weight: 650; color: var(--ink-2); cursor: pointer; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.facet-more:hover { color: var(--ink); text-decoration-color: currentColor; }
+.sheet-head, .sheet-foot, .scrim, .fbtn { display: none; }
+
+.main { container: idx / inline-size; min-width: 0; }
+.bar { position: sticky; top: 62px; z-index: 10; display: flex; align-items: center; gap: 8px; padding: 10px 0; background: var(--canvas); }
+.search { position: relative; flex: 1 1 220px; min-width: 0; }
+.search .i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.search input { width: 100%; height: 40px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); padding: 0 40px 0 36px; font-size: 14.5px; transition: border-color 0.2s, box-shadow 0.2s; }
+.search input::placeholder { color: #6B7280; }
+.search input::-webkit-search-cancel-button { display: none; }
+.search input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08); }
+.search kbd { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font: 600 11px/1 inherit; color: var(--muted); border: 1px solid var(--line-2); border-radius: 5px; padding: 3px 6px; background: var(--sunk); pointer-events: none; }
+.search input:focus + kbd, .search input:not(:placeholder-shown) + kbd { display: none; }
+.sort { position: relative; flex: none; }
+.sort select { appearance: none; -webkit-appearance: none; height: 40px; max-width: 100%; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); padding: 0 32px 0 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: border-color 0.2s; }
+.sort select:hover { border-color: var(--ink); }
+.sort .i { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.fbtn { align-items: center; gap: 6px; flex: none; height: 40px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); padding: 0 12px; font-size: 14px; font-weight: 650; cursor: pointer; }
+.fbtn b { min-width: 18px; height: 18px; border-radius: 9px; background: var(--ink); color: #fff; font-size: 11.5px; font-weight: 700; line-height: 18px; text-align: center; padding: 0 5px; }
+
+.status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; min-height: 32px; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+.status-text strong, .pager-status strong { color: var(--ink); font-weight: 700; }
+.on-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; flex: 1; min-width: 0; }
+.chip-x { display: inline-flex; align-items: center; gap: 3px; min-height: 26px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--surface); padding: 2px 6px 2px 10px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; transition: border-color 0.15s; }
+.chip-x:hover { border-color: var(--ink); color: var(--ink); }
+.chip-x .i { color: var(--muted); }
+.chip-clear { border: 0; background: none; padding: 2px 4px; font-size: 12.5px; font-weight: 650; color: var(--ink-2); cursor: pointer; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.chip-clear:hover { color: var(--ink); text-decoration-color: currentColor; }
+.seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line-2); border-radius: 9px; padding: 2px; gap: 2px; height: 32px; margin-left: auto; }
+.seg button { display: inline-flex; align-items: center; gap: 5px; border: 0; background: transparent; padding: 0 10px; border-radius: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s; }
+.seg button:hover { color: var(--ink); background: var(--sunk); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+
+/* ---------- Index: ledger rows (one DOM, list or card layout) ---------- */
+.rows { list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.row { --rg: 10px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "info info" "dom ali" "verd verd" "act act"; gap: var(--rg) 8px; margin-top: -1px; padding: 14px 14px 12px; border-top: 1px solid var(--line); transition: background 0.15s; }
+.row:hover, .row[data-open] { background: #FBFCFD; }
+.r-info { grid-area: info; min-width: 0; }
+.r-meta { font-size: 12px; font-weight: 600; color: var(--muted); line-height: 1.4; }
+.r-title { margin-top: 1px; font-size: 14.5px; line-height: 1.4; font-weight: 700; letter-spacing: -0.012em; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.r-title a { text-decoration: none; }
+.r-title a:hover { text-decoration: underline; }
+.r-spec { margin-top: 3px; font-size: 12.5px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r-spec b { font-weight: 650; color: var(--ink); }
+.r-spec span::before { content: "·"; margin: 0 6px; color: #9AA1AC; }
+.r-price { display: flex; flex-direction: column; min-width: 0; padding: 7px 10px 8px; background: var(--sunk); border-radius: 8px; }
+.r-dom { grid-area: dom; }
+.r-ali { grid-area: ali; }
+.r-price .store { font-size: 12px; font-weight: 650; color: var(--muted); }
+.r-price .store::before { width: 7px; height: 7px; }
+.amt { font-size: 15px; line-height: 1.4; font-weight: 600; color: var(--ink-2); letter-spacing: -0.01em; white-space: nowrap; }
+.r-price.is-win .amt { font-weight: 780; color: var(--save-ink); }
+.r-off { font-size: 12px; line-height: 1.4; color: var(--muted); }
+.r-off b { font-weight: 700; color: var(--save-ink); }
+.duty { align-self: flex-start; margin-top: 3px; font-size: 11.5px; font-weight: 650; line-height: 1.5; color: var(--warn-ink); background: var(--warn-bg); border-radius: 5px; padding: 0 6px; white-space: nowrap; }
+.r-verd { grid-area: verd; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; min-width: 0; }
+.gap { font-size: 14.5px; line-height: 1.45; font-weight: 760; letter-spacing: -0.01em; white-space: nowrap; }
+.gap small { font-size: 12.5px; font-weight: 650; color: var(--ink-2); margin-left: 2px; }
+.call { font-size: 12.5px; line-height: 1.45; font-weight: 700; white-space: nowrap; }
+.is-ali > .call { color: var(--save-ink); }
+.is-local > .call { color: var(--local); }
+.why { font-size: 12px; line-height: 1.4; color: var(--muted); white-space: nowrap; }
+.r-act { grid-area: act; display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; gap: 4px 6px; }
+.buy { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 38px; padding: 0 9px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--surface); font-size: 13px; font-weight: 650; color: var(--ink); text-decoration: none; white-space: nowrap; transition: border-color 0.15s, background 0.15s; }
+.buy .i { color: var(--muted); }
+.buy:hover { border-color: var(--c, var(--ink)); }
+.buy.is-pick { background: var(--ink); border-color: var(--ink); color: #fff; }
+.buy.is-pick .i { color: #C9CED6; }
+.buy.is-pick:hover { background: #1F2937; }
+.r-more { display: inline-flex; align-items: center; justify-content: center; gap: 3px; height: 38px; border: 0; border-radius: 8px; background: transparent; padding: 0 6px 0 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+.r-more:hover { background: #E9ECF0; color: var(--ink); }
+.r-more .i { transition: transform 0.2s var(--ease); }
+.row[data-open] .r-more .i { transform: rotate(180deg); }
+
+.drawer { grid-column: 1 / -1; display: grid; grid-template-rows: 0fr; visibility: hidden; margin-top: calc(var(--rg) * -1); transition: grid-template-rows 0.22s var(--ease), visibility 0s 0.22s; }
+.row[data-open] .drawer { grid-template-rows: 1fr; visibility: visible; margin-top: 0; transition: grid-template-rows 0.22s var(--ease); }
+.drawer-in { min-height: 0; overflow: hidden; }
+.drawer-box { display: grid; gap: 10px; padding: 12px 14px; background: var(--sunk); border-radius: 8px; }
+.drawer dl { display: grid; gap: 10px 28px; }
+.drawer dt { font-size: 12px; font-weight: 700; color: var(--muted); }
+.drawer dd { position: relative; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); max-width: 68ch; }
+.drawer .cons dd { padding-left: 12px; }
+.drawer .cons dd::before { content: ""; position: absolute; left: 1px; top: 0.72em; width: 5px; height: 1.5px; background: #9AA1AC; }
+.drawer-link { justify-self: start; display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 650; text-decoration: none; }
+.drawer-link:hover { text-decoration: underline; }
+.drawer-link .i { transition: transform 0.2s var(--ease); }
+.drawer-link:hover .i { transform: translateX(3px); }
+
+.hub[data-view="cards"] .rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; background: none; border: 0; border-radius: 0; overflow: visible; }
+.hub[data-view="cards"] .row { grid-template-rows: 1fr; align-content: start; margin-top: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.hub[data-view="cards"] .row:hover { border-color: var(--line-2); }
+@container idx (max-width: 639.98px) {
+  .hub[data-view="cards"] .rows { grid-template-columns: minmax(0, 1fr); }
+}
+@container idx (min-width: 560px) {
+  .drawer dl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .hub[data-view="cards"] .drawer dl { grid-template-columns: minmax(0, 1fr); }
+  .buy, .r-more { height: 32px; }
+}
+@container idx (min-width: 560px) and (max-width: 879.98px) {
+  .hub[data-view="list"] .row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr); grid-template-areas: "info info act" "dom ali verd"; gap: var(--rg) 10px; padding: 14px 16px 12px; }
+  .hub[data-view="list"] .r-act { align-self: start; justify-content: flex-end; }
+  .hub[data-view="list"] .buy { flex: none; }
+  .hub[data-view="list"] .r-verd { flex-direction: column; flex-wrap: nowrap; align-self: center; padding-left: 6px; }
+}
+@container idx (min-width: 880px) {
+  .hub[data-view="list"] .row { --rg: 0px; grid-template-columns: minmax(0, 1fr) var(--pc, 112px) calc(var(--pc, 112px) + 4px) 168px var(--act, 136px); grid-template-areas: "info dom ali verd act"; gap: 0 16px; padding: 12px 16px; content-visibility: auto; contain-intrinsic-size: auto 92px; }
+  .hub[data-view="list"] .r-price { align-items: flex-end; padding: 0; background: none; border-radius: 0; text-align: right; }
+  .hub[data-view="list"] .duty { align-self: flex-end; }
+  .hub[data-view="list"] .r-verd { flex-direction: column; flex-wrap: nowrap; }
+  .hub[data-view="list"] .r-act { justify-content: flex-end; }
+  .hub[data-view="list"] .buy { flex: none; }
+  .hub[data-view="list"] .drawer-box { margin-top: 12px; grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+}
+.en { --act: 152px; --pc: 128px; }
+
+.pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; }
+.pager-status { width: 100%; text-align: center; font-size: 13px; color: var(--muted); }
+.pager button { height: 40px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); padding: 0 16px; font-size: 14px; font-weight: 650; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.pager button:hover { border-color: var(--ink); }
+.pager button.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+.pager button.primary:hover { background: #1F2937; }
+.empty { background: var(--surface); border: 1px dashed var(--line-2); border-radius: 12px; padding: 36px 20px; text-align: center; font-size: 14px; color: var(--ink-2); }
+.empty strong { display: block; font-size: 1rem; color: var(--ink); margin-bottom: 2px; }
+.empty button { margin-top: 14px; height: 36px; border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 9px; padding: 0 14px; font-size: 13.5px; font-weight: 650; cursor: pointer; }
+
+/* Before app.js runs, clamp to the first page so the full catalog never flashes; without JS everything stays visible. */
+html.js .hub:not([data-ready]) .rows > li:nth-child(n+__PAGE_NEXT__) { display: none; }
+html:not(.js) .bar, html:not(.js) .status, html:not(.js) .pager, html:not(.js) .facets, html:not(.js) .r-more { display: none; }
+html:not(.js) .drawer { grid-template-rows: 1fr; visibility: visible; margin-top: 0; }
 
 /* ---------- Detail page ---------- */
 .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 22px 0 0; font-size: 13.5px; color: var(--muted); list-style: none; }
@@ -407,39 +544,71 @@ button, input { font: inherit; color: inherit; }
 .foot-links a:hover { text-decoration: underline; }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 1020px) {
+@media (max-width: 1023.98px) {
   .detail { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "aside" "body"; }
   .d-aside { position: static; margin-top: 22px; }
-  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .kpi:nth-child(3) { border-left: 0; }
-  .kpi:nth-child(n+3) { border-top: 1px solid var(--line); }
   .rel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* Index: sidebar dissolves into a category scroller + bottom filter sheet */
+  .is-hub .site-head { position: static; }
+  .work { display: block; margin-top: 14px; }
+  .side-col { display: contents; }
+  .catnav .facet-h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .catnav ul { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -22px; padding: 0 22px 2px; }
+  .catnav ul::-webkit-scrollbar { display: none; }
+  .catnav li { flex: none; }
+  .catnav a { min-height: 34px; padding: 4px 12px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--surface); font-size: 13.5px; font-weight: 600; }
+  .catnav a:hover { background: var(--surface); border-color: var(--ink); }
+  .catnav a[aria-current] { border-color: var(--ink); background: var(--ink); }
+  .bar { top: 0; }
+  .fbtn { display: inline-flex; }
+  .facets { position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; max-height: 86dvh; background: var(--surface); border-radius: 16px 16px 0 0; box-shadow: 0 -12px 40px -12px rgba(17, 24, 39, 0.35); transform: translateY(104%); visibility: hidden; transition: transform 0.28s var(--ease), visibility 0s 0.28s; }
+  .facets[data-open] { transform: none; visibility: visible; transition: transform 0.28s var(--ease); }
+  .facets-body { overflow-y: auto; overscroll-behavior: contain; padding: 14px 12px 12px; }
+  .facets-body .facet:first-child { margin-top: 0; }
+  .facets .opt { min-height: 42px; font-size: 15px; }
+  .facets .opt input { width: 18px; height: 18px; }
+  .facet[data-brands] .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8px; }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 12px 20px; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .sheet-head button { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 0; border-radius: 10px; background: none; color: var(--ink-2); cursor: pointer; }
+  .sheet-head button:hover { background: var(--sunk); }
+  .sheet-foot { display: grid; grid-template-columns: auto 1fr; gap: 8px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
+  .sheet-foot button { height: 46px; border: 1px solid var(--line-2); border-radius: 11px; background: var(--surface); padding: 0 16px; font-size: 14.5px; font-weight: 650; cursor: pointer; }
+  .sheet-foot .primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .scrim { display: block; position: fixed; inset: 0; z-index: 39; background: rgba(17, 24, 39, 0.45); opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0s 0.25s; }
+  .scrim[data-open] { opacity: 1; visibility: visible; transition: opacity 0.25s; }
+  html.sheet-open { overflow: hidden; }
 }
 @media (max-width: 860px) {
-  .deal-grid, .regions { grid-template-columns: 1fr; }
+  .regions { grid-template-columns: 1fr; }
   .head-nav .lbl-long { display: none; }
+  .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm:nth-child(3) { border-left: 0; }
+  .sm:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .tops { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; }
+  .tops::-webkit-scrollbar { display: none; }
+  .tops h2 { flex: none; padding: 8px 14px; }
+  .tops li { flex: 0 0 232px; scroll-snap-align: start; }
 }
 @media (max-width: 620px) {
   body { font-size: 15px; }
   .wrap { padding: 0 16px; }
-  .toolbar { margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
   .site-head .wrap { height: 56px; }
-  .toolbar { top: 56px; }
   .brand-name { display: none; }
   .head-nav { gap: 0; font-size: 13.5px; }
   .head-nav a { padding: 7px 8px; }
   .head-nav .lbl-tg { display: none; }
-  .hero { padding: 30px 0 20px; }
-  .kpi { padding: 14px 14px 13px; }
-  .kpi-value { font-size: 1.22rem; }
-  .seg-label { display: none; }
-  .seg { flex: 1 1 auto; }
-  .seg button { flex: 1; justify-content: center; padding: 0 8px; font-size: 13px; }
-  .view-seg { flex: none; }
-  .view-seg .lbl { display: none; }
+  .idx-head { padding: 16px 0 10px; }
+  .idx-head h1 { font-size: 1.25rem; }
+  .sm { padding: 9px 12px 10px; }
+  .sm-v { font-size: 1.0625rem; }
+  .catnav ul { margin: 0 -16px; padding: 0 16px 2px; }
   .search kbd { display: none; }
-  .deal { padding: 16px 16px 14px; }
-  .deal-top { flex-direction: column; align-items: flex-start; }
+  .search input { padding-right: 12px; font-size: 16px; }
+  .sort select { width: 132px; text-overflow: ellipsis; }
+  .fbtn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .seg .lbl { display: none; }
+  .seg button { padding: 0 9px; }
   .pick { text-align: left; }
   .price { font-size: 1.22rem; }
   .battle .side { padding: 11px 11px 10px; }
@@ -466,86 +635,290 @@ APP_JS = r"""
 (() => {
   const hub = document.querySelector('[data-hub]');
   if (!hub) return;
-  const grid = hub.querySelector('[data-grid]');
-  const tbody = hub.querySelector('[data-rows]');
-  const cards = Array.from(grid.children);
-  const rows = Array.from(tbody.children);
-  const search = hub.querySelector('[data-search]');
-  const catBtns = Array.from(hub.querySelectorAll('[data-cat]'));
-  const sortBtns = Array.from(hub.querySelectorAll('[data-sort]'));
-  const viewBtns = Array.from(hub.querySelectorAll('[data-view-btn]'));
-  const countEl = hub.querySelector('[data-count]');
-  const empty = hub.querySelector('[data-empty]');
-  const tpl = countEl.dataset.tpl;
+  const $ = (s, r) => (r || hub).querySelector(s);
+  const $$ = (s, r) => Array.from((r || hub).querySelectorAll(s));
+  const L = JSON.parse($('[data-i18n]').textContent);
+  const fmt = (tpl, v) => tpl.replace(/\{(\w+)\}/g, (_, k) => v[k]);
+  const norm = s => s.normalize('NFKC').toLowerCase();
+  const PAGE = parseInt(hub.dataset.pageSize, 10) || 20;
+  const scoped = hub.dataset.scope !== 'all';
+
+  const list = $('[data-rows]');
+  const items = Array.from(list.children).map(el => {
+    const d = el.dataset;
+    return { el, c: d.c, b: d.b, r: d.r, d: d.d === '1', pb: d.pb, save: +d.save, pct: +d.pct, price: +d.price, q: d.q };
+  });
+  const SORTS = {
+    save: (a, b) => b.save - a.save,
+    pct: (a, b) => b.pct - a.pct,
+    price: (a, b) => a.price - b.price,
+    name: (a, b) => a.q.localeCompare(b.q),
+  };
+
+  const main = $('.main');
+  const search = $('[data-search]');
+  const sortSel = $('[data-sort]');
+  const viewBtns = $$('[data-view-btn]');
+  const catLinks = scoped ? [] : $$('[data-cat]');
+  const routeIn = $$('input[name="route"]');
+  const dutyIn = $('[data-duty]');
+  const priceIn = $$('input[data-f="price"]');
+  const brandIn = $$('input[data-f="brand"]');
+  const brandBox = $('[data-brands]');
+  const brandMore = $('[data-brand-more]');
+  const counters = $$('[data-n]');
+  const statusEls = $$('[data-status]');
+  const chipsEl = $('[data-chips]');
+  const moreBtn = $('[data-load]');
+  const allBtn = $('[data-all]');
+  const empty = $('[data-empty]');
+  const sheet = $('[data-sheet]');
+  const scrim = $('[data-scrim]');
+  const fcount = $('[data-fcount]');
+  const applyBtn = $('[data-sheet-apply]');
+  const xIcon = $('[data-x]');
+
   const params = new URLSearchParams(location.search);
+  const pickMany = (key, inputs) => {
+    const valid = new Set(inputs.map(i => i.value));
+    return new Set(params.getAll(key).filter(v => valid.has(v)));
+  };
   let savedView = null;
   try { savedView = localStorage.getItem('gch-view'); } catch (e) {}
   const state = {
-    cat: catBtns.some(b => b.dataset.cat === params.get('cat')) ? params.get('cat') : 'all',
+    cat: catLinks.some(a => a.dataset.cat === params.get('cat')) ? params.get('cat') : 'all',
     q: params.get('q') || '',
-    sort: 'save',
-    view: (params.get('view') || savedView) === 'table' ? 'table' : 'cards',
+    route: ['ali', 'dom'].includes(params.get('route')) ? params.get('route') : 'all',
+    duty: !!dutyIn && params.get('duty') === '1',
+    price: pickMany('price', priceIn),
+    brand: pickMany('brand', brandIn),
+    sort: SORTS[params.get('sort')] ? params.get('sort') : 'save',
+    view: (params.get('view') || savedView) === 'cards' ? 'cards' : 'list',
+    limit: PAGE,
   };
-  search.value = state.q;
-  const norm = s => s.normalize('NFKC').toLowerCase();
-  const matchesQuery = (el, terms) => terms.every(t => el.dataset.q.includes(t));
+  let order = items;
 
   function syncUrl() {
     const p = new URLSearchParams();
     if (state.cat !== 'all') p.set('cat', state.cat);
     if (state.q.trim()) p.set('q', state.q.trim());
+    if (state.route !== 'all') p.set('route', state.route);
+    if (state.duty) p.set('duty', '1');
+    state.price.forEach(v => p.append('price', v));
+    state.brand.forEach(v => p.append('brand', v));
+    if (state.sort !== 'save') p.set('sort', state.sort);
     const qs = p.toString();
     history.replaceState(null, '', qs ? '?' + qs : location.pathname);
   }
 
-  function apply() {
-    const terms = norm(state.q).split(/\s+/).filter(Boolean);
-    const key = state.sort;
-    const cmp = (a, b) => key === 'price'
-      ? parseFloat(a.dataset.price) - parseFloat(b.dataset.price)
-      : parseFloat(b.dataset[key]) - parseFloat(a.dataset[key]);
-    let shown = 0;
-    [[cards, grid], [rows, tbody]].forEach(([list, parent], idx) => {
-      list.slice().sort(cmp).forEach(el => {
-        const ok = (state.cat === 'all' || el.dataset.c === state.cat) && matchesQuery(el, terms);
-        el.hidden = !ok;
-        if (ok && idx === 0) shown++;
-        parent.appendChild(el);
-      });
-    });
-    catBtns.forEach(btn => {
-      const c = btn.dataset.cat;
-      const n = cards.filter(el => (c === 'all' || el.dataset.c === c) && matchesQuery(el, terms)).length;
-      btn.querySelector('.num').textContent = n;
-      btn.setAttribute('aria-pressed', String(c === state.cat));
-      btn.disabled = n === 0 && c !== state.cat;
-    });
-    sortBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sort === state.sort)));
-    viewBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewBtn === state.view)));
-    hub.dataset.view = state.view;
-    countEl.innerHTML = tpl.replace('{n}', '<strong>' + shown + '</strong>').replace('{t}', cards.length);
-    empty.hidden = shown > 0;
+  // Server order is already `save`; only touch the DOM when the sort actually changes.
+  function resort() {
+    order = items.slice().sort(SORTS[state.sort]);
+    const frag = document.createDocumentFragment();
+    order.forEach(it => frag.appendChild(it.el));
+    list.appendChild(frag);
   }
 
-  search.addEventListener('input', () => { state.q = search.value; apply(); syncUrl(); });
-  catBtns.forEach(b => b.addEventListener('click', () => { state.cat = b.dataset.cat; apply(); syncUrl(); }));
-  sortBtns.forEach(b => b.addEventListener('click', () => { state.sort = b.dataset.sort; apply(); }));
+  function chip(label, off) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip-x';
+    b.textContent = label;
+    b.appendChild(xIcon.content.cloneNode(true));
+    b.setAttribute('aria-label', fmt(L.remove, { x: label }));
+    b.addEventListener('click', () => { off(); changed(); });
+    return b;
+  }
+
+  function renderChips() {
+    const out = [];
+    if (state.q.trim()) out.push(chip(fmt(L.q, { q: state.q.trim() }), () => { state.q = ''; }));
+    if (state.cat !== 'all') out.push(chip(L.cats[state.cat] || state.cat, () => { state.cat = 'all'; }));
+    if (state.route !== 'all') out.push(chip(L.route[state.route], () => { state.route = 'all'; }));
+    if (state.duty) out.push(chip(L.duty, () => { state.duty = false; }));
+    Array.from(state.price).sort().forEach(v => out.push(chip(L.price[v], () => state.price.delete(v))));
+    state.brand.forEach(v => out.push(chip(v, () => state.brand.delete(v))));
+    if (out.length > 1) {
+      const c = document.createElement('button');
+      c.type = 'button';
+      c.className = 'chip-clear';
+      c.textContent = L.clear;
+      c.addEventListener('click', reset);
+      out.push(c);
+    }
+    chipsEl.replaceChildren(...out);
+    const facets = (state.cat !== 'all') + (state.route !== 'all') + state.duty + state.price.size + state.brand.size;
+    fcount.textContent = facets;
+    fcount.hidden = facets === 0;
+  }
+
+  function apply() {
+    const terms = norm(state.q).split(/\s+/).filter(Boolean);
+    const tests = [
+      ['cat', it => state.cat === 'all' || it.c === state.cat],
+      ['q', it => terms.every(t => it.q.includes(t))],
+      ['route', it => state.route === 'all' || it.r === state.route],
+      ['duty', it => !state.duty || it.d],
+      ['price', it => !state.price.size || state.price.has(it.pb)],
+      ['brand', it => !state.brand.size || state.brand.has(it.b)],
+    ];
+    // Each facet's counts ignore that facet's own selection, so options show what picking them would yield.
+    const tally = new Map();
+    const bump = k => tally.set(k, (tally.get(k) || 0) + 1);
+    let total = 0;
+    order.forEach(it => {
+      let misses = 0, miss = null;
+      for (const [k, fn] of tests) {
+        if (!fn(it)) { misses++; miss = k; if (misses > 1) break; }
+      }
+      it.el.hidden = misses > 0 || ++total > state.limit;
+      if (misses > 1) return;
+      const open = k => misses === 0 || miss === k;
+      if (open('cat')) { bump('cat:all'); bump('cat:' + it.c); }
+      if (open('route')) { bump('route:all'); bump('route:' + it.r); }
+      if (open('duty') && it.d) bump('duty:1');
+      if (open('price')) bump('price:' + it.pb);
+      if (open('brand')) bump('brand:' + it.b);
+    });
+    const shown = Math.min(total, state.limit);
+
+    counters.forEach(el => {
+      const n = tally.get(el.dataset.n) || 0;
+      el.textContent = n;
+      const host = el.closest('.opt, [data-cat]');
+      const input = host.querySelector('input');
+      const active = input ? input.checked : host.hasAttribute('aria-current');
+      host.classList.toggle('is-zero', n === 0 && !active);
+    });
+    catLinks.forEach(a => {
+      if (a.dataset.cat === state.cat) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+    routeIn.forEach(i => { i.checked = i.value === state.route; });
+    if (dutyIn) dutyIn.checked = state.duty;
+    priceIn.forEach(i => { i.checked = state.price.has(i.value); });
+    brandIn.forEach(i => { i.checked = state.brand.has(i.value); });
+    sortSel.value = state.sort;
+    viewBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewBtn === state.view)));
+    hub.dataset.view = state.view;
+
+    const text = total
+      ? fmt(L.status, { a: 1, b: shown, n: total }) + (total !== items.length ? fmt(L.statusOf, { t: items.length }) : '')
+      : fmt(L.statusNone, { t: items.length });
+    statusEls.forEach(el => { el.innerHTML = text; });
+    const rest = total - shown;
+    moreBtn.hidden = rest <= 0;
+    moreBtn.textContent = fmt(L.more, { k: Math.min(PAGE, rest), r: rest });
+    allBtn.hidden = rest <= PAGE;
+    allBtn.textContent = fmt(L.all, { n: total });
+    applyBtn.textContent = fmt(L.apply, { n: total });
+    empty.hidden = total > 0;
+    list.hidden = total === 0;
+    renderChips();
+  }
+
+  // Any filter change restarts paging and brings the list top back under the sticky bar.
+  function changed() {
+    state.limit = PAGE;
+    apply();
+    syncUrl();
+    if (main.getBoundingClientRect().top < 0) main.scrollIntoView({ block: 'start' });
+  }
+  function reset() {
+    state.q = ''; state.cat = 'all'; state.route = 'all'; state.duty = false;
+    state.price.clear(); state.brand.clear();
+    search.value = '';
+    changed();
+  }
+
+  search.value = state.q;
+  search.addEventListener('input', () => { state.q = search.value; changed(); });
+  sortSel.addEventListener('change', () => { state.sort = sortSel.value; resort(); changed(); });
   viewBtns.forEach(b => b.addEventListener('click', () => {
     state.view = b.dataset.viewBtn;
     try { localStorage.setItem('gch-view', state.view); } catch (e) {}
     apply();
   }));
-  hub.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => {
-    state.q = ''; state.cat = 'all'; search.value = ''; apply(); syncUrl(); search.focus();
+  catLinks.forEach(a => a.addEventListener('click', e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    e.preventDefault();
+    state.cat = a.dataset.cat;
+    changed();
   }));
+  $$('[data-route-link]').forEach(a => a.addEventListener('click', e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    e.preventDefault();
+    state.route = a.dataset.routeLink;
+    changed();
+    main.scrollIntoView({ block: 'start' });
+  }));
+  routeIn.forEach(i => i.addEventListener('change', () => { state.route = i.value; changed(); }));
+  if (dutyIn) dutyIn.addEventListener('change', () => { state.duty = dutyIn.checked; changed(); });
+  [[priceIn, state.price], [brandIn, state.brand]].forEach(([inputs, set]) => inputs.forEach(i => {
+    i.addEventListener('change', () => { if (i.checked) set.add(i.value); else set.delete(i.value); changed(); });
+  }));
+  if (brandMore) brandMore.addEventListener('click', () => {
+    const open = brandBox.toggleAttribute('data-expanded');
+    brandMore.setAttribute('aria-expanded', String(open));
+    brandMore.textContent = open ? brandMore.dataset.labelLess : brandMore.dataset.labelMore;
+  });
+  moreBtn.addEventListener('click', () => { state.limit += PAGE; apply(); });
+  allBtn.addEventListener('click', () => { state.limit = Infinity; apply(); });
+  $$('[data-reset]').forEach(b => b.addEventListener('click', reset));
+
+  list.addEventListener('click', e => {
+    const btn = e.target.closest('[data-more]');
+    if (!btn) return;
+    const open = btn.closest('li').toggleAttribute('data-open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+
+  // Mobile filter sheet: the same facet markup that sits in the desktop sidebar.
+  let lastFocus = null;
+  const sheetOpen = () => sheet.hasAttribute('data-open');
+  function openSheet() {
+    lastFocus = document.activeElement;
+    sheet.setAttribute('data-open', '');
+    scrim.setAttribute('data-open', '');
+    sheet.setAttribute('role', 'dialog');
+    sheet.setAttribute('aria-modal', 'true');
+    document.documentElement.classList.add('sheet-open');
+    $('[data-sheet-close]', sheet).focus();
+  }
+  function closeSheet() {
+    if (!sheetOpen()) return;
+    sheet.removeAttribute('data-open');
+    scrim.removeAttribute('data-open');
+    sheet.removeAttribute('role');
+    sheet.removeAttribute('aria-modal');
+    document.documentElement.classList.remove('sheet-open');
+    if (lastFocus) lastFocus.focus();
+  }
+  $('[data-sheet-open]').addEventListener('click', openSheet);
+  $$('[data-sheet-close]').forEach(b => b.addEventListener('click', closeSheet));
+  applyBtn.addEventListener('click', closeSheet);
+  scrim.addEventListener('click', closeSheet);
+  matchMedia('(min-width: 1024px)').addEventListener('change', closeSheet);
+  sheet.addEventListener('keydown', e => {
+    if (e.key !== 'Tab' || !sheetOpen()) return;
+    const f = $$('button, input, a[href]', sheet).filter(el => el.offsetParent !== null);
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
   document.addEventListener('keydown', e => {
-    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
-    if (e.key === '/' && !typing) { e.preventDefault(); search.focus(); }
+    if (e.key === 'Escape' && sheetOpen()) { closeSheet(); return; }
+    const typing = document.activeElement.matches('input:not([type="checkbox"]):not([type="radio"]), textarea, select');
+    if (e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); search.focus(); search.select(); }
     else if (e.key === 'Escape' && document.activeElement === search && search.value) {
-      search.value = ''; state.q = ''; apply(); syncUrl();
+      search.value = ''; state.q = ''; changed();
     }
   });
+
+  if (state.sort !== 'save') resort();
   apply();
+  hub.setAttribute('data-ready', '');
 })();
 """
 
@@ -614,6 +987,14 @@ def _cat_label(cat: str, lang: str) -> str:
     return labels.get(cat, cat)
 
 
+def _bracket(best: float, lang: str) -> int:
+    brackets = _PRICE_BRACKETS[lang]
+    for i, (cap, _) in enumerate(brackets):
+        if cap is None or (best <= cap if lang == "ko" else best < cap):
+            return i
+    return len(brackets) - 1
+
+
 def _deal(it: dict, lang: str) -> dict:
     """Normalize per-region pricing into one shape so KO & EN share every template."""
     p, m, links = it["prices"], it["metrics"], it["affiliate_links"]
@@ -638,8 +1019,10 @@ def _deal(it: dict, lang: str) -> dict:
         "pct": pct,
         "off": off,
         "best": min(dom, ali),
+        "bracket": _bracket(min(dom, ali), lang),
         "direct_pick": ali_wins and pct >= DIRECT_PICK_MIN_PCT,
         "customs": lang == "ko" and float(p["ali_usd"]) > KR_CUSTOMS_LIMIT_USD,
+        "duty_free": float(p["ali_usd"]) <= KR_CUSTOMS_LIMIT_USD,
         "ali_usd": float(p["ali_usd"]),
         "dom_key": dom_key,
         "dom_url": dom_url,
@@ -660,13 +1043,10 @@ T = {
         "ali_store": "알리익스프레스",
         "ali_perk": "직구 특가 · 무료배송",
         "win": "최저가",
-        "customs": f"⚠️ ${KR_CUSTOMS_LIMIT_USD} 초과 관부가세 유의",
-        "verdict": "💡 결론",
-        "con": "⚠️ 단점 체크",
+        "customs": f"${KR_CUSTOMS_LIMIT_USD} 초과 · 관부가세 유의",
         "btn_dom": "쿠팡 최저가 확인",
         "btn_ali": "알리 직구가 확인",
-        "more": "상세 스펙·장단점 더보기",
-        "switch": "🌐 Global Hub",
+        "switch": "Global Hub",
         "tg": "텔레그램 알림",
         "tg_long": "핫딜 텔레그램 알림",
         "policy": "정책·고지",
@@ -685,12 +1065,9 @@ T = {
         "ali_perk": "Direct Saver",
         "win": "Lowest",
         "customs": "",
-        "verdict": "💡 Verdict",
-        "con": "⚠️ Caveat",
         "btn_dom": "Amazon",
         "btn_ali": "AliExpress",
-        "more": "Full specs, pros & caveats",
-        "switch": "🇰🇷 한국어 허브",
+        "switch": "한국어 허브",
         "tg": "Telegram alerts",
         "tg_long": "Telegram deal alerts",
         "policy": "Policy",
@@ -704,17 +1081,17 @@ T = {
 def _pick_badge(d: dict, lang: str) -> str:
     if lang == "ko":
         if d["direct_pick"]:
-            return f'<span class="pick is-ali">🌏 알리 직구 추천 · {_money(d["diff"], lang, False)} ({d["pct"]:.0f}%) 절약</span>'
-        return '<span class="pick is-local">🚀 쿠팡 정발 추천 · 빠른 배송·AS 유리</span>'
+            return f'<span class="pick is-ali">알리 직구 추천 · {_money(d["diff"], lang, False)} ({d["pct"]:.0f}%) 절약</span>'
+        return '<span class="pick is-local">쿠팡 정발 추천 · 빠른 배송·AS 유리</span>'
     if d["direct_pick"]:
-        return f'<span class="pick is-ali">🌏 AliExpress pick · Save {_money(d["diff"], lang)} ({d["pct"]:.0f}%)</span>'
-    return '<span class="pick is-local">🚀 Amazon pick · Fast Prime &amp; easy returns</span>'
+        return f'<span class="pick is-ali">AliExpress pick · Save {_money(d["diff"], lang)} ({d["pct"]:.0f}%)</span>'
+    return '<span class="pick is-local">Amazon pick · Fast Prime &amp; easy returns</span>'
 
 
 def _pick_short(d: dict, lang: str) -> str:
     if d["direct_pick"]:
-        return '<span class="pick is-ali">🌏 ' + ("알리 직구" if lang == "ko" else "AliExpress") + "</span>"
-    return '<span class="pick is-local">🚀 ' + ("쿠팡 정발" if lang == "ko" else "Amazon") + "</span>"
+        return '<span class="pick is-ali">' + ("알리 직구" if lang == "ko" else "AliExpress") + "</span>"
+    return '<span class="pick is-local">' + ("쿠팡 정발" if lang == "ko" else "Amazon") + "</span>"
 
 
 def _ext(url: str, cls: str, label: str) -> str:
@@ -747,15 +1124,18 @@ def _battle(d: dict, lang: str) -> str:
 
 
 def _search_blob(it: dict, lang: str) -> str:
-    parts = [it["brand"], it["model"], it[lang]["title"], it["ko"]["title"], it["en"]["title"],
+    parts = [it["brand"], it["model"], it["ko"]["title"], it["en"]["title"],
              _cat_label(it["category"], lang), *map(str, it.get("specs", {}).values())]
-    return _esc(" ".join(parts).lower())
+    return _esc(unicodedata.normalize("NFKC", " ".join(parts)).lower())
 
 
 def _data_attrs(it: dict, d: dict, lang: str) -> str:
+    """Facet/sort keys read by app.js. `data-q` leads with brand + model, so it doubles as the name sort key."""
+    duty = f' data-d="{1 if d["duty_free"] else 0}"' if lang == "ko" else ""
     return (
-        f'data-c="{_esc(it["category"])}" data-save="{d["diff"]:.2f}" data-off="{d["off"]:.1f}" '
-        f'data-price="{d["best"]:.2f}" data-q="{_search_blob(it, lang)}"'
+        f'data-c="{_esc(it["category"])}" data-b="{_esc(it["brand"])}" data-r="{"ali" if d["direct_pick"] else "dom"}"{duty} '
+        f'data-pb="{d["bracket"]}" data-save="{d["diff"]:.2f}" data-pct="{d["pct"]:.1f}" data-price="{d["best"]:.2f}" '
+        f'data-q="{_search_blob(it, lang)}"'
     )
 
 
@@ -779,6 +1159,7 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
   <title>{_esc(title)}</title>
   <meta name="description" content="{_esc(description)}">
   <meta name="theme-color" content="#FFFFFF">
+  <script>document.documentElement.classList.add('js')</script>
   <link rel="canonical" href="{_esc(base + path)}">{alt}
   <meta property="og:title" content="{_esc(title)}">
   <meta property="og:description" content="{_esc(description)}">
@@ -832,8 +1213,160 @@ def _site_footer(lang: str, up: str, cfg: dict) -> str:
 
 
 # --------------------------------------------------------------------------------------
-# Hub pages (/ko/, /en/)
+# Index pages (/ko/, /en/, /ko/c/<cat>/, /en/c/<cat>/)
 # --------------------------------------------------------------------------------------
+
+
+HUB = {
+    "ko": {
+        "h1": "PC·데스크 주변기기 국내가 · 직구가 시세표",
+        "h1_cat": "{cat} 국내가 · 직구가 시세표",
+        "title": "{brand} KR — PC·데스크 주변기기 국내가 vs 직구가 비교",
+        "title_cat": "{cat} 쿠팡 vs 알리 직구 가격 비교 ({n}종) | {brand}",
+        "desc": "동일 모델 PC·데스크 주변기기 {n}종의 쿠팡 가격, 알리익스프레스 직구가, 가격차, 관부가세 대상 여부를 분류·브랜드·가격대별로 정리한 시세표.",
+        "desc_cat": "{cat} {n}개 모델의 쿠팡 가격과 알리익스프레스 직구가, 가격차, 관부가세 대상 여부 비교표. 수록 브랜드: {brands}.",
+        "stamp": '<span>기준일 <b class="num">{date}</b></span><span>쿠팡 · 알리익스프레스 동일 모델</span><span>면세 한도 미화 {limit}달러</span>',
+        "dom_short": "쿠팡",
+        "ali_short": "알리",
+        "summary_lbl": "요약 지표",
+        "m_models": "등록 모델",
+        "m_models_v": "{k}<small>종</small>",
+        "m_models_sub": "{c}개 분류 · {b}개 브랜드",
+        "m_models_sub_cat": "{b}개 브랜드 · 전체 {t}종 중",
+        "m_share_v": "{k}<small>종 · {p}%</small>",
+        "m_direct": "알리 직구 유리",
+        "m_direct_sub": "평균 차액 {avg} · 15% 이상 저렴",
+        "m_local": "쿠팡 정발 유리",
+        "m_local_sub": "국내가 더 저렴 {a}종 · 차액 15% 미만 {b}종",
+        "m_none": "해당 모델 없음",
+        "m_filter": "수집·오매칭 필터",
+        "m_filter_v": "케이스·단품 매물 제외",
+        "m_filter_sub": "정가의 {r}% 미만 이상 저가 차단",
+        "m_filter_sub_plain": "정가 대비 이상 저가 매물 차단",
+        "tops": "가격차 상위 {n}",
+        "tops_by": "할인율 기준",
+        "cats": "분류",
+        "filters": "필터",
+        "close": "필터 닫기",
+        "f_route": "구매 경로",
+        "r_all": "전체",
+        "r_ali": "알리 직구 유리",
+        "r_ali_note": "15%+",
+        "r_dom": "쿠팡 정발 유리",
+        "duty": f"무관세 (${KR_CUSTOMS_LIMIT_USD} 이하)",
+        "f_price": "가격대",
+        "f_price_note": "최저가 기준",
+        "f_brand": "브랜드",
+        "brand_more": "브랜드 전체 보기 (+{n})",
+        "brand_less": "상위 브랜드만 보기",
+        "search_lbl": "모델 검색",
+        "search_ph": "모델명, 브랜드, 스펙 검색 (예: CD226, 100W, F75)",
+        "sort_lbl": "정렬",
+        "sorts": [("save", "가격차(절약액) 큰순"), ("pct", "할인율 높은순"), ("price", "낮은 가격순"), ("name", "브랜드·모델명순")],
+        "view_lbl": "보기 방식",
+        "views": [("list", "리스트", "시세표 리스트 뷰"), ("cards", "카드", "2열 카드 뷰")],
+        "list_h": "모델 목록",
+        "more_btn": "단점·요약",
+        "con": "단점 체크",
+        "verdict": "구매 판단",
+        "detail": "상세 페이지",
+        "call_ali": "알리 직구 유리",
+        "call_dom": "쿠팡 정발 추천",
+        "why_gap": "차액 15% 미만",
+        "why_dom": "국내가가 더 저렴",
+        "why_same": "가격 동일",
+        "at_msrp": "정가와 동일",
+        "duty_badge": f"${KR_CUSTOMS_LIMIT_USD} 초과 · 관부가세",
+        "empty_t": "조건에 맞는 모델이 없습니다",
+        "empty_d": "검색어를 줄이거나 적용 중인 필터를 해제하세요.",
+        "reset": "필터 초기화",
+        "js": {
+            "status": "<strong>{a}–{b}</strong> / 총 <strong>{n}</strong>개 모델 표시 중",
+            "statusOf": " · 전체 {t}개",
+            "statusNone": "표시할 모델 없음 · 전체 {t}개",
+            "more": "더보기 (+{k}개 · 남은 {r}개)",
+            "all": "전체 보기 ({n}개)",
+            "apply": "{n}개 모델 보기",
+            "q": "검색: {q}",
+            "remove": "{x} 필터 해제",
+            "clear": "모두 해제",
+        },
+    },
+    "en": {
+        "h1": "Desk & USB-C Hardware Price Index",
+        "h1_cat": "{cat} Price Index",
+        "title": "{brand} — Desk & USB-C Hardware Price Index (Amazon vs AliExpress)",
+        "title_cat": "{cat} Price Index — Amazon vs AliExpress ({n} models) | {brand}",
+        "desc": "Model-for-model price index of {n} desk and USB-C hardware models: Amazon US vs. AliExpress direct prices, spreads, and the cheaper route by category, brand, and price range.",
+        "desc_cat": "Amazon US vs. AliExpress direct prices, spreads, and the cheaper route for {n} {cat} models. Brands: {brands}.",
+        "stamp": '<span>Updated <b class="num">{date}</b></span><span>Amazon US vs. AliExpress direct (USD)</span>',
+        "dom_short": "Amazon",
+        "ali_short": "Ali",
+        "summary_lbl": "Summary",
+        "m_models": "Tracked models",
+        "m_models_v": "{k}",
+        "m_models_sub": "{c} categories · {b} brands",
+        "m_models_sub_cat": "{b} brands · of {t} tracked",
+        "m_share_v": "{k}<small>· {p}%</small>",
+        "m_direct": "AliExpress cheaper",
+        "m_direct_sub": "Avg. gap {avg} · 15%+ below Amazon",
+        "m_local": "Amazon preferred",
+        "m_local_sub": "{a} cheaper on Amazon · {b} under 15% gap",
+        "m_none": "No models",
+        "m_filter": "Listing filter",
+        "m_filter_v": "Accessory-only listings excluded",
+        "m_filter_sub": "Blocks prices under {r}% of MSRP",
+        "m_filter_sub_plain": "Blocks outlier prices far below MSRP",
+        "tops": "Top {n} spreads",
+        "tops_by": "by % gap",
+        "cats": "Categories",
+        "filters": "Filters",
+        "close": "Close filters",
+        "f_route": "Best route",
+        "r_all": "All",
+        "r_ali": "AliExpress cheaper",
+        "r_ali_note": "15%+",
+        "r_dom": "Amazon preferred",
+        "duty": "",
+        "f_price": "Price range",
+        "f_price_note": "lowest price",
+        "f_brand": "Brand",
+        "brand_more": "All brands (+{n})",
+        "brand_less": "Top brands only",
+        "search_lbl": "Search models",
+        "search_ph": "Search brand, model number, or spec (e.g. CD226, 100W, QMK)",
+        "sort_lbl": "Sort",
+        "sorts": [("save", "Largest spread ($)"), ("pct", "Highest % gap"), ("price", "Lowest price"), ("name", "Brand · model A–Z")],
+        "view_lbl": "View",
+        "views": [("list", "List", "Index list view"), ("cards", "Cards", "2-column card view")],
+        "list_h": "Models",
+        "more_btn": "Caveats",
+        "con": "Caveats",
+        "verdict": "Verdict",
+        "detail": "Full details",
+        "call_ali": "AliExpress cheaper",
+        "call_dom": "Amazon preferred",
+        "why_gap": "Gap under 15%",
+        "why_dom": "Lower on Amazon",
+        "why_same": "Same price",
+        "at_msrp": "At MSRP",
+        "duty_badge": "",
+        "empty_t": "No models match these filters",
+        "empty_d": "Shorten the query or remove an active filter.",
+        "reset": "Reset filters",
+        "js": {
+            "status": "Showing <strong>{a}–{b}</strong> of <strong>{n}</strong> models",
+            "statusOf": " · {t} total",
+            "statusNone": "No models to show · {t} total",
+            "more": "Load {k} more ({r} remaining)",
+            "all": "Show all {n}",
+            "apply": "View {n} models",
+            "q": "Search: {q}",
+            "remove": "Remove filter: {x}",
+            "clear": "Clear all",
+        },
+    },
+}
 
 
 def _region_summary(items: list[dict], lang: str) -> dict:
@@ -848,167 +1381,325 @@ def _region_summary(items: list[dict], lang: str) -> dict:
             "top_deal": top[1] if top else None, "ranked": ranked}
 
 
-def _render_card(it: dict, lang: str) -> str:
-    t, d, loc = T[lang], _deal(it, lang), it[lang]
-    href = f"p/{product_slug(it['id'])}/"
-    con = loc["cons"][0] if loc.get("cons") else ""
-    return f"""
-    <article class="deal" {_data_attrs(it, d, lang)}>
-      <div class="deal-top">
-        <span class="tag">{_esc(_cat_label(it['category'], lang))} · {_esc(it['brand'])}</span>
-        {_pick_badge(d, lang)}
-      </div>
-      <div>
-        <h2 class="deal-title"><a href="{href}">{_esc(loc['title'])}</a></h2>
-        <p class="deal-sum">{_esc(loc['summary'])}</p>
-      </div>
-      {_chips(it, 4)}
-      {_battle(d, lang)}
-      <dl class="callout">
-        <div><dt>{t['verdict']}</dt><dd>{_esc(loc['verdict'])}</dd></div>
-        <div><dt>{t['con']}</dt><dd>{_esc(con)}</dd></div>
-      </dl>
-      <div class="actions">
-        {_ext(d['dom_url'], 'btn btn-' + d['dom_key'], ('쿠팡 최저가 확인' if lang == 'ko' else 'Amazon'))}
-        {_ext(d['ali_url'], 'btn btn-ali', ('알리 직구가 확인' if lang == 'ko' else 'AliExpress'))}
-      </div>
-      <a class="more" href="{href}">{t['more']} {_icon('arrow', 15)}</a>
-    </article>"""
+def _cat_slug(cat: str) -> str:
+    return product_slug(cat)
 
 
-def _render_row(it: dict, lang: str) -> str:
-    t, d, loc = T[lang], _deal(it, lang), it[lang]
-    href = f"p/{product_slug(it['id'])}/"
-    customs = f'<span class="customs">{_esc(t["customs"])}</span>' if d["customs"] else ""
-    spread = f'{_money(d["diff"], lang, False)}'
-    return f"""
-        <tr {_data_attrs(it, d, lang)}>
-          <td class="model"><a href="{href}">{_esc(loc['title'])}</a><span>{_esc(_cat_label(it['category'], lang))} · {_esc(it['brand'])}</span></td>
-          <td>{_chips(it, 2)}</td>
-          <td class="n{' win' if not d['ali_wins'] else ''}">{_money(d['dom'], lang, False)}</td>
-          <td class="n{' win' if d['ali_wins'] else ''}">{_money(d['ali'], lang, False)}{customs}</td>
-          <td class="n">{spread}<span class="spread">{d['pct']:.1f}% · {t['msrp']} −{d['off']:.0f}%</span></td>
-          <td>{_pick_short(d, lang)}</td>
-          <td class="buy"><a class="btn-{d['dom_key']}" style="background:var(--{d['dom_key']});{'color:#111827;' if d['dom_key'] == 'amazon' else ''}" href="{_esc(d['dom_url'])}" target="_blank" rel="nofollow sponsored noopener">{t['dom_store']} {_icon('out', 13)}</a><a style="background:var(--ali)" href="{_esc(d['ali_url'])}" target="_blank" rel="nofollow sponsored noopener">{'알리' if lang == 'ko' else 'Ali'} {_icon('out', 13)}</a></td>
-        </tr>"""
+def _ranked(counts: Counter) -> list[str]:
+    """Keys by descending count, then alphabetically."""
+    return sorted(counts, key=lambda k: (-counts[k], k.lower()))
 
 
-def _render_hub(items: list[dict], cfg: dict, lang: str) -> str:
-    t = T[lang]
-    brand = cfg["site"]["brand_name"]
-    up = "../"
-    s = _region_summary(items, lang)
-    latest = max((it.get("updated_at", "") for it in items), default="")
-    ordered = [it for it, _ in s["ranked"]]
+def _sku(it: dict) -> str:
+    """Manufacturer code when the model string carries one, e.g. '(CD226)'; otherwise the short model name."""
+    for group in reversed(re.findall(r"\(([^)]*)\)", it["model"])):
+        for token in reversed(group.split(",")):
+            if _SKU_RE.match(token.strip()):
+                return token.strip()
+    short = _short_name(it)
+    return short[len(it["brand"].strip()):].strip() or short
 
-    counts: dict[str, int] = {}
-    for it in items:
-        counts[it["category"]] = counts.get(it["category"], 0) + 1
-    cat_btns = [f'<button type="button" class="cat" data-cat="all" aria-pressed="true">{_esc(_cat_label("all", lang))} <span class="num">{len(items)}</span></button>']
-    for c in sorted(counts, key=lambda c: (-counts[c], _cat_label(c, lang))):
-        cat_btns.append(
-            f'<button type="button" class="cat" data-cat="{_esc(c)}" aria-pressed="false">{_esc(_cat_label(c, lang))} <span class="num">{counts[c]}</span></button>'
+
+def _off_text(off: int, lang: str) -> str:
+    label = T[lang]["msrp"]
+    if off > 0:
+        return f"{label} −{off}%"
+    if off < 0:
+        return f"{label} +{-off}%"
+    return HUB[lang]["at_msrp"]
+
+
+def _signed_gap(d: dict, lang: str) -> tuple[str, str]:
+    """AliExpress price relative to the domestic store: negative means direct import is cheaper."""
+    sign = "−" if d["ali"] < d["dom"] else "+" if d["ali"] > d["dom"] else ""
+    return f'{sign}{_money(d["diff"], lang, False)}', f'{sign}{d["pct"]:.0f}%'
+
+
+def _route_call(d: dict, lang: str) -> tuple[str, str, str]:
+    h = HUB[lang]
+    if d["direct_pick"]:
+        return "is-ali", h["call_ali"], ""
+    why = h["why_gap"] if d["ali_wins"] else h["why_same"] if d["diff"] == 0 else h["why_dom"]
+    return "is-local", h["call_dom"], why
+
+
+def _render_row(it: dict, lang: str, pfx: str) -> str:
+    """One catalog entry. The same markup is laid out as a ledger row or a card purely in CSS."""
+    t, h, d, loc = T[lang], HUB[lang], _deal(it, lang), it[lang]
+    slug = product_slug(it["id"])
+    href = f"{pfx}{slug}/"
+    name = _esc(_short_name(it))
+    spec_vals = [v for v in it.get("specs", {}).values() if str(v).strip()][:3]
+    specs = "".join(f"<span>{_esc(_chip_text(v, 34))}</span>" for v in spec_vals)
+    dom_win = not d["ali_wins"]
+    gap, pct = _signed_gap(d, lang)
+    cls, call, why = _route_call(d, lang)
+    why_html = f'<span class="why">{_esc(why)}</span>' if why else ""
+    duty = f'<span class="duty">{_esc(h["duty_badge"])}</span>' if d["customs"] else ""
+    cons = "".join(f"<dd>{_esc(c)}</dd>" for c in loc.get("cons", [])[:2])
+
+    def price(area: str, store_cls: str, store: str, val: float, off: int, win: bool, extra: str = "") -> str:
+        lead = f'<b>{t["win"]}</b> · ' if win else ""
+        return (
+            f'<div class="r-price r-{area}{" is-win" if win else ""}"><span class="store {store_cls}">{store}</span>'
+            f'<span class="amt num">{_money(val, lang, False)}</span>'
+            f'<span class="r-off num">{lead}{_off_text(off, lang)}</span>{extra}</div>'
         )
 
-    if s["top"]:
-        top_href = f'p/{product_slug(s["top"]["id"])}/'
-        top_name = _esc(_short_name(s["top"]))
-        top_gap = _money(s["top_deal"]["diff"], lang, False)
-    else:
-        top_href, top_name, top_gap = "#deals", "—", ""
+    def buy(store_cls: str, url: str, label: str, pick: bool) -> str:
+        return (
+            f'<a class="buy {store_cls}{" is-pick" if pick else ""}" href="{_esc(url)}" target="_blank" '
+            f'rel="nofollow sponsored noopener" aria-label="{label} · {name}">{label} {_use("out", 13)}</a>'
+        )
 
+    return f"""
+        <li class="row" {_data_attrs(it, d, lang)}>
+          <div class="r-info">
+            <p class="r-meta">{_esc(_cat_label(it['category'], lang))} · {_esc(it['brand'])}</p>
+            <h3 class="r-title"><a href="{href}">{_esc(loc['title'])}</a></h3>
+            <p class="r-spec"><b>{_esc(_sku(it))}</b>{specs}</p>
+          </div>
+          {price('dom', d['dom_key'], h['dom_short'], d['dom'], d['dom_off'], dom_win)}
+          {price('ali', 'ali', h['ali_short'], d['ali'], d['ali_off'], not dom_win, duty)}
+          <div class="r-verd {cls}"><span class="gap num">{gap}<small>{pct}</small></span><span class="call">{_esc(call)}</span>{why_html}</div>
+          <div class="r-act">
+            {buy(d['dom_key'], d['dom_url'], h['dom_short'], not d['direct_pick'])}
+            {buy('ali', d['ali_url'], h['ali_short'], d['direct_pick'])}
+            <button type="button" class="r-more" data-more aria-expanded="false" aria-controls="d-{slug}">{h['more_btn']} {_use('down')}</button>
+          </div>
+          <div class="drawer" id="d-{slug}"><div class="drawer-in"><div class="drawer-box">
+            <dl><div class="cons"><dt>{h['con']}</dt>{cons}</div><div><dt>{h['verdict']}</dt><dd>{_esc(loc['verdict'])}</dd></div></dl>
+            <a class="drawer-link" href="{href}">{h['detail']} {_use('arrow')}</a>
+          </div></div></div>
+        </li>"""
+
+
+def _opt(kind: str, attrs: str, label: str, key: str, count: int, cls: str = "") -> str:
+    return (
+        f'<label class="opt{cls}"><input type="{kind}" {attrs}><span class="lbl">{label}</span>'
+        f'<span class="num" data-n="{_esc(key)}">{count}</span></label>'
+    )
+
+
+def _render_summary(deals: list[tuple[dict, dict]], cfg: dict, lang: str, models_sub: str) -> str:
+    h = HUB[lang]
+    n = len(deals)
+    direct = [d for _, d in deals if d["direct_pick"]]
+    local = [d for _, d in deals if not d["direct_pick"]]
+    dom_cheaper = sum(1 for d in local if not d["ali_wins"])
+
+    def share(k: int) -> str:
+        return h["m_share_v"].format(k=k, p=round(k / n * 100) if n else 0)
+
+    direct_sub = (
+        h["m_direct_sub"].format(avg=f'<b class="num">{_money(sum(d["diff"] for d in direct) / len(direct), lang, False)}</b>')
+        if direct else h["m_none"]
+    )
+    local_sub = h["m_local_sub"].format(a=dom_cheaper, b=len(local) - dom_cheaper) if local else h["m_none"]
+    ratio = cfg.get("gatekeeper", {}).get("min_price_ratio_vs_msrp")
+    filter_sub = h["m_filter_sub"].format(r=round(float(ratio) * 100)) if ratio else h["m_filter_sub_plain"]
+    dom_key = "coupang" if lang == "ko" else "amazon"
+    return f"""
+      <div class="sm"><dt>{h['m_models']}</dt><dd><span class="sm-v num">{h['m_models_v'].format(k=n)}</span><span class="sm-s">{models_sub}</span></dd></div>
+      <div class="sm"><dt><span class="store ali">{h['m_direct']}</span></dt><dd><a href="?route=ali" data-route-link="ali"><span class="sm-v num">{share(len(direct))}</span></a><span class="sm-s">{direct_sub}</span></dd></div>
+      <div class="sm"><dt><span class="store {dom_key}">{h['m_local']}</span></dt><dd><a href="?route=dom" data-route-link="dom"><span class="sm-v num">{share(len(local))}</span></a><span class="sm-s num">{local_sub}</span></dd></div>
+      <div class="sm"><dt>{h['m_filter']}</dt><dd><span class="sm-v is-text">{_esc(h['m_filter_v'])}</span><span class="sm-s num">{_esc(filter_sub)}</span></dd></div>"""
+
+
+def _render_tops(deals: list[tuple[dict, dict]], lang: str, pfx: str) -> str:
+    """Largest spreads by percentage: a different cut from the default amount-sorted list below it."""
+    h = HUB[lang]
+    if len(deals) < TOPS_MIN_ITEMS:
+        return ""
+    top = sorted(deals, key=lambda x: x[1]["pct"], reverse=True)[:4]
+    cells = []
+    for it, d in top:
+        pct = _signed_gap(d, lang)[1]
+        cells.append(
+            f'<li><a href="{pfx}{product_slug(it["id"])}/"><span class="tops-name">{_esc(_short_name(it))}</span>'
+            f'<span class="tops-pct num {"is-ali" if d["ali_wins"] else "is-local"}">{pct}</span>'
+            f'<span class="tops-sub num">{h["dom_short"]} {_money(d["dom"], lang, False)} · '
+            f'{h["ali_short"]} {_money(d["ali"], lang, False)}</span></a></li>'
+        )
+    return (
+        f'<section class="tops" aria-labelledby="tops-h" style="--n:{len(top)}"><h2 id="tops-h">{h["tops"].format(n=len(top))}'
+        f'<small>{h["tops_by"]}</small></h2><ol>{"".join(cells)}</ol></section>'
+    )
+
+
+def _render_facets(deals: list[tuple[dict, dict]], lang: str) -> str:
+    h = HUB[lang]
+    n = len(deals)
+    n_direct = sum(1 for _, d in deals if d["direct_pick"])
+    note = f' <small>{h["r_ali_note"]}</small>'
+    route = [
+        _opt("radio", 'name="route" value="all" checked', h["r_all"], "route:all", n),
+        _opt("radio", 'name="route" value="ali"', h["r_ali"] + note, "route:ali", n_direct),
+        _opt("radio", 'name="route" value="dom"', h["r_dom"], "route:dom", n - n_direct),
+    ]
     if lang == "ko":
-        title = f"{brand} KR — PC·데스크 주변기기 국내가 vs 직구가 비교"
-        desc = "동일 모델 PC·데스크 주변기기의 쿠팡 가격, 알리익스프레스 직구가, 주요 스펙 및 실사용 단점 비교표."
-        h1 = "PC·데스크 주변기기 국내가 · 직구가 시세표"
-        stamp = f'<span>기준일 <b class="num">{_esc(latest)}</b></span><span>쿠팡 · 알리익스프레스 동일 모델</span><span>면세 한도 미화 150달러</span>'
-        kpis = f"""
-      <div class="kpi"><div class="kpi-label">등록 모델</div><div class="kpi-value num">{s['count']}<small>종</small></div><div class="kpi-sub">{len(counts)}개 분류</div></div>
-      <div class="kpi"><div class="kpi-label">평균 직구 가격차</div><div class="kpi-value num">{s['avg']:.1f}<small>%</small></div><div class="kpi-sub">쿠팡가 대비 알리 직구가</div></div>
-      <div class="kpi"><div class="kpi-label">최대 가격차 모델</div><div class="kpi-value"><a href="{top_href}">{top_name}</a></div><div class="kpi-sub"><b class="num">{top_gap}</b> 차이</div></div>
-      <div class="kpi"><div class="kpi-label">수집 필터</div><div class="gk"><span class="dot"></span>케이스·단품 오매칭 제외</div><div class="kpi-sub" style="margin-top:6px">정가 대비 이상 저가 매물 차단</div></div>"""
-        ph = "모델명, 브랜드, 스펙 검색 (예: CD226, 100W, F75)"
-        sorts = [("save", "가격차 큰순"), ("off", "정가 대비 할인순"), ("price", "낮은 가격순")]
-        views = [("cards", "카드형"), ("table", "표로 보기")]
-        sort_lbl, view_lbl = "정렬", "보기"
-        count_tpl = "{n}개 표시 (전체 {t}개)"
-        sort_note = "가격차 = 쿠팡가와 알리 직구가 차이"
-        head_cols = ["모델", "핵심 스펙", "쿠팡", "알리 직구", "가격차", "유리한 경로", "판매처"]
-        empty_t, empty_d, reset = "일치하는 모델이 없습니다", "검색어를 줄이거나 다른 분류를 선택해 보세요.", "필터 초기화"
-        search_lbl = "모델 검색"
-    else:
-        title = f"{brand} — Desk & USB-C Hardware Price Index (Amazon vs AliExpress)"
-        desc = "Model-for-model price index comparing Amazon US and AliExpress direct listings across GaN chargers, keyboards, mini PCs, and USB-C docks."
-        h1 = "Desk & USB-C Hardware Price Index"
-        stamp = f'<span>Updated <b class="num">{_esc(latest)}</b></span><span>Amazon US vs. AliExpress Direct (USD)</span>'
-        kpis = f"""
-      <div class="kpi"><div class="kpi-label">Tracked models</div><div class="kpi-value num">{s['count']}</div><div class="kpi-sub">{len(counts)} categories</div></div>
-      <div class="kpi"><div class="kpi-label">Avg. direct spread</div><div class="kpi-value num">{s['avg']:.1f}<small>%</small></div><div class="kpi-sub">AliExpress vs. Amazon</div></div>
-      <div class="kpi"><div class="kpi-label">Largest spread</div><div class="kpi-value"><a href="{top_href}">{top_name}</a></div><div class="kpi-sub"><b class="num">{top_gap}</b> difference</div></div>
-      <div class="kpi"><div class="kpi-label">Listing filter</div><div class="gk"><span class="dot"></span>Accessories &amp; mismatches excluded</div><div class="kpi-sub" style="margin-top:6px">Blocks case-only &amp; outlier SKUs</div></div>"""
-        ph = "Search brand, model number, or spec (e.g. CD226, 100W, QMK)"
-        sorts = [("save", "Largest spread"), ("off", "Highest % off"), ("price", "Lowest price")]
-        views = [("cards", "Cards"), ("table", "Table")]
-        sort_lbl, view_lbl = "Sort", "View"
-        count_tpl = "Showing {n} of {t}"
-        sort_note = "Spread = Amazon vs. AliExpress price gap"
-        head_cols = ["Model", "Key specs", "Amazon", "AliExpress", "Spread", "Best route", "Links"]
-        empty_t, empty_d, reset = "No matching models", "Try a shorter query or switch category.", "Reset filters"
-        search_lbl = "Search models"
+        n_duty = sum(1 for _, d in deals if d["duty_free"])
+        route.append(_opt("checkbox", "data-duty", _esc(h["duty"]), "duty:1", n_duty, " opt-sep"))
 
-    sort_html = "".join(
-        f'<button type="button" data-sort="{k}" aria-pressed="{"true" if k == "save" else "false"}">{v}</button>' for k, v in sorts
+    per_bracket = [0] * len(_PRICE_BRACKETS[lang])
+    for _, d in deals:
+        per_bracket[d["bracket"]] += 1
+    price = [
+        _opt("checkbox", f'data-f="price" value="{i}"', _esc(label), f"price:{i}", per_bracket[i])
+        for i, (_, label) in enumerate(_PRICE_BRACKETS[lang])
+    ]
+
+    per_brand = Counter(it["brand"] for it, _ in deals)
+    ranked = _ranked(per_brand)
+    brands = [
+        _opt("checkbox", f'data-f="brand" value="{_esc(b)}"', _esc(b), f"brand:{b}", per_brand[b],
+             " is-extra" if i >= TOP_BRANDS else "")
+        for i, b in enumerate(ranked)
+    ]
+    extra = len(ranked) - TOP_BRANDS
+    more = (
+        f'<button type="button" class="facet-more" data-brand-more aria-expanded="false" '
+        f'data-label-more="{_esc(h["brand_more"].format(n=extra))}" data-label-less="{_esc(h["brand_less"])}">'
+        f'{_esc(h["brand_more"].format(n=extra))}</button>'
+        if extra > 0 else ""
     )
+    return f"""
+            <fieldset class="facet"><legend>{h['f_route']}</legend>{''.join(route)}</fieldset>
+            <fieldset class="facet"><legend>{h['f_price']} <small>{h['f_price_note']}</small></legend>{''.join(price)}</fieldset>
+            <fieldset class="facet" data-brands><legend>{h['f_brand']}</legend><div class="opts">{''.join(brands)}</div>{more}</fieldset>"""
+
+
+def _render_hub(items: list[dict], cfg: dict, lang: str, cat: str | None = None,
+                all_items: list[dict] | None = None) -> str:
+    """Faceted index. With `cat`, renders the static category landing page scoped to `items` of that category."""
+    t, h = T[lang], HUB[lang]
+    other = "en" if lang == "ko" else "ko"
+    brand = cfg["site"]["brand_name"]
+    all_items = items if all_items is None else all_items
+    deals = sorted(((it, _deal(it, lang)) for it in items), key=lambda x: x[1]["diff"], reverse=True)
+    n = len(deals)
+    latest = max((it.get("updated_at", "") for it in items), default="")
+    cat_counts = Counter(it["category"] for it in all_items)
+    cats = sorted(cat_counts, key=lambda c: (-cat_counts[c], _cat_label(c, lang)))
+    per_brand = Counter(it["brand"] for it in items)
+
+    if cat is None:
+        up, pfx, cat_pfx, all_href, path = "../", "p/", "c/", "./", f"/{lang}/"
+        switch = f"{up}{other}/"
+        alternates = {"ko": "/ko/", "en": "/en/", "x-default": "/"}
+        title, desc, h1 = h["title"].format(brand=brand), h["desc"].format(n=n), h["h1"]
+        models_sub = h["m_models_sub"].format(c=len(cats), b=len(per_brand))
+        crumbs = ""
+    else:
+        slug, label = _cat_slug(cat), _cat_label(cat, lang)
+        up, pfx, cat_pfx, all_href, path = "../../../", "../../p/", "../", "../../", f"/{lang}/c/{slug}/"
+        switch = f"{up}{other}/c/{slug}/"
+        alternates = {"ko": f"/ko/c/{slug}/", "en": f"/en/c/{slug}/"}
+        title = h["title_cat"].format(cat=label, n=n, brand=brand)
+        desc = h["desc_cat"].format(cat=label, n=n, brands=", ".join(_ranked(per_brand)[:6]))
+        h1 = h["h1_cat"].format(cat=label)
+        models_sub = h["m_models_sub_cat"].format(b=len(per_brand), t=len(all_items))
+        crumbs = (
+            f'<nav aria-label="{"이동 경로" if lang == "ko" else "Breadcrumb"}"><ol class="crumbs">'
+            f'<li><a href="{all_href}">{t["home"]}</a></li><li>{_icon("chev", 14)}</li>'
+            f'<li aria-current="page">{_esc(label)}</li></ol></nav>'
+        )
+
+    # Hub: category links filter in place (app.js) and fall back to the static pages. Category page: plain links.
+    if cat is None:
+        cat_links = [
+            f'<li><a href="{all_href}" data-cat="all" aria-current="true">{_esc(_cat_label("all", lang))} '
+            f'<span class="num" data-n="cat:all">{n}</span></a></li>'
+        ]
+        cat_links += [
+            f'<li><a href="{cat_pfx}{_cat_slug(c)}/" data-cat="{_esc(c)}">{_esc(_cat_label(c, lang))} '
+            f'<span class="num" data-n="cat:{_esc(c)}">{cat_counts[c]}</span></a></li>'
+            for c in cats
+        ]
+    else:
+        cat_links = [
+            f'<li><a href="{all_href}">{_esc(_cat_label("all", lang))} <span class="num">{len(all_items)}</span></a></li>'
+        ]
+        current = ' aria-current="page"'
+        cat_links += [
+            f'<li><a href="{cat_pfx}{_cat_slug(c)}/"{current if c == cat else ""}>'
+            f'{_esc(_cat_label(c, lang))} <span class="num">{cat_counts[c]}</span></a></li>'
+            for c in cats
+        ]
+
+    sort_html = "".join(f'<option value="{k}">{_esc(v)}</option>' for k, v in h["sorts"])
     view_html = "".join(
-        f'<button type="button" data-view-btn="{k}" aria-pressed="{"true" if k == "cards" else "false"}" title="{v}">{_icon(k, 16)}<span class="lbl">{v}</span></button>'
-        for k, v in views
+        f'<button type="button" data-view-btn="{k}" aria-pressed="{"true" if k == "list" else "false"}" title="{_esc(tip)}">'
+        f'{_icon(k, 15)}<span class="lbl">{_esc(v)}</span></button>'
+        for k, v, tip in h["views"]
     )
-    th = "".join(
-        f'<th scope="col" class="{"model" if i == 0 else ("n" if i in (2, 3, 4) else "")}">{c}</th>' for i, c in enumerate(head_cols)
-    )
+    strings = dict(h["js"])
+    strings.update({
+        "cats": {c: _cat_label(c, lang) for c in cats},
+        "route": {"ali": h["r_ali"], "dom": h["r_dom"]},
+        "duty": h["duty"],
+        "price": [label for _, label in _PRICE_BRACKETS[lang]],
+    })
+    i18n = json.dumps(strings, ensure_ascii=False).replace("</", "<\\/")
+    stamp = h["stamp"].format(date=_esc(latest), limit=KR_CUSTOMS_LIMIT_USD)
 
     body = f"""
-<body class="{lang}">
+<body class="{lang} is-hub">
   {_legal_strip(lang)}
-  {_site_header(lang, up, cfg, f"{up}{'en' if lang == 'ko' else 'ko'}/")}
-  <main class="wrap hub" data-hub data-view="cards">
-    <section class="hero">
-      <h1>{h1}</h1>
+  {_site_header(lang, up, cfg, switch)}
+  {ICON_SPRITE}
+  <main class="wrap hub" data-hub data-view="list" data-scope="{_esc(cat or 'all')}" data-page-size="{PAGE_SIZE}">
+    {crumbs}
+    <header class="idx-head">
+      <h1>{_esc(h1)}</h1>
       <p class="stamp">{stamp}</p>
-    </section>
-    <section class="kpis" aria-label="{'요약 지표' if lang == 'ko' else 'Summary'}">{kpis}
-    </section>
+    </header>
+    <dl class="summary" aria-label="{h['summary_lbl']}">{_render_summary(deals, cfg, lang, models_sub)}
+    </dl>
+    {_render_tops(deals, lang, pfx)}
 
-    <div class="toolbar" id="deals">
-      <div class="toolbar-row">
-        <label class="search"><span class="sr-only">{search_lbl}</span>{_icon('search', 17)}<input type="search" data-search placeholder="{_esc(ph)}" autocomplete="off" enterkeyhint="search"><kbd>/</kbd></label>
-        <div class="seg" role="group" aria-label="{sort_lbl}"><span class="seg-label" style="align-self:center;padding-left:8px">{sort_lbl}</span>{sort_html}</div>
-        <div class="seg view-seg" role="group" aria-label="{view_lbl}">{view_html}</div>
+    <div class="work" id="index">
+      <div class="side-col">
+        <nav class="catnav" aria-labelledby="cat-h">
+          <h2 class="facet-h" id="cat-h">{h['cats']}</h2>
+          <ul>{''.join(cat_links)}</ul>
+        </nav>
+        <aside class="facets" id="facets" aria-label="{h['filters']}" data-sheet>
+          <div class="sheet-head"><strong>{h['filters']}</strong><button type="button" data-sheet-close aria-label="{h['close']}">{_icon('x', 18)}</button></div>
+          <div class="facets-body">{_render_facets(deals, lang)}
+          </div>
+          <div class="sheet-foot"><button type="button" data-reset>{h['reset']}</button><button type="button" class="primary" data-sheet-apply></button></div>
+        </aside>
       </div>
-      <div class="cats" role="group" aria-label="{'카테고리' if lang == 'ko' else 'Categories'}">{''.join(cat_btns)}</div>
-    </div>
 
-    <div class="result-line"><span data-count data-tpl="{_esc(count_tpl)}" aria-live="polite">{count_tpl.replace('{n}', f'<strong>{len(items)}</strong>').replace('{t}', str(len(items)))}</span><span>{sort_note}</span></div>
-
-    <div class="deal-grid" data-grid>{''.join(_render_card(it, lang) for it in ordered)}
+      <div class="main">
+        <div class="bar">
+          <label class="search"><span class="sr-only">{h['search_lbl']}</span>{_icon('search', 16)}<input type="search" data-search placeholder="{_esc(h['search_ph'])}" autocomplete="off" enterkeyhint="search"><kbd>/</kbd></label>
+          <label class="sort"><span class="sr-only">{h['sort_lbl']}</span><select data-sort>{sort_html}</select>{_icon('down', 15)}</label>
+          <button type="button" class="fbtn" data-sheet-open aria-controls="facets">{_icon('filter', 16)}<span>{h['filters']}</span><b class="num" data-fcount hidden>0</b></button>
+        </div>
+        <div class="status">
+          <p class="status-text num" data-status aria-live="polite"></p>
+          <div class="on-chips" data-chips></div>
+          <div class="seg" role="group" aria-label="{h['view_lbl']}">{view_html}</div>
+        </div>
+        <h2 class="sr-only">{h['list_h']}</h2>
+        <ol class="rows" data-rows>{''.join(_render_row(it, lang, pfx) for it, _ in deals)}
+        </ol>
+        <div class="empty" data-empty hidden><strong>{h['empty_t']}</strong>{h['empty_d']}<br><button type="button" data-reset>{h['reset']}</button></div>
+        <div class="pager"><p class="pager-status num" data-status></p><button type="button" class="primary" data-load></button><button type="button" data-all></button></div>
+      </div>
     </div>
-    <div class="ledger-wrap">
-      <table class="ledger">
-        <thead><tr>{th}</tr></thead>
-        <tbody data-rows>{''.join(_render_row(it, lang) for it in ordered)}
-        </tbody>
-      </table>
-    </div>
-    <div class="empty" data-empty hidden><strong>{empty_t}</strong>{empty_d}<br><button type="button" data-reset>{reset}</button></div>
+    <div class="scrim" data-scrim></div>
+    <template data-x>{_icon('x', 13)}</template>
+    <script type="application/json" data-i18n>{i18n}</script>
   </main>
   {_site_footer(lang, up, cfg)}
   <script src="{up}assets/app.js" defer></script>
 </body>
 </html>
 """
-    head = _head(lang=lang, title=title, description=desc, up=up, cfg=cfg, path=f"/{lang}/",
-                 alternates={"ko": "/ko/", "en": "/en/", "x-default": "/"})
-    return head + body
+    return _head(lang=lang, title=title, description=desc, up=up, cfg=cfg, path=path, alternates=alternates) + body
 
 
 def _render_ko_index(items: list[dict], cfg: dict) -> str:
@@ -1116,7 +1807,7 @@ def _render_detail_page(it: dict, lang: str, cfg: dict, items: list[dict] | None
       <ol class="crumbs">
         <li><a href="../../">{t['home']}</a></li>
         <li>{_icon('chev', 14)}</li>
-        <li><a href="../../?cat={_esc(cat)}">{_esc(_cat_label(cat, lang))}</a></li>
+        <li><a href="../../c/{_cat_slug(cat)}/">{_esc(_cat_label(cat, lang))}</a></li>
         <li>{_icon('chev', 14)}</li>
         <li aria-current="page">{_esc(_short_name(it))}</li>
       </ol>
@@ -1282,7 +1973,7 @@ def _render_policy_page(cfg: dict) -> str:
       <p>Every listing passes an automated gatekeeper before publication: out-of-stock items, accessory-only matches, and prices abnormally far below MSRP are rejected, and each product must carry at least one honest drawback in both Korean and English.</p>
 
       <h2>4. Privacy &amp; cookies</h2>
-      <p>{brand} is a static site and does not collect personal registration data, passwords, or payment details. When you click outbound retail links (Amazon, AliExpress, Coupang), those merchants may set standard affiliate attribution cookies under their own privacy policies. The hub remembers your preferred card/table view in your browser's local storage only.</p>
+      <p>{brand} is a static site and does not collect personal registration data, passwords, or payment details. When you click outbound retail links (Amazon, AliExpress, Coupang), those merchants may set standard affiliate attribution cookies under their own privacy policies. The hub remembers your preferred list/card view in your browser's local storage only.</p>
     </article>
   </main>
   <footer class="site-foot"><div class="wrap"><p>© {datetime.now(timezone.utc).year} {brand}</p><nav class="foot-links" aria-label="Footer"><a href="../ko/">한국어 허브</a><a href="../en/">Global Hub</a><a href="../">Home</a></nav></div></footer>
@@ -1295,6 +1986,9 @@ def _render_sitemap(items: list[dict], cfg: dict) -> str:
     base = cfg["site"]["base_url"].rstrip("/")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     urls = [f"{base}/", f"{base}/ko/", f"{base}/en/", f"{base}/policy/"]
+    for cat in sorted({it["category"] for it in items}):
+        urls.append(f"{base}/ko/c/{_cat_slug(cat)}/")
+        urls.append(f"{base}/en/c/{_cat_slug(cat)}/")
     for it in items:
         slug = product_slug(it["id"])
         urls.append(f"{base}/ko/p/{slug}/")
@@ -1326,15 +2020,23 @@ def _clean_dist(dist_dir: Path) -> None:
 
 
 def build_site(approved_items: list[dict], cfg: dict, dist_dir: Path) -> dict:
-    """Generate clean-URL static pages for root, /ko/, /en/, product details, policy, and sitemap."""
+    """Generate clean-URL static pages for root, /ko/, /en/, category indexes, product details, policy, and sitemap."""
     _clean_dist(dist_dir)
 
-    _write(dist_dir / "assets" / "style.css", SHARED_CSS.strip() + "\n")
+    css = SHARED_CSS.strip().replace("__PAGE_NEXT__", str(PAGE_SIZE + 1))
+    _write(dist_dir / "assets" / "style.css", css + "\n")
     _write(dist_dir / "assets" / "app.js", APP_JS.strip() + "\n")
     _write(dist_dir / "index.html", _render_root_gateway(cfg, approved_items))
     _write(dist_dir / "policy" / "index.html", _render_policy_page(cfg))
     _write(dist_dir / "ko" / "index.html", _render_ko_index(approved_items, cfg))
     _write(dist_dir / "en" / "index.html", _render_en_index(approved_items, cfg))
+
+    categories = sorted({it["category"] for it in approved_items})
+    for cat in categories:
+        scoped = [it for it in approved_items if it["category"] == cat]
+        for lang in ("ko", "en"):
+            _write(dist_dir / lang / "c" / _cat_slug(cat) / "index.html",
+                   _render_hub(scoped, cfg, lang, cat=cat, all_items=approved_items))
 
     for item in approved_items:
         slug = product_slug(item["id"])
@@ -1346,6 +2048,6 @@ def build_site(approved_items: list[dict], cfg: dict, dist_dir: Path) -> dict:
 
     return {
         "approved_products_rendered": len(approved_items),
-        "total_html_pages": 4 + (len(approved_items) * 2),
+        "total_html_pages": 4 + (len(categories) * 2) + (len(approved_items) * 2),
         "output_dir": str(dist_dir),
     }

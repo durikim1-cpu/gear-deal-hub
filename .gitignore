@@ -7,3 +7,5 @@ __pycache__/
 dist/
 data/candidates_staged.json
 data/audit_log.json
+data/discovery_queue.json
+data/rejected_leads.json
