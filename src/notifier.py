@@ -6,13 +6,14 @@ import json
 import urllib.request
 from pathlib import Path
 from src.affiliate import DISCLOSURE_EN, DISCLOSURE_KO
+from src.site_builder import product_slug
 
 
 def format_ko_alert(item: dict, base_url: str) -> str:
     p = item["prices"]
     m = item["metrics"]
     links = item["affiliate_links"]
-    detail_url = f"{base_url}/ko/products/{item['id']}.html"
+    detail_url = f"{base_url}/ko/p/{product_slug(item['id'])}/"
     cheaper_label = "알리 직구" if m["kr_cheaper"] == "aliexpress" else "쿠팡 로켓"
 
     return (
@@ -33,7 +34,7 @@ def format_en_alert(item: dict, base_url: str) -> str:
     p = item["prices"]
     m = item["metrics"]
     links = item["affiliate_links"]
-    detail_url = f"{base_url}/en/products/{item['id']}.html"
+    detail_url = f"{base_url}/en/p/{product_slug(item['id'])}/"
     cheaper_label = "AliExpress" if m["en_cheaper"] == "aliexpress" else "Amazon"
 
     return (
