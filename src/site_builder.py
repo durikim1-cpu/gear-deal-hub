@@ -169,11 +169,9 @@ button, input { font: inherit; color: inherit; }
 .head-nav a.tg:hover { background: #1F2937; color: #fff; }
 
 /* ---------- Hero + KPI ledger ---------- */
-.hero { padding: 44px 0 26px; }
-.hero h1 { font-size: clamp(1.9rem, 1.15rem + 2.6vw, 3rem); line-height: 1.12; letter-spacing: -0.035em; font-weight: 780; text-wrap: balance; max-width: 18ch; }
-.hero .dek { margin-top: 14px; color: var(--ink-2); font-size: 1.04rem; max-width: 62ch; text-wrap: pretty; }
-.hero .dek strong { color: var(--ink); font-weight: 650; }
-.stamp { margin-top: 16px; color: var(--muted); font-size: 13px; display: flex; gap: 14px; flex-wrap: wrap; }
+.hero { padding: 24px 0 16px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; }
+.hero h1 { font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.75rem); line-height: 1.25; letter-spacing: -0.025em; font-weight: 760; }
+.stamp { color: var(--muted); font-size: 13px; display: flex; gap: 14px; flex-wrap: wrap; }
 .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 30px; }
 .kpi { padding: 18px 20px 17px; border-left: 1px solid var(--line); min-width: 0; }
 .kpi:first-child { border-left: 0; }
@@ -920,45 +918,43 @@ def _render_hub(items: list[dict], cfg: dict, lang: str) -> str:
         top_href, top_name, top_gap = "#deals", "—", ""
 
     if lang == "ko":
-        title = f"{brand} KR — 데스크/IT 기어 쿠팡 vs 알리 직구 가격 비교"
-        desc = "검수를 통과한 IT·데스크 기어의 쿠팡 가격과 알리익스프레스 직구가, 실사용 단점을 한눈에 비교합니다."
-        h1 = "내일 받을까, 직구로 아낄까?"
-        dek = "같은 모델의 <strong>쿠팡 가격과 알리 직구가</strong>를 나란히 놓고, 사기 전에 알아야 할 단점까지 한 장에 정리했습니다."
-        stamp = f'<span>가격 기준일 <b class="num">{_esc(latest)}</b></span><span>쿠팡 · 알리익스프레스 동일 모델 비교</span>'
+        title = f"{brand} KR — PC·데스크 주변기기 국내가 vs 직구가 비교"
+        desc = "동일 모델 PC·데스크 주변기기의 쿠팡 가격, 알리익스프레스 직구가, 주요 스펙 및 실사용 단점 비교표."
+        h1 = "PC·데스크 주변기기 국내가 · 직구가 시세표"
+        stamp = f'<span>기준일 <b class="num">{_esc(latest)}</b></span><span>쿠팡 · 알리익스프레스 동일 모델</span><span>면세 한도 미화 150달러</span>'
         kpis = f"""
-      <div class="kpi"><div class="kpi-label">검수 통과 기어</div><div class="kpi-value num">{s['count']}<small>종</small></div><div class="kpi-sub">{len(counts)}개 카테고리</div></div>
-      <div class="kpi"><div class="kpi-label">평균 직구 절약률</div><div class="kpi-value num">{s['avg']:.1f}<small>%</small></div><div class="kpi-sub">쿠팡가 대비 알리 직구가</div></div>
-      <div class="kpi"><div class="kpi-label">최대 절약 픽</div><div class="kpi-value"><a href="{top_href}">{top_name}</a></div><div class="kpi-sub"><b class="num">{top_gap}</b> 차이</div></div>
-      <div class="kpi"><div class="kpi-label">게이트키퍼 상태</div><div class="gk"><span class="dot"></span>자동 오매칭·가품 필터 작동 중</div><div class="kpi-sub" style="margin-top:6px">액세서리 단품·이상 저가 매물 차단</div></div>"""
-        ph = "브랜드, 모델, 스펙으로 검색 (예: 100W, 기계식)"
-        sorts = [("save", "절약 금액 큰순"), ("off", "할인율 높은순"), ("price", "낮은 가격순")]
-        views = [("cards", "카드 비교 뷰"), ("table", "한눈에 가격·스펙 표 뷰")]
+      <div class="kpi"><div class="kpi-label">등록 모델</div><div class="kpi-value num">{s['count']}<small>종</small></div><div class="kpi-sub">{len(counts)}개 분류</div></div>
+      <div class="kpi"><div class="kpi-label">평균 직구 가격차</div><div class="kpi-value num">{s['avg']:.1f}<small>%</small></div><div class="kpi-sub">쿠팡가 대비 알리 직구가</div></div>
+      <div class="kpi"><div class="kpi-label">최대 가격차 모델</div><div class="kpi-value"><a href="{top_href}">{top_name}</a></div><div class="kpi-sub"><b class="num">{top_gap}</b> 차이</div></div>
+      <div class="kpi"><div class="kpi-label">수집 필터</div><div class="gk"><span class="dot"></span>케이스·단품 오매칭 제외</div><div class="kpi-sub" style="margin-top:6px">정가 대비 이상 저가 매물 차단</div></div>"""
+        ph = "모델명, 브랜드, 스펙 검색 (예: CD226, 100W, F75)"
+        sorts = [("save", "가격차 큰순"), ("off", "정가 대비 할인순"), ("price", "낮은 가격순")]
+        views = [("cards", "카드형"), ("table", "표로 보기")]
         sort_lbl, view_lbl = "정렬", "보기"
-        count_tpl = "{n}개 표시 · 전체 {t}개"
-        sort_note = "절약 금액 = 두 판매처 가격 차이"
-        head_cols = ["모델", "핵심 스펙", "쿠팡", "알리 직구", "가격 차이", "구매 판정", "바로 구매"]
-        empty_t, empty_d, reset = "조건에 맞는 기어가 없습니다", "검색어를 줄이거나 다른 카테고리를 선택해 보세요.", "필터 초기화"
-        search_lbl = "기어 검색"
+        count_tpl = "{n}개 표시 (전체 {t}개)"
+        sort_note = "가격차 = 쿠팡가와 알리 직구가 차이"
+        head_cols = ["모델", "핵심 스펙", "쿠팡", "알리 직구", "가격차", "유리한 경로", "판매처"]
+        empty_t, empty_d, reset = "일치하는 모델이 없습니다", "검색어를 줄이거나 다른 분류를 선택해 보세요.", "필터 초기화"
+        search_lbl = "모델 검색"
     else:
-        title = f"{brand} — Desk & Tech Gear Price Comparison (Amazon vs AliExpress)"
-        desc = "Side-by-side Amazon vs AliExpress prices on vetted GaN chargers, keyboards, mini PCs, and desk gear, with honest drawbacks."
-        h1 = "Fast Prime delivery, or direct-import savings?"
-        dek = "We track identical desk &amp; USB-C models on <strong>Amazon and AliExpress</strong>, side by side, with the real-world drawbacks you should know before you buy."
-        stamp = f'<span>Prices checked <b class="num">{_esc(latest)}</b></span><span>Same model, two storefronts</span>'
+        title = f"{brand} — Desk & USB-C Hardware Price Index (Amazon vs AliExpress)"
+        desc = "Model-for-model price index comparing Amazon US and AliExpress direct listings across GaN chargers, keyboards, mini PCs, and USB-C docks."
+        h1 = "Desk & USB-C Hardware Price Index"
+        stamp = f'<span>Updated <b class="num">{_esc(latest)}</b></span><span>Amazon US vs. AliExpress Direct (USD)</span>'
         kpis = f"""
-      <div class="kpi"><div class="kpi-label">Vetted models</div><div class="kpi-value num">{s['count']}</div><div class="kpi-sub">across {len(counts)} categories</div></div>
-      <div class="kpi"><div class="kpi-label">Avg. AliExpress savings</div><div class="kpi-value num">{s['avg']:.1f}<small>%</small></div><div class="kpi-sub">vs. the Amazon price</div></div>
-      <div class="kpi"><div class="kpi-label">Biggest saving</div><div class="kpi-value"><a href="{top_href}">{top_name}</a></div><div class="kpi-sub"><b class="num">{top_gap}</b> gap</div></div>
-      <div class="kpi"><div class="kpi-label">Gatekeeper</div><div class="gk"><span class="dot"></span>Mismatch &amp; fake-listing filter active</div><div class="kpi-sub" style="margin-top:6px">Accessory-only &amp; too-cheap listings blocked</div></div>"""
-        ph = "Search brand, model, or spec (e.g. 100W, QMK)"
-        sorts = [("save", "Biggest savings"), ("off", "Highest % off"), ("price", "Lowest price")]
-        views = [("cards", "Cards"), ("table", "Price &amp; spec table")]
+      <div class="kpi"><div class="kpi-label">Tracked models</div><div class="kpi-value num">{s['count']}</div><div class="kpi-sub">{len(counts)} categories</div></div>
+      <div class="kpi"><div class="kpi-label">Avg. direct spread</div><div class="kpi-value num">{s['avg']:.1f}<small>%</small></div><div class="kpi-sub">AliExpress vs. Amazon</div></div>
+      <div class="kpi"><div class="kpi-label">Largest spread</div><div class="kpi-value"><a href="{top_href}">{top_name}</a></div><div class="kpi-sub"><b class="num">{top_gap}</b> difference</div></div>
+      <div class="kpi"><div class="kpi-label">Listing filter</div><div class="gk"><span class="dot"></span>Accessories &amp; mismatches excluded</div><div class="kpi-sub" style="margin-top:6px">Blocks case-only &amp; outlier SKUs</div></div>"""
+        ph = "Search brand, model number, or spec (e.g. CD226, 100W, QMK)"
+        sorts = [("save", "Largest spread"), ("off", "Highest % off"), ("price", "Lowest price")]
+        views = [("cards", "Cards"), ("table", "Table")]
         sort_lbl, view_lbl = "Sort", "View"
         count_tpl = "Showing {n} of {t}"
-        sort_note = "Savings = gap between the two stores"
-        head_cols = ["Model", "Key specs", "Amazon", "AliExpress", "Spread", "Verdict", "Buy"]
-        empty_t, empty_d, reset = "No gear matches", "Try a shorter search or another category.", "Reset filters"
-        search_lbl = "Search gear"
+        sort_note = "Spread = Amazon vs. AliExpress price gap"
+        head_cols = ["Model", "Key specs", "Amazon", "AliExpress", "Spread", "Best route", "Links"]
+        empty_t, empty_d, reset = "No matching models", "Try a shorter query or switch category.", "Reset filters"
+        search_lbl = "Search models"
 
     sort_html = "".join(
         f'<button type="button" data-sort="{k}" aria-pressed="{"true" if k == "save" else "false"}">{v}</button>' for k, v in sorts
@@ -978,7 +974,6 @@ def _render_hub(items: list[dict], cfg: dict, lang: str) -> str:
   <main class="wrap hub" data-hub data-view="cards">
     <section class="hero">
       <h1>{h1}</h1>
-      <p class="dek">{dek}</p>
       <p class="stamp">{stamp}</p>
     </section>
     <section class="kpis" aria-label="{'요약 지표' if lang == 'ko' else 'Summary'}">{kpis}
@@ -1234,10 +1229,9 @@ def _render_root_gateway(cfg: dict, items: list[dict] | None = None) -> str:
     </div>
   </header>
   <main class="wrap">
-    <section class="gate-hero">
-      <h1>Same gear, two routes. Know which one is worth it.</h1>
-      <p>We match identical desk and USB-C models across fast domestic stores and AliExpress direct import, then filter out accessory-only and fake listings before anything is published.</p>
-      <p lang="ko">같은 모델, 두 가지 구매 경로. 빠른 배송과 직구 절약 중 무엇이 이득인지 지역별로 비교하세요.</p>
+    <section class="gate-hero" style="padding:36px 0 22px;">
+      <h1 style="font-size:clamp(1.6rem,1.2rem + 1.5vw,2.2rem);">{brand}</h1>
+      <p>동일 모델 오픈마켓 · 해외직구 시세 비교 / Model-level domestic vs. direct-import price index</p>
     </section>
     <div class="regions">{''.join(panels)}
     </div>
