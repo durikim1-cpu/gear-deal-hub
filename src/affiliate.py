@@ -54,7 +54,7 @@ def build_affiliate_links(product: dict, affiliate_cfg: dict) -> dict[str, str]:
     """
     urls = product.get("urls", {})
     cp_id = affiliate_cfg.get("coupang_partners_id", "AF8784203")
-    amz_tag = affiliate_cfg.get("amazon_associate_tag", "gearhub-20")
+    amz_tag = affiliate_cfg.get("amazon_associate_tag", "gearcomparehu-20")
     cp_sub = affiliate_cfg.get("coupang_sub_id", "gearhub_ko")
     ali_track = affiliate_cfg.get("aliexpress_tracking_id", "gearhub_global")
 
