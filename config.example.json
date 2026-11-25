@@ -2,8 +2,8 @@
   "site": {
     "brand_name": "GearCompare Hub",
     "base_url": "https://durikim1-cpu.github.io/gear-deal-hub",
-    "telegram_channel_ko": "https://t.me/your_kr_deal_channel",
-    "telegram_channel_en": "https://t.me/your_global_deal_channel",
+    "telegram_channel_ko": "https://t.me/gearcompare_kr",
+    "telegram_channel_en": "https://t.me/gearcompare_en",
     "pinterest_verify_code": ""
   },
   "affiliate": {
@@ -14,8 +14,8 @@
   },
   "telegram": {
     "bot_token": "",
-    "chat_id_ko": "@your_kr_deal_channel",
-    "chat_id_en": "@your_global_deal_channel"
+    "chat_id_ko": "@gearcompare_kr",
+    "chat_id_en": "@gearcompare_en"
   },
   "gatekeeper": {
     "min_price_ratio_vs_msrp": 0.35,
