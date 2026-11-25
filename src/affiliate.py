@@ -53,13 +53,15 @@ def build_affiliate_links(product: dict, affiliate_cfg: dict) -> dict[str, str]:
     URLs that never break or 404 during initial approval stages.
     """
     urls = product.get("urls", {})
+    cp_id = affiliate_cfg.get("coupang_partners_id", "AF8784203")
     amz_tag = affiliate_cfg.get("amazon_associate_tag", "gearhub-20")
     cp_sub = affiliate_cfg.get("coupang_sub_id", "gearhub_ko")
     ali_track = affiliate_cfg.get("aliexpress_tracking_id", "gearhub_global")
 
     coupang_url = urls.get("coupang_direct") or (
-        f"https://www.coupang.com/np/search?q={quote_plus(urls.get('coupang_query', product['model']))}"
-        f"&channel=user&subId={quote_plus(cp_sub)}"
+        f"https://link.coupang.com/re/AFFSRP?lptag={quote_plus(cp_id)}"
+        f"&subid={quote_plus(cp_sub)}"
+        f"&pageKey={quote_plus(urls.get('coupang_query', product['model']))}"
     )
     ali_url = urls.get("ali_direct") or (
         f"https://www.aliexpress.com/w/wholesale-{quote_plus(urls.get('ali_query', product['model'])).replace('+', '-')}.html"
