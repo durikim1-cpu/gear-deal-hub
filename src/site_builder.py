@@ -1153,6 +1153,8 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
         )
     p_verify = (cfg.get("site", {}).get("pinterest_verify_code") or "").strip()
     p_meta = f'\n  <meta name="p:domain_verify" content="{_esc(p_verify)}">' if p_verify else ""
+    g_verify = (cfg.get("site", {}).get("google_verify_code") or "").strip()
+    g_meta = f'\n  <meta name="google-site-verification" content="{_esc(g_verify)}">' if g_verify else ""
     rss_href = f"{base}/ko/feed.xml" if lang == "ko" else f"{base}/en/pinterest-feed.xml"
     rss_link = f'\n  <link rel="alternate" type="application/rss+xml" title="{_esc(cfg["site"]["brand_name"])} RSS" href="{_esc(rss_href)}">'
     return f"""<!DOCTYPE html>
@@ -1162,7 +1164,7 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{_esc(title)}</title>
   <meta name="description" content="{_esc(description)}">
-  <meta name="theme-color" content="#FFFFFF">{p_meta}{rss_link}
+  <meta name="theme-color" content="#FFFFFF">{p_meta}{g_meta}{rss_link}
   <script>document.documentElement.classList.add('js')</script>
   <link rel="canonical" href="{_esc(base + path)}">{alt}
   <meta property="og:title" content="{_esc(title)}">
