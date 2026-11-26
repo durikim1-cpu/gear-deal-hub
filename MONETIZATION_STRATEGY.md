@@ -37,6 +37,7 @@
 | **아마존 어소시에이트** | ✅ 발급됨 | **`gearcomparehu-20`** (미국 US) | **가입 후 180일 이내 적격 판매 3건 필수** |
 | **알리익스프레스 포털** | ⏳ 심사 중 | `portals.aliexpress.com` (`2026-11-25` 제출) | 1시간~2영업일 내 메일 승인 시 `Tracking ID` 반영 필요 |
 | **핀터레스트 비즈니스** | ✅ 무인 가동 중 | `https://www.pinterest.com/gearcomparehub` | 도메인 인증 완료 + `Desk & Tech Gear Deals` 보드에 RSS 자동 발행 연결 완료 |
+| **구글 서치콘솔** | ✅ 제출 완료 | `https://durikim1-cpu.github.io/gear-deal-hub/` | 소유권 인증 완료 + `sitemap.xml` (164개 URL) 제출 완료 |
 | **GitHub Secrets** | ✅ 등록됨 | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID_KO/EN`, `COUPANG_PARTNERS_ID`, `AMAZON_ASSOCIATE_TAG` | 추후 `ALIEXPRESS_TRACKING_ID` 등만 추가 |
 
 ---
