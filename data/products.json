@@ -54,6 +54,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "max_output": "100W PD 3.0",
+      "ports": "3x USB-C + 1x USB-A",
+      "weight": "320g",
+      "size": "69 x 69 x 33 mm"
     }
   },
   {
@@ -111,6 +117,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "layout": "75% (80 Keys + Knob)",
+      "connectivity": "2.4GHz / BT 5.0 / USB-C",
+      "battery": "4000mAh",
+      "mount": "Gasket + 5-Layer Foam"
     }
   },
   {
@@ -168,6 +180,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capacity": "20,000mAh (72Wh, TSA Carry-On Safe)",
+      "max_output": "200W Total (100W + 100W)",
+      "input": "100W USB-C Fast Recharge",
+      "weight": "544g"
     }
   },
   {
@@ -225,6 +243,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "cpu": "AMD Ryzen 7 8745HS (8C/16T) + Radeon 780M",
+      "memory": "32GB DDR5 5600MHz",
+      "storage": "1TB PCIe 4.0 NVMe SSD",
+      "ports": "USB4 (40Gbps) + HDMI 2.1 + DP 1.4 + 2.5G LAN"
     }
   },
   {
@@ -282,6 +306,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "layout": "75% Compact (84 Keys)",
+      "firmware": "Open-Source QMK / Web VIA",
+      "connectivity": "2.4GHz (1000Hz) / BT 5.1 / Wired",
+      "os_support": "macOS & Windows Switch + Extra Keycaps"
     }
   },
   {
@@ -339,6 +369,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sensor": "8000 DPI Darkfield (Tracks on Glass)",
+      "switches": "Quiet Clicks (90% Noise Reduction)",
+      "scroll": "MagSpeed Electromagnetic Wheel + Thumb Scroll",
+      "weight": "141g"
     }
   },
   {
@@ -396,6 +432,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "thickness": "18mm Ultra-Flat Blade Profile",
+      "capacity": "20,000mAh",
+      "max_output": "100W USB-C PD",
+      "ports": "2x USB-C + 2x USB-A"
     }
   },
   {
@@ -453,6 +495,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capsule": "Cardioid Dynamic (Rejects Off-Axis Room Noise)",
+      "interface": "USB-C Plug & Play + Balanced XLR",
+      "controls": "Tap-to-Mute + Physical Gain Knob + 3.5mm Jack",
+      "mount": "Weighted Desk Base + 3/8\" & 5/8\" Boom Thread"
     }
   },
   {
@@ -510,6 +558,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "speed": "Read 1,050 MB/s / Write 1,000 MB/s",
+      "durability": "IP65 Water/Dust Resistance + 3m Drop Protection",
+      "interface": "USB 3.2 Gen 2 (10Gbps)",
+      "weight": "98g"
     }
   },
   {
@@ -567,6 +621,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "cri": "Ra95 High-CRI Asymmetric LED",
+      "control": "2.4GHz Wireless Rotary Puck",
+      "color_temp": "2700K–6500K Stepless Dimming & Color Temp",
+      "power": "USB-C 5V 2A"
     }
   },
   {
@@ -624,6 +684,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "keys": "15x Customizable LCD Keys",
+      "stand": "45-Deg Detachable Stand + Removable USB-C Cable",
+      "os": "macOS 10.15+ / Windows 10+",
+      "ecosystem": "Elgato Marketplace Plugin Ecosystem"
     }
   },
   {
@@ -681,6 +747,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "video": "2x HDMI + 2x DP (DisplayLink Dual 4K@60Hz on M1/M2/M3)",
+      "pd_passthrough": "100W USB-C PD Input",
+      "network": "Gigabit Ethernet (1000Mbps)",
+      "data_ports": "2x USB-C 10Gbps + 2x USB-A 10Gbps"
     }
   },
   {
@@ -738,6 +810,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "max_output": "100W PD 3.1",
+      "ports": "2x USB-C + 1x USB-A",
+      "weight": "170g",
+      "size": "43 x 29 x 60 mm"
     }
   },
   {
@@ -795,6 +873,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "max_output": "140W Single / 160W Total",
+      "ports": "3x USB-C + 1x USB-A",
+      "weight": "304g",
+      "size": "70 x 70 x 33 mm"
     }
   },
   {
@@ -852,6 +936,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "max_output": "140W Total",
+      "ports": "Qi2 15W Pad + 0.8m Retractable USB-C + 2C1A",
+      "weight": "420g",
+      "size": "Desktop Station Footprint"
     }
   },
   {
@@ -878,7 +968,7 @@
       "title": "쿸테크 CUKTECH 15호 140W 4포트 PD 3.1 GaN 충전기 (240W 케이블 동봉)",
       "summary": "샤오미 생태계 제조사 ZMI 핵심 엔지니어 브랜드의 가성비 140W 4포트 충전기.",
       "pros": [
-        "3만 원대 후반 직구가에 240W 6A 초고속 케이블까지 기본 동봉",
+        "컴팩트한 4포트 본체 패키지에 240W 6A 초고속 케이블까지 기본 동봉",
         "샤오미 120W 독자 규격 및 일반 PD 3.1 140W 동시 지원"
       ],
       "cons": [
@@ -909,6 +999,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "max_output": "140W PD 3.1",
+      "ports": "3x USB-C + 1x USB-A",
+      "weight": "302g",
+      "size": "79 x 60 x 32 mm"
     }
   },
   {
@@ -966,6 +1062,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "max_output": "100W PD 3.0",
+      "ports": "2x USB-C + 1x USB-A",
+      "weight": "198g",
+      "size": "65 x 51 x 30 mm"
     }
   },
   {
@@ -1023,6 +1125,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capacity": "25,000mAh (90Wh, Carry-On Safe)",
+      "max_output": "140W Single / 210W Total",
+      "input": "110W High-Speed Self-Recharge",
+      "weight": "632g"
     }
   },
   {
@@ -1080,6 +1188,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capacity": "10,000mAh (36Wh)",
+      "max_output": "100W Single / 150W Max",
+      "input": "90W Fast Self-Recharging",
+      "weight": "287g"
     }
   },
   {
@@ -1137,6 +1251,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capacity": "10,000mAh",
+      "wireless": "Qi2 15W Magnetic Wireless",
+      "wired": "27W USB-C Bi-Directional I/O",
+      "weight": "250g"
     }
   },
   {
@@ -1194,6 +1314,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capacity": "24,000mAh (86.4Wh)",
+      "max_output": "140W Single / 170W Total",
+      "durability": "IP66 Water Resistance",
+      "weight": "680g"
     }
   },
   {
@@ -1251,6 +1377,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capacity": "20,000mAh (72Wh)",
+      "max_output": "100W Single / 130W Total",
+      "ports": "2x USB-C + 1x USB-A",
+      "weight": "480g"
     }
   },
   {
@@ -1290,7 +1422,7 @@
       "title": "WOBKEY Rainy 75 CNC Aluminum Wireless VIA Mechanical Keyboard",
       "summary": "Viral 1.8kg CNC aluminum  board delivering 'raindrop/marbly' acoustics and VIA support at entry-level pricing.",
       "pros": [
-        "Anodized CNC aluminum build and glass/mirror backplate punch way above $100",
+        "Anodized CNC aluminum build and glass/mirror backplate rival custom boutique kits",
         "Native VIA browser remapping with tri-mode wireless"
       ],
       "cons": [
@@ -1308,6 +1440,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "case": "Full CNC Aluminum Case + Counterweight",
+      "layout": "75% Compact (81 Keys)",
+      "firmware": "Browser-Based VIA Key Remapping",
+      "weight": "1.8kg"
     }
   },
   {
@@ -1365,6 +1503,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "layout": "96% Compact Full-Size (99 Keys w/ Numpad)",
+      "battery": "8000mAh Dual-Cell Battery",
+      "connectivity": "2.4GHz / Bluetooth / USB-C Wired",
+      "mount": "Flex-Cut Gasket Mount"
     }
   },
   {
@@ -1422,6 +1566,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "switch_type": "Gateron Low-Profile 2.0 Switches",
+      "polling": "1000Hz 2.4GHz Wireless",
+      "firmware": "Open-Source QMK / Web VIA",
+      "weight": "598g"
     }
   },
   {
@@ -1479,6 +1629,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "switch_type": "Kailh Full-POM Low-Profile Switches",
+      "case": "Slim All-Aluminum Chassis",
+      "connectivity": "BT 5.3 / USB-C",
+      "weight": "568g"
     }
   },
   {
@@ -1519,7 +1675,7 @@
       "summary": "Tool-less ball-catch CNC aluminum  board with rotary knob, 8000mAh battery, and VIA support.",
       "pros": [
         "Tool-free ball-catch top frame pops off in seconds for effortless modding",
-        "Combines rotary encoder, 8000mAh battery, and VIA under $85 direct"
+        "Combines rotary encoder, 8000mAh battery, tool-free ball-catch case, and native VIA"
       ],
       "cons": [
         "Nearly 2kg weight stays planted on the desk",
@@ -1536,6 +1692,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "case": "Quick-Release Ball-Catch CNC Aluminum Case",
+      "battery": "8000mAh",
+      "layout": "75% Layout + Rotary Knob",
+      "firmware": "VIA Keymap Support"
     }
   },
   {
@@ -1593,6 +1755,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "switch_type": "Low-Noise Scissor Switches",
+      "battery": "Up to 1,200 Hours (~8 Months Battery)",
+      "connectivity": "2.4GHz / Bluetooth 5.2 / Wired",
+      "weight": "425g"
     }
   },
   {
@@ -1650,6 +1818,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sensor": "PixArt PAW3395 Flagship Sensor",
+      "weight": "54g Ultralight",
+      "battery": "500mAh Battery (Up to 150h)",
+      "coating": "Ice-Feel Matte Grip Coating"
     }
   },
   {
@@ -1707,6 +1881,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "angle": "57-Deg Vertical Ergonomic Angle",
+      "switches": "Silent Touch Clicks + SmartWheel",
+      "connectivity": "Logi Bolt USB Receiver + Bluetooth",
+      "power": "1x AA Battery (Up to 24 Months)"
     }
   },
   {
@@ -1764,6 +1944,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sensor": "PAW3395 (26,000 DPI)",
+      "switches": "Optical Switches (Zero Double-Click Wear)",
+      "weight": "53g Hole-Free Shell",
+      "shape": "Symmetrical Low-Hump Claw Shape"
     }
   },
   {
@@ -1821,6 +2007,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sensor": "Focus Pro 30K Optical Sensor",
+      "power": "Single AA Battery (Up to 280h)",
+      "switches": "Gen-2 Mechanical Switches (60M Clicks)",
+      "weight": "82g (With Included AA Lithium)"
     }
   },
   {
@@ -1878,6 +2070,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sensor": "PixArt PAW3950 Next-Gen Sensor",
+      "weight": "45g Solid-Shell Ultralight",
+      "polling": "8000Hz Wireless Receiver Included",
+      "switches": "Omron Optical Microswitches"
     }
   },
   {
@@ -1935,6 +2133,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "feature": "Solder-Free Hot-Swappable Microswitch Sockets",
+      "sensor": "PAW3395 + Nordic 52840",
+      "weight": "65g",
+      "battery": "500mAh"
     }
   },
   {
@@ -1992,6 +2196,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "cpu": "AMD Ryzen 7 8845HS + Radeon 780M",
+      "expansion": "Dedicated OCuLink eGPU Port (64Gbps PCIe)",
+      "memory": "32GB DDR5 + 1TB PCIe 4.0",
+      "lan": "Dual Intel 2.5GbE LAN Ports"
     }
   },
   {
@@ -2049,6 +2259,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "cpu": "Intel Alder Lake-N100 (TDP 6W~25W)",
+      "memory": "16GB DDR4 3200MHz",
+      "storage": "500GB NVMe + 2.5-inch SATA Bay",
+      "video": "Dual HDMI 2.0 (4K@60Hz)"
     }
   },
   {
@@ -2106,6 +2322,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "cpu": "Intel Twin Lake N150 (Up to 3.6GHz)",
+      "memory": "16GB DDR4",
+      "storage": "512GB M.2 NVMe + Secondary M.2 2242 Slot",
+      "lan": "2.5GbE Wired Ethernet"
     }
   },
   {
@@ -2150,7 +2372,7 @@
       ],
       "cons": [
         "Metal chassis still attenuates 2.4GHz mouse/keyboard dongles without a short USB extender",
-        "Factor local import VAT on >$500 AliExpress shipments"
+        "Factor destination import duties/VAT at checkout on cross-border shipments"
       ],
       "verdict": "Compare Amazon US for easy dead-on-arrival return protection, or weigh AliExpress barebone/RAM options after checking US import charges at checkout."
     },
@@ -2163,6 +2385,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "cpu": "AMD Ryzen 9 7940HS + Radeon 780M",
+      "ports": "Dual 40Gbps USB4 (Supports PD Power In)",
+      "wireless": "Killer Wi-Fi 6E (Revised High-Gain Antenna)",
+      "memory": "32GB DDR5 + Dual PCIe 4.0 M.2 Slots"
     }
   },
   {
@@ -2189,7 +2417,7 @@
       "title": "유그린 Revodok 107 7-in-1 4K 60Hz USB-C 멀티 허브",
       "summary": "저가 허브들의 4K 30Hz 끊김 없이 매끄러운 4K 60Hz 화면 출력과 SD카드 리더를 제공하는 가성비 휴대용 허브.",
       "pros": [
-        "2만 원 이하 직구가에 4K@60Hz 주사율 지원으로 외장 모니터 마우스 끊김 없음",
+        "가벼운 휴대용 독임에도 4K@60Hz 주사율을 지원해 외장 모니터 마우스 끊김이 없음",
         "알루미늄 방열 바디 및 SD/TF 듀얼 슬롯 탑재"
       ],
       "cons": [
@@ -2202,7 +2430,7 @@
       "title": "UGREEN Revodok 107 7-in-1 4K@60Hz 100W PD USB-C Hub",
       "summary": "Everyday carry 7-in-1 aluminum dongle delivering true 4K@60Hz HDMI instead of laggy 30Hz budget hubs.",
       "pros": [
-        "True 4K@60Hz HDMI output + 100W PD pass-through under $15 direct",
+        "True 4K@60Hz HDMI output + 100W PD pass-through in a pocket-sized aluminum hub",
         "Simultaneous SD + MicroSD card reader slots"
       ],
       "cons": [
@@ -2220,6 +2448,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "video": "HDMI 4K@60Hz",
+      "pd_passthrough": "100W PD Input (85W Host Output)",
+      "card_reader": "Simultaneous SD + microSD Readers",
+      "data_ports": "1x USB-C + 2x USB-A (5Gbps)"
     }
   },
   {
@@ -2277,6 +2511,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "ssd_size": "M.2 2230 NVMe Form Factor",
+      "speed": "USB 3.2 Gen 2 (10Gbps)",
+      "pd_passthrough": "100W USB-C PD Pass-Through",
+      "feature": "MagSafe Ring Mount for Direct ProRes Capture"
     }
   },
   {
@@ -2334,6 +2574,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "speed": "40Gbps USB4 / TB4 Compatible (Up to 3,100 MB/s)",
+      "ssd_size": "M.2 NVMe 2280/2260/2242/2230",
+      "cooling": "Finned Aluminum Heatsink + Active Cooling Fan",
+      "cable": "40Gbps USB-C/A 2-in-1 Braided Cable"
     }
   },
   {
@@ -2391,6 +2637,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "speed": "40Gbps USB4 (Up to 3,840 MB/s)",
+      "cooling": "Silent Fanless CNC Aluminum + Clear Heat Shield",
+      "ssd_size": "Supports Up to 16TB M.2 NVMe",
+      "mount": "Tool-Free Push-Pin SSD Retention"
     }
   },
   {
@@ -2448,6 +2700,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "ports": "13-in-1 (2x HDMI + DP + 1Gbps LAN + SD/TF + 6x USB)",
+      "pd_passthrough": "135W External PSU Included (85W Host + 18W Front PD)",
+      "video": "Windows Triple 1080p (MST) / Single 4K@60Hz",
+      "stand": "Vertical Desktop Tower Form"
     }
   },
   {
@@ -2505,6 +2763,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "speed": "Read 1,050 MB/s / Write 1,050 MB/s",
+      "size": "65 x 50 x 10 mm (Smaller Than a Credit Card)",
+      "weight": "38g Featherweight",
+      "durability": "IP55 Water/Dust Resistant Anodized Body"
     }
   },
   {
@@ -2562,6 +2826,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "speed": "Up to 2,000 MB/s (USB 3.2 Gen 2x2 20Gbps)",
+      "durability": "3m Drop-Resistant Rubberized Shell",
+      "warranty": "5-Year Limited Manufacturer Warranty",
+      "weight": "122g"
     }
   },
   {
@@ -2619,6 +2889,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "speed": "Read 1,050 MB/s / Write 1,000 MB/s",
+      "cache": "Dedicated DRAM Cache Onboard",
+      "size": "74 x 46 x 14.8 mm",
+      "weight": "53g (Clear Bumper Case Included)"
     }
   },
   {
@@ -2676,6 +2952,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "thickness": "4.8–6mm Ultra-Slim Aluminum Unibody",
+      "speed": "Up to 2,000 MB/s (iPhone ProRes 4K60 Ready)",
+      "weight": "43g",
+      "encryption": "256-bit AES Encryption Support"
     }
   },
   {
@@ -2733,6 +3015,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "connector": "Direct USB-C w/ Built-In DSP DAC & Mic",
+      "driver": "10mm Al-Mg Alloy Dynamic Driver",
+      "cable": "0.78mm 2-Pin Detachable Cable",
+      "shell": "Die-Cast Zn-Al Alloy Ear Shells"
     }
   },
   {
@@ -2772,7 +3060,7 @@
       "title": "TRUTHEAR HEXA 1DD + 3BA Hybrid Studio Reference IEM",
       "summary": "Benchmark sub- 4-driver hybrid IEM praised by audio reviewers for neutral midrange clarity and smooth treble.",
       "pros": [
-        "Neutral-with-subbass tuning rivals $200+ studio monitors in detail retrieval",
+        "Neutral-with-subbass tuning rivals studio reference IEMs in detail retrieval",
         "Lightweight DLP 3D-printed resin shell"
       ],
       "cons": [
@@ -2790,6 +3078,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "drivers": "1DD + 3BA Hybrid 4-Driver Array",
+      "plug": "3.5mm Plug (0.78mm 2-Pin Detachable)",
+      "shell": "3D-Printed Resin Shell + CNC Anodized Faceplate",
+      "tuning": "Neutral Studio-Reference Tuning"
     }
   },
   {
@@ -2847,6 +3141,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "codecs": "LDAC + aptX Lossless Dual Hi-Res Codecs",
+      "anc": "QuietSmart 3.0 Adaptive ANC (Up to 50dB)",
+      "battery": "11h Buds / 52h Total w/ Case",
+      "features": "Multipoint + Qi Wireless Case + Wear Detection"
     }
   },
   {
@@ -2904,6 +3204,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "anc": "Voice-Targeted Adaptive ANC",
+      "codecs": "Hi-Res LDAC Wireless + 3.5mm Wired Aux",
+      "battery": "40h ANC On / 55h ANC Off",
+      "weight": "263g"
     }
   },
   {
@@ -2961,6 +3267,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capsule": "Custom Cardioid Dynamic Broadcast Capsule",
+      "body": "All-Metal Body w/ Integrated Shock Mount",
+      "interface": "USB-C (Maono Link DSP App) + XLR",
+      "controls": "2-in-1 Mic Gain & Headphone Mix Knob"
     }
   },
   {
@@ -3018,6 +3330,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capsule": "130dB SPL Dynamic Capsule w/ Broadcast Windscreen",
+      "mount": "Suspended Elastomer Shock Mount Included",
+      "interface": "Dual USB-C Digital + Analog XLR Outputs",
+      "controls": "Front Tap-to-Mute + On-Body Gain & Monitor Dial"
     }
   },
   {
@@ -3075,6 +3393,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "cri": "Front Ra95 Task Beam + Rear 16M RGB Bias Backlight",
+      "control": "Wireless Rotary Puck + Matter / Razer Chroma Sync",
+      "power": "Dedicated Barrel Wall Power Adapter",
+      "fit": "Fits Flat & Gentle Curved Bezel Profiles"
     }
   },
   {
@@ -3102,7 +3426,7 @@
       "summary": "책상 위 무선 리모컨 공간조차 아끼고 모니터 USB 포트 하나로 가볍게 구동하는 대 입문용 스크린바.",
       "pros": [
         "별도 어댑터나 건전지 리모컨 없이 모니터 뒤 USB 포트에 꽂으면 바로 작동",
-        "2만 원 초반 직구가로 야간 스탠드 대용 가성비 우수"
+        "모니터 상단 거치만으로 책상 면적을 차지하지 않아 야간 작업등 대용 활용도가 높음"
       ],
       "cons": [
         "조명 바 상단을 직접 손으로 터치해 밝기를 조절할 때 모니터 각도가 살짝 흔들릴 수 있음",
@@ -3132,6 +3456,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "cri": "Ra95 Asymmetric Optical Beam",
+      "control": "On-Bar Capacitive Touch Dimmer",
+      "power": "USB-C 5V 1A (Runs Off Monitor USB Port)",
+      "weight": "280g"
     }
   },
   {
@@ -3189,6 +3519,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sticks": "Hall Effect Magnetic Sticks & Analog Triggers",
+      "polling": "1000Hz Polling (Wired & 2.4GHz Dongle)",
+      "extra_buttons": "Extra Remappable L4 / R4 Top Bumpers",
+      "weight": "214g"
     }
   },
   {
@@ -3246,6 +3582,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "compatibility": "Nintendo Switch (Gyro + Shake-to-Wake) & Windows PC",
+      "sticks": "Drift-Free Hall Effect Sticks",
+      "dock": "Magnetic Drop-In Charging Dock w/ 2.4G Pass-Through",
+      "extra_buttons": "2x Remappable Rear P1/P2 Paddles"
     }
   },
   {
@@ -3303,6 +3645,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sticks": "Next-Gen TMR Magnetic Sticks (High Linearity)",
+      "triggers": "Dual-Mode Hall Analog ↔ Hair-Trigger Microswitch Locks",
+      "compatibility": "PC / Switch / iOS / Android",
+      "polling": "1000Hz Wired & Wireless"
     }
   },
   {
@@ -3360,6 +3708,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "interface": "Pivoting Direct USB-C Plug (iPhone 15/16 & Android)",
+      "sticks": "Full-Height Hall Sticks + 3 Swappable Caps",
+      "passthrough": "Bottom USB-C PD Pass-Through + 3.5mm Audio Jack",
+      "grip": "Full-Size Console-Grade Ergonomic Grips"
     }
   },
   {
@@ -3417,6 +3771,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "keys": "8x Custom LCD Keys + Dynamic Infobar",
+      "navigation": "Capacitive Touch Page-Turn Sensors",
+      "stand": "3-Angle Integrated Stand",
+      "cable": "Captive Braided USB-C Cable"
     }
   },
   {
@@ -3474,6 +3834,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "dials": "Rotary Knob + Scroll Wheel + 6 Tactile Buttons",
+      "apps": "Premiere, DaVinci, Photoshop, Lightroom & Clip Studio",
+      "interface": "Zero-Lag Wired USB-C",
+      "os": "macOS & Windows"
     }
   },
   {
@@ -3531,6 +3897,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sensor": "1/2-inch CMOS Sensor (Natural Depth of Field)",
+      "resolution": "4K@30fps / 1080p@60fps HDR",
+      "privacy": "Built-In Slide Privacy Shutter",
+      "mic": "Dual AI Noise-Canceling Mics"
     }
   },
   {
@@ -3557,7 +3929,7 @@
       "title": "이미트 EMEET S600 소니 센서 탑재 가성비 4K 화상회의 웹캠",
       "summary": "넘는 로지텍 구형 1080p 웹캠(C920) 살 돈보다 싸게 소니 센서 4K 화질과 물리 가림막을 챙기는 가성비 웹캠.",
       "pros": [
-        "4만 원대 가격에 PDAF 빠른 자동 초점과 렌즈 링을 돌려서 닫는 직관적인 프라이버시 커버 내장",
+        "컴팩트한 경통에 빠른 PDAF 자동 초점과 렌즈 링을 돌려 닫는 물리 프라이버시 커버 내장",
         "73도 적당한 화각으로 방 주변 지저분한 배경이 덜 찍힘"
       ],
       "cons": [
@@ -3570,7 +3942,7 @@
       "title": "EMEET S600 4K Webcam with Sony 1/2.8-inch Sensor & Rotary Privacy Cover",
       "summary": "Budget 4K@30 / 1080p@60 webcam beating aging 1080p Logitech C920s with PDAF autofocus and twist-shut privacy cover.",
       "pros": [
-        "Crisp 4K image and fast PDAF focus at sub-$35 direct pricing",
+        "Crisp 4K Sony-sensor image, fast PDAF focus, and twist-ring physical privacy shutter",
         "Twist-ring physical privacy cover can never get lost"
       ],
       "cons": [
@@ -3588,6 +3960,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sensor": "Sony 1/2.8-inch 8MP CMOS Sensor",
+      "resolution": "4K@30fps / 1080p@60fps w/ PDAF Autofocus",
+      "privacy": "Twist-Ring Physical Privacy Shutter",
+      "fov": "73-Deg Low-Distortion FOV"
     }
   },
   {
@@ -3645,6 +4023,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "keys": "15x LCD Macro Keys + Side Status Strip",
+      "os": "Windows & macOS Companion Software",
+      "stand": "Detachable 45-Deg Stand + USB-C Cable",
+      "purpose": "App Launch, Hotkeys & Live System Telemetry"
     }
   },
   {
@@ -3702,6 +4086,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "slots": "Dual Vertical Slots (2 Laptops or Laptop + Tablet)",
+      "width_adjust": "12–26mm Tool-Free Thumbscrew Width Adjust",
+      "material": "Solid CNC Aluminum + Full Silicone Slot Liners",
+      "weight": "540g"
     }
   },
   {
@@ -3759,6 +4149,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "capacity": "24,000mAh (86.4Wh, Carry-On Safe)",
+      "max_output": "140W Bi-Directional PD 3.1 I/O",
+      "ports": "2x USB-C + 1x USB-A",
+      "weight": "630g"
     }
   },
   {
@@ -3816,6 +4212,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "sensor": "HERO 2 (44,000 DPI / 888 IPS)",
+      "polling": "Up to 8000Hz Wireless Polling (Firmware Enabled)",
+      "switches": "LIGHTFORCE Hybrid Optical-Mechanical Switches",
+      "weight": "60g"
     }
   },
   {
@@ -3873,6 +4275,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "anc": "Dual-Processor 8-Mic Flagship ANC",
+      "codecs": "LDAC / AAC / SBC + Multipoint",
+      "battery": "30h w/ ANC On (3-Min Quick Charge = 3h)",
+      "weight": "250g"
     }
   },
   {
@@ -3903,10 +4311,10 @@
         "썬더볼트 독 중 발열 안정성과 수면 모드 복귀 호환성이 가장 검증됨"
       ],
       "cons": [
-        "50만 원에 육박하는 높은 가격대와 거대한 230W 외장 벽돌 어댑터",
+        "플래그십 워크스테이션 급 초기 비용 부담과 거대한 230W 외장 벽돌 어댑터 부피",
         "기본형 M1/M2/M3(Pro/Max 아닌 일반칩) 맥북은 애플 칩 제한으로 이 독을 써도 외장 모니터 1대만 나옴(기본칩 듀얼은 DisplayLink 독 필요)"
       ],
-      "verdict": "직구가 더 비싸고 관부가세까지 붙으므로 국내 공식 수입원(쿠팡) 또는 아마존 정품으로만 구매하세요."
+      "verdict": "고출력 썬더볼트 장비 특성상 직구 시 관부가세 부담과 초기 불량 반품 번거로움이 크므로 국내 공식 유통 경로를 우선 확인하세요."
     },
     "en": {
       "title": "CalDigit TS4 18-Port Thunderbolt 4 Workstation Dock (98W PD, 2.5GbE)",
@@ -3916,7 +4324,7 @@
         "2.5GbE Ethernet and front UHS-II SD 4.0 / microSD slots"
       ],
       "cons": [
-        "Expensive ~$380 price tag and a massive external 230W power brick",
+        "High flagship workstation investment and a massive external 230W power brick",
         "Base non-Pro M1/M2/M3 MacBooks still support only 1 external monitor over native TB4"
       ],
       "verdict": "Buy exclusively via Amazon authorized retail or Coupang official distributor."
@@ -3930,6 +4338,12 @@
       "kr_customs_rule": "china_150_us_200",
       "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
       "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
+    },
+    "specs_en": {
+      "ports": "18 Ports (3x TB4 + DP 1.4 + 2.5GbE + Dual UHS-II + 8x USB)",
+      "pd_passthrough": "98W Sustained Host PD (230W External PSU)",
+      "video": "Single 8K or Native Dual 6K@60Hz (Mac Pro/Max)",
+      "network": "2.5GbE Ethernet"
     }
   }
 ]

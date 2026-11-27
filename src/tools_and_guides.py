@@ -551,7 +551,13 @@ DOCK_TOOL_JS = r"""
       picks = ['caldigit-ts4-thunderbolt4-dock', 'ugreen-vertical-laptop-stand-dual'];
     }
 
-    const cardsHtml = picks.map(id => DATA.cards[id] || '').join('');
+    const cardList = picks.map(id => DATA.cards[id] || '').filter(Boolean);
+    const cardsHtml = cardList.join('');
+    const condHtml = `<dl class="v-cond"><dt>${DATA.t.cond_label}</dt>${[chipSel, monSel, lidSel, hdcpSel].map(el => {
+      const dd = document.createElement('dd');
+      dd.textContent = el.options[el.selectedIndex].text;
+      return dd.outerHTML;
+    }).join('')}</dl>`;
     const holdChecklist = status === 'hold' ? `<ul class="tool-check">${DATA.t.hold_checks.map(x => `<li>${x}</li>`).join('')}</ul>` : '';
     const mstWarn = (chip !== 'windows_usb4' && chip !== 'other_unverified' && mons === '2')
       ? `<div class="tool-alert"><strong>${DATA.t.mst_warn_title}</strong><span>${DATA.t.mst_warn_desc}</span></div>`
@@ -564,8 +570,9 @@ DOCK_TOOL_JS = r"""
         <p>${reason}</p>
         ${holdChecklist}
         ${mstWarn}
+        ${condHtml}
       </div>
-      ${cardsHtml ? `<div class="tool-picks"><h3>${DATA.t.rec_heading}</h3><div class="tool-grid">${cardsHtml}</div><p class="btn-disc">${DATA.t.btn_disc}</p></div>` : ''}
+      ${cardsHtml ? `<div class="tool-picks"><h3>${DATA.t.rec_heading}</h3><div class="tool-grid" data-count="${cardList.length}">${cardsHtml}</div><p class="btn-disc">${DATA.t.btn_disc}</p></div>` : ''}
     `;
 
     // Re-apply dynamic channel tracking on newly injected store links
@@ -580,37 +587,6 @@ DOCK_TOOL_JS = r"""
 """
 
 
-def _render_tool_product_card(it: dict, lang: str, detail_prefix: str, slug_fn: Callable[[str], str], up: str = "../../../") -> str:
-    loc = it[lang]
-    links = it["affiliate_links"]
-    slug = slug_fn(it["id"])
-    dom_url = links["coupang"] if lang == "ko" else links["amazon"]
-    dom_cls = "btn-coupang" if lang == "ko" else "btn-amazon"
-    dom_lbl = "쿠팡 실시간 가격·재고 확인" if lang == "ko" else "Check Price on Amazon"
-    ali_lbl = "알리 직구 조건 확인" if lang == "ko" else "Check AliExpress"
-    detail_lbl = "상세 스펙·단점 보기" if lang == "ko" else "Specs & Caveats"
-    con_lbl = "주의할 단점:" if lang == "ko" else "Caveat:"
-    alt_txt = f"{it['brand']} {it['model']}"
-    return (
-        f'<article class="panel tool-card">'
-        f'<div class="tc-top">'
-        f'<a class="tc-thumb" href="{detail_prefix}{slug}/" tabindex="-1">'
-        f'<img src="{up}assets/products/{slug}.webp" alt="{_esc(alt_txt)}" width="80" height="80" loading="lazy" decoding="async">'
-        f'</a>'
-        f'<div class="tc-meta"><span class="tag">{_esc(it["brand"])} · {_esc(it["model"])}</span>'
-        f'<h4><a href="{detail_prefix}{slug}/">{_esc(loc["title"])}</a></h4></div>'
-        f'</div>'
-        f'<p class="tc-sum">{_esc(loc["summary"])}</p>'
-        f'<p class="tc-con"><strong>{con_lbl}</strong> {_esc(loc["cons"][0])}</p>'
-        f'<div class="actions">'
-        f'<a class="btn {dom_cls}" data-aff="dom" data-store="{"coupang" if lang == "ko" else "amazon"}" href="{_esc(dom_url)}" target="_blank" rel="nofollow sponsored noopener">{dom_lbl}</a>'
-        f'<a class="btn btn-ali" data-aff="ali" data-store="aliexpress" href="{_esc(links["aliexpress"])}" target="_blank" rel="nofollow sponsored noopener">{ali_lbl}</a>'
-        f'</div>'
-        f'<a class="tc-more" href="{detail_prefix}{slug}/">{detail_lbl} →</a>'
-        f'</article>'
-    )
-
-
 def render_dock_checker_page(
     *,
     lang: str,
@@ -620,7 +596,8 @@ def render_dock_checker_page(
     legal_fn: Callable[[str], str],
     header_fn: Callable[[str, str, dict, str], str],
     footer_fn: Callable[[str, str, dict], str],
-    slug_fn: Callable[[str], str],
+    card_fn: Callable[..., str],
+    icon_fn: Callable[..., str],
 ) -> str:
     up = "../../../"
     other = "en" if lang == "ko" else "ko"
@@ -637,7 +614,7 @@ def render_dock_checker_page(
         "ugreen-vertical-laptop-stand-dual",
     ]
     cards = {
-        pid: _render_tool_product_card(items_by_id[pid], lang, "../../p/", slug_fn)
+        pid: card_fn(items_by_id[pid], lang)
         for pid in needed_ids
         if pid in items_by_id
     }
@@ -647,7 +624,7 @@ def render_dock_checker_page(
         desc = "내 맥북 에어·프로 칩셋과 클램쉘 여부, 넷플릭스(HDCP) 사용 여부에 맞춰 화면 복제(미러링) 실패 없는 도킹스테이션 구성을 즉시 판별합니다."
         h1 = "맥북 모델·칩별 듀얼모니터 독 호환 판별기"
         lead = "맥북에서 '듀얼 HDMI 허브'를 샀다가 두 모니터에 똑같은 화면만 복제되어 반품하는 사고를 막기 위한 공식 사양 교차 검증 도구입니다. Apple 외부 디스플레이 사양과 DisplayLink·Thunderbolt 4 작동 조건이 확인된 조합만 추천하며, 불확실한 특수 구성은 억지 추천 대신 '판정 유보'로 표시합니다."
-        labels = ("1. 노트북 모델 · 칩셋", "2. 연결할 외부 모니터 수", "3. 노트북 덮개(클램쉘) 상태", "4. OTT 스트리밍(넷플릭스·티빙 등 HDCP) 상시 재생")
+        labels = ("노트북 모델 · 칩셋", "연결할 외부 모니터 수", "노트북 덮개(클램쉘) 상태", "OTT 스트리밍(넷플릭스·티빙 등 HDCP) 상시 재생")
         chip_opts = [
             ("m1_m2_base", "맥북 에어 M1 / M2 (13·15인치) 및 맥북 프로 13인치 (M1/M2 기본칩)"),
             ("m3_base", "맥북 에어 M3 (13·15인치) 및 맥북 프로 14인치 (M3 기본칩, macOS 14.6+)"),
@@ -691,7 +668,8 @@ def render_dock_checker_page(
             "native_dual_badge": "네이티브 듀얼 모니터 완벽 지원 (Thunderbolt 4 권장)",
             "promax_head": "선택하신 칩셋은 노트북 화면을 연 상태에서도 네이티브 듀얼 모니터와 HDCP를 기본 지원합니다",
             "promax_body": "DisplayLink 압축 독을 쓸 이유가 전혀 없습니다. 대역폭 손실과 CPU 점유가 없는 정통 Thunderbolt 4 도킹스테이션을 연결하세요.",
-            "mst_warn_title": "⚠️ 절대 피해야 할 오구매 1순위: 윈도우 전용 MST 멀티 HDMI 허브",
+            "mst_warn_title": "절대 피해야 할 오구매 1순위: 윈도우 전용 MST 멀티 HDMI 허브",
+            "cond_label": "판정에 사용한 조건",
             "mst_warn_desc": "상세페이지 작은 글씨에 'macOS는 확장 미지원(미러링만 지원, A+B+B)'이라고 적힌 일반 USB-C 멀티 HDMI 허브는 맥북 Pro/Max·M4에 꽂아도 두 모니터에 똑같은 화면만 나옵니다.",
             "rec_heading": "교차 검증된 호환 장비 확인 (실시간 조건 대조)",
             "btn_disc": BUTTON_DISCLOSURE_KO,
@@ -702,7 +680,7 @@ def render_dock_checker_page(
         desc = "Check whether your exact MacBook Air or MacBook Pro chip needs DisplayLink, Clamshell Thunderbolt 4, or avoids macOS MST mirroring traps before buying a dock."
         h1 = "MacBook Dual-Monitor Dock Compatibility Checker"
         lead = "Stop buying 'Dual 4K HDMI' USB-C hubs that only mirror screens on macOS. Select your exact MacBook chip, lid preference, and DRM streaming requirement below. Only setups cross-verified against official Apple external display specs and DisplayLink / Thunderbolt 4 rules are recommended; unverified edge cases are marked Hold."
-        labels = ("1. Laptop Model & Chip", "2. External Monitors Needed", "3. Laptop Lid Mode", "4. Daily Netflix / Apple TV+ (HDCP DRM) Playback")
+        labels = ("Laptop Model & Chip", "External Monitors Needed", "Laptop Lid Mode", "Daily Netflix / Apple TV+ (HDCP DRM) Playback")
         chip_opts = [
             ("m1_m2_base", "MacBook Air M1 / M2 (13\" & 15\") or 13\" MacBook Pro (Base M1 / M2)"),
             ("m3_base", "MacBook Air M3 (13\" & 15\") or 14\" MacBook Pro (Base M3 w/ macOS 14.6+)"),
@@ -746,24 +724,29 @@ def render_dock_checker_page(
             "native_dual_badge": "Native Dual-Display Match (Thunderbolt 4 Recommended)",
             "promax_head": "Your Mac chip drives 2+ external displays natively with the lid open and full HDCP",
             "promax_body": "Skip DisplayLink compression completely. Use a true Thunderbolt 4 dock for uncompressed 6K/4K@60Hz output, 98W charging, and 2.5GbE.",
-            "mst_warn_title": "⚠️ #1 Return Trap on macOS: Windows MST Dual-HDMI Splitters",
+            "mst_warn_title": "#1 Return Trap on macOS: Windows MST Dual-HDMI Splitters",
+            "cond_label": "Checked against",
             "mst_warn_desc": "Generic USB-C hubs with two HDMI ports rely on DisplayPort MST, which macOS does not support for extended desktops—even on M4 or M3 Max, both HDMI monitors will show the exact same mirrored image.",
             "rec_heading": "Cross-Verified Hardware Matches (Compare Live Store Options)",
             "btn_disc": BUTTON_DISCLOSURE_EN,
         }
         foot_note = "Cross-checked against Apple official external display specifications and Thunderbolt 4 / DisplayLink architecture. US buyers: check 'Ships from US' on Amazon vs cross-border import charges at checkout on AliExpress."
 
-    def sel(name: str, opts: list[tuple[str, str]]) -> str:
-        return f'<select name="{name}" class="tool-sel">' + "".join(
-            f'<option value="{_esc(k)}">{_esc(v)}</option>' for k, v in opts
-        ) + "</select>"
+    def field(n: int, name: str, label: str, opts: list[tuple[str, str]]) -> str:
+        options = "".join(f'<option value="{_esc(k)}">{_esc(v)}</option>' for k, v in opts)
+        return (
+            f'<li class="field"><label for="f-{name}"><span class="step">{n}</span><span>{_esc(label)}</span></label>'
+            f'<span class="sel"><select id="f-{name}" name="{name}" class="tool-sel">{options}</select>{icon_fn("down", 16)}</span></li>'
+        )
 
     payload = json.dumps({"t": t_data, "cards": cards}, ensure_ascii=False).replace("</", "<\\/")
+    arrow = icon_fn("arrow", 14)
     guide_link = (
-        '<p style="margin-top:18px;font-size:14px"><a href="../../guides/macbook-m1-m2-m3-dual-monitor-dock-guide/">Read full technical breakdown: Why macOS Mirrors Dual-HDMI Hubs →</a></p>'
+        f'<p class="tool-more"><a class="text-link" href="../../guides/macbook-m1-m2-m3-dual-monitor-dock-guide/">Read full technical breakdown: Why macOS Mirrors Dual-HDMI Hubs {arrow}</a></p>'
         if lang == "en"
-        else '<p style="margin-top:18px;font-size:14px"><a href="../../c/hubs/">전체 독·허브 검수 목록 보기 →</a></p>'
+        else f'<p class="tool-more"><a class="text-link" href="../../c/hubs/">전체 독·허브 검수 목록 보기 {arrow}</a></p>'
     )
+    form_lbl = "호환 조건 입력" if lang == "ko" else "Compatibility inputs"
 
     body = f"""
 <body class="{lang}">
@@ -774,22 +757,21 @@ def render_dock_checker_page(
       <ol class="crumbs">
         <li><a href="../../">{'홈' if lang == 'ko' else 'Home'}</a></li>
         <li> / </li>
-        <li aria-current="page">{_esc(h1)}</li>
+        <li aria-current="page">{'호환성 판별 도구' if lang == 'ko' else 'Interactive Compatibility Tool'}</li>
       </ol>
     </nav>
-    <section class="tool-hero">
-      <span class="tag">{'호환성 판별 도구' if lang == 'ko' else 'Interactive Compatibility Tool'}</span>
+    <header class="page-head tool-hero">
       <h1>{_esc(h1)}</h1>
       <p class="dek">{_esc(lead)}</p>
-    </section>
+    </header>
 
-    <section class="panel tool-form" aria-label="Compatibility Inputs">
-      <div class="tool-fields">
-        <label><span>{_esc(labels[0])}</span>{sel('mac_chip', chip_opts)}</label>
-        <label><span>{_esc(labels[1])}</span>{sel('monitors', mon_opts)}</label>
-        <label><span>{_esc(labels[2])}</span>{sel('lid_mode', lid_opts)}</label>
-        <label><span>{_esc(labels[3])}</span>{sel('hdcp_need', hdcp_opts)}</label>
-      </div>
+    <section class="sheet tool-form" aria-label="{form_lbl}">
+      <ol class="tool-fields">
+        {field(1, 'mac_chip', labels[0], chip_opts)}
+        {field(2, 'monitors', labels[1], mon_opts)}
+        {field(3, 'lid_mode', labels[2], lid_opts)}
+        {field(4, 'hdcp_need', labels[3], hdcp_opts)}
+      </ol>
     </section>
 
     <section class="tool-out" data-dock-result aria-live="polite"></section>
@@ -813,21 +795,34 @@ def render_en_guides_index(
     legal_fn: Callable[[str], str],
     header_fn: Callable[[str, str, dict, str], str],
     footer_fn: Callable[[str, str, dict], str],
+    items_by_id: dict[str, dict],
+    plate_fn: Callable[..., str],
+    icon_fn: Callable[..., str],
 ) -> str:
     up = "../../"
     brand = cfg["site"]["brand_name"]
     title = f"Hardware Compatibility & Buying Guides (MacBook, GaN, Controllers, SSDs) | {brand}"
     desc = "12 non-template engineering buying guides covering Apple Silicon dual-monitor docks, USB4 thermals, TSA 100Wh power banks, Hall-effect/TMR controllers, and Budget Setup Picks."
-    cards = []
-    for g in GUIDES_EN:
-        cards.append(
-            f'<article class="panel guide-card">'
-            f'<span class="tag">{_esc(g["pillar"])}</span>'
-            f'<h2><a href="{_esc(g["slug"])}/">{_esc(g["title"])}</a></h2>'
+
+    def card(g: dict) -> str:
+        plates = "".join(plate_fn(items_by_id[pid], up) for pid in g["product_ids"][:4] if pid in items_by_id)
+        return (
+            f'<article class="sheet guide-card">'
+            f'<h3><a href="{_esc(g["slug"])}/">{_esc(g["title"])}</a></h3>'
             f'<p>{_esc(g["summary"])}</p>'
-            f'<span class="gc-meta">Reviewed {_esc(g["reviewed_at"])} · {len(g["product_ids"])} vetted models compared →</span>'
+            f'<div class="gc-foot"><span class="gc-plates" aria-hidden="true">{plates}</span>'
+            f'<span class="gc-meta">Reviewed {_esc(g["reviewed_at"])} · {len(g["product_ids"])} vetted models compared</span></div>'
             f'</article>'
         )
+
+    pillars: dict[str, list[dict]] = {}
+    for g in GUIDES_EN:
+        pillars.setdefault(g["pillar"], []).append(g)
+    groups = "".join(
+        f'<section class="guide-group"><h2>{_esc(pillar)}</h2>'
+        f'<div class="guide-grid">{"".join(card(g) for g in gs)}</div></section>'
+        for pillar, gs in pillars.items()
+    )
 
     body = f"""
 <body class="en">
@@ -835,13 +830,13 @@ def render_en_guides_index(
   {header_fn("en", up, cfg, f"{up}ko/tools/macbook-dock-checker/")}
   <main class="wrap">
     <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="../">Home</a></li><li> / </li><li aria-current="page">Buying Guides</li></ol></nav>
-    <header class="tool-hero">
-      <span class="tag">Original Decision Guides · Zero Stale Prices</span>
+    <header class="page-head">
       <h1>Hardware Compatibility &amp; Setup Buying Guides</h1>
       <p class="dek">Every guide below tests protocol compatibility, real-world caveats, and explicit exclusion rules ("who should skip") before linking to domestic US Amazon and direct-import options.</p>
-      <p style="margin-top:14px"><a class="btn btn-amazon" style="display:inline-flex;width:auto" href="../tools/macbook-dock-checker/">Launch Interactive MacBook Dual-Monitor Dock Checker →</a></p>
+      <p class="page-meta">Original Decision Guides · Zero Stale Prices</p>
+      <p class="page-act"><a class="btn btn-primary" href="../tools/macbook-dock-checker/">Launch Interactive MacBook Dual-Monitor Dock Checker {icon_fn("arrow", 15)}</a></p>
     </header>
-    <div class="guide-grid">{''.join(cards)}</div>
+    {groups}
   </main>
   {footer_fn("en", up, cfg)}
   <script src="{up}assets/app.js" defer></script>
@@ -860,7 +855,8 @@ def render_en_guide_detail(
     legal_fn: Callable[[str], str],
     header_fn: Callable[[str, str, dict, str], str],
     footer_fn: Callable[[str, str, dict], str],
-    slug_fn: Callable[[str], str],
+    card_fn: Callable[..., str],
+    icon_fn: Callable[..., str],
 ) -> str:
     up = "../../../"
     brand = cfg["site"]["brand_name"]
@@ -877,15 +873,13 @@ def render_en_guide_detail(
         for sh, sp in guide["sections"]
     )
     excl = "".join(f"<li>{_esc(x)}</li>" for x in guide["exclusions"])
-    prod_cards = "".join(
-        _render_tool_product_card(items_by_id[pid], "en", "../../p/", slug_fn)
-        for pid in guide["product_ids"]
-        if pid in items_by_id
-    )
+    prods = [items_by_id[pid] for pid in guide["product_ids"] if pid in items_by_id]
+    prod_cards = "".join(card_fn(it, "en", hl="h3") for it in prods)
     tool_banner = (
-        '<div class="panel" style="padding:16px 20px;margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">'
-        '<div><strong>Interactive MacBook Dual-Monitor Dock Checker</strong><p style="font-size:14px;color:var(--ink-2)">Select your exact M1/M2/M3/M4 chip and lid mode for an instant compatibility check.</p></div>'
-        '<a class="btn btn-amazon" href="../../tools/macbook-dock-checker/">Open Checker →</a></div>'
+        f'<section class="feat-strip" aria-label="Compatibility tool"><span class="feat-ic">{icon_fn("dual", 22)}</span>'
+        '<div><strong>Interactive MacBook Dual-Monitor Dock Checker</strong>'
+        '<p>Select your exact M1/M2/M3/M4 chip and lid mode for an instant compatibility check.</p></div>'
+        f'<div class="feat-actions"><a class="btn btn-primary btn-s" href="../../tools/macbook-dock-checker/">Open Checker {icon_fn("arrow", 14)}</a></div></section>'
         if guide.get("tool_cta")
         else ""
     )
@@ -903,17 +897,17 @@ def render_en_guide_detail(
       </ol>
     </nav>
     <article class="guide-article">
-      <header class="tool-hero">
-        <span class="tag">{_esc(guide['pillar'])} · Reviewed {_esc(guide['reviewed_at'])}</span>
+      <header class="page-head">
         <h1>{_esc(guide['title'])}</h1>
         <p class="dek">{_esc(guide['summary'])}</p>
+        <p class="page-meta">{_esc(guide['pillar'])} · Reviewed {_esc(guide['reviewed_at'])}</p>
       </header>
       {tool_banner}
-      <p class="guide-p" style="margin-top:20px">{_esc(guide['intro'])}</p>
+      <p class="guide-p lead">{_esc(guide['intro'])}</p>
 
       <section class="section">
         <h2>Compatibility &amp; Selection Matrix</h2>
-        <div class="panel" style="overflow-x:auto">
+        <div class="table-sheet table-scroll" tabindex="0" role="region" aria-label="Compatibility and selection matrix">
           <table class="spec-table guide-matrix">
             <thead><tr>{ths}</tr></thead>
             <tbody>{trs}</tbody>
@@ -925,15 +919,15 @@ def render_en_guide_detail(
 
       <section class="section">
         <h2>Who Should Skip These Setups (Exclusion Checklist)</h2>
-        <div class="panel cons" style="padding:18px 22px;border-left:4px solid #D97706">
+        <div class="notice excl">
           <ul class="guide-excl">{excl}</ul>
         </div>
       </section>
 
       <section class="section">
         <h2>Vetted Hardware Referenced in This Guide</h2>
-        <p style="font-size:13.5px;color:var(--muted);margin-bottom:12px">{_esc(BUTTON_DISCLOSURE_EN)} US shoppers: check "Ships from US" on Amazon vs checkout import charges on cross-border AliExpress listings.</p>
-        <div class="tool-grid">{prod_cards}</div>
+        <div class="tool-grid" data-count="{len(prods)}">{prod_cards}</div>
+        <p class="btn-disc">{_esc(BUTTON_DISCLOSURE_EN)} US shoppers: check "Ships from US" on Amazon vs checkout import charges on cross-border AliExpress listings.</p>
       </section>
     </article>
   </main>
