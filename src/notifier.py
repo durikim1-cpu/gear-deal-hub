@@ -81,11 +81,23 @@ def format_en_alert(item: dict, base_url: str) -> str:
     )
 
 
+def _normalize_chat_id(raw: str) -> str:
+    val = (raw or "").strip()
+    if val.startswith("https://t.me/"):
+        val = "@" + val.removeprefix("https://t.me/").strip("/")
+    elif val and not val.startswith(("@", "-")):
+        val = "@" + val
+    return val
+
+
 def _send_telegram_message(bot_token: str, chat_id: str, text: str) -> bool:
+    norm_chat = _normalize_chat_id(chat_id)
+    if not norm_chat:
+        return False
     api_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     body = json.dumps(
         {
-            "chat_id": chat_id,
+            "chat_id": norm_chat,
             "text": text,
             "parse_mode": "HTML",
             "disable_web_page_preview": True,
@@ -94,8 +106,12 @@ def _send_telegram_message(bot_token: str, chat_id: str, text: str) -> bool:
     req = urllib.request.Request(
         api_url, data=body, headers={"Content-Type": "application/json"}, method="POST"
     )
-    with urllib.request.urlopen(req, timeout=8) as resp:
-        return resp.status == 200
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            return resp.status == 200
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError) as exc:
+        print(f"[Telegram warn] Failed to send to {norm_chat}: {exc}")
+        return False
 
 
 def stage_alerts_preview(sniper_res: dict, cfg: dict, dist_dir: Path) -> dict:

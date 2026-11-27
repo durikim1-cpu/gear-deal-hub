@@ -11,14 +11,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from src.affiliate import load_config
-from src.auto_discover import auto_grow_catalog
-from src.collector import collect_candidates
-from src.deal_sniper import snipe_hot_deals
 from src.notifier import dispatch_verified_alerts, stage_alerts_preview
-from src.pin_generator import build_pinterest_and_rss_feeds
-from src.site_builder import build_site
 from src.social_publisher import publish_verified_social, stage_social_queues
-from src.verifier import verify_batch
 
 
 def main() -> int:
@@ -71,6 +65,14 @@ def main() -> int:
         print(f"Telegram sent (post-URL check) : KO={alert_stats['sent_ko']}, EN={alert_stats['sent_en']}")
         print(f"Threads posted (<=1/day cap)   : {social_stats['threads_published_ko']}")
         return 0
+
+    # Build-phase imports (kept lazy so --dispatch-deployed runs with zero external dependencies like Pillow)
+    from src.auto_discover import auto_grow_catalog
+    from src.collector import collect_candidates
+    from src.deal_sniper import snipe_hot_deals
+    from src.pin_generator import build_pinterest_and_rss_feeds
+    from src.site_builder import build_site
+    from src.verifier import verify_batch
 
     # Step 1: Collect live signals & stage existing + inbox candidates
     staged = collect_candidates(project_root, live_network=args.live_network)
