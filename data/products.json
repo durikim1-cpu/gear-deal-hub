@@ -4,16 +4,10 @@
     "category": "chargers",
     "brand": "UGREEN",
     "model": "Nexode 100W 4-Port GaN Charger (CD226)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 69000,
     "msrp_usd": 59.99,
-    "prices": {
-      "coupang_krw": 48900,
-      "ali_krw": 34200,
-      "amazon_usd": 44.99,
-      "ali_usd": 25.4
-    },
     "urls": {
       "coupang_query": "UGREEN 넥소드 100W GaN 충전기 CD226",
       "ali_query": "UGREEN Nexode 100W GaN CD226",
@@ -36,7 +30,7 @@
         "새 기기를 꽂을 때 순간 재분배(리셋) 현상이 약 1초 발생함",
         "벽면 콘센트에 수직 장착 시 무게감으로 살짝 처질 수 있음"
       ],
-      "verdict": "급하면 쿠팡 로켓배송, 1만 4천 원 이상 아끼려면 알리 코인/초이스 직구가 유리합니다."
+      "verdict": "국내 콘센트 규격(KR 플러그)·빠른 교환이 중요하면 쿠팡을, 프로모션 코드 시즌에 여유 있게 직구하려면 알리 공식 스토어를 결제창 기준으로 비교하세요."
     },
     "en": {
       "title": "UGREEN Nexode 100W 4-Port USB-C GaN Desktop Wall Charger",
@@ -49,7 +43,17 @@
         "Brief 1-second power renegotiation drop when plugging in a new device",
         "Runs warm (~52C) under full 100W continuous load"
       ],
-      "verdict": "Grab Amazon if you need fast warranty replacement; pick AliExpress when savings exceed 35%."
+      "verdict": "Compare Amazon US when you want domestic US fulfillment and NEMA plug verification, or check AliExpress brand stores when promo codes offset longer shipping."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -57,16 +61,10 @@
     "category": "keyboards",
     "brand": "AULA",
     "model": "AULA F75 75% Tri-Mode Gasket Mechanical Keyboard",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
-    "prices": {
-      "coupang_krw": 64900,
-      "ali_krw": 43500,
-      "amazon_usd": 62.99,
-      "ali_usd": 33.8
-    },
     "urls": {
       "coupang_query": "독거미 키보드 AULA F75 무선 기계식",
       "ali_query": "AULA F75 75% Wireless Gasket Mechanical Keyboard",
@@ -80,7 +78,7 @@
     },
     "ko": {
       "title": "독거미 AULA F75 유무선 가스켓 기계식 키보드 (노브 탑재)",
-      "summary": "입문용 커스텀 키보드 시장을 평정한 가성비 도각도각(로우피치) 타건감의 75% 배열 무선 키보드.",
+      "summary": "입문용 커스텀 키보드 시장을 평정한 가성비 도각도각(로우피치) 타건감의  배열 무선 키보드.",
       "pros": [
         "순정 상태에서 윤활·흡음재 완성도가 매우 높음",
         "볼륨 노브 및 3모드 무선 연결 기본 지원"
@@ -93,7 +91,7 @@
     },
     "en": {
       "title": "AULA F75 75% Wireless Gasket Mechanical Keyboard with Knob",
-      "summary": "Budget king 75% tri-mode keyboard famous on Reddit for deep 'creamy/thocky' out-of-the-box acoustics without modding.",
+      "summary": "Budget king  tri-mode keyboard famous on Reddit for deep 'creamy/thocky' out-of-the-box acoustics without modding.",
       "pros": [
         "Pre-lubed linear switches and 5-layer dampening sound great stock",
         "Solid 2.4GHz wireless latency for casual gaming"
@@ -102,7 +100,17 @@
         "Proprietary Windows-only remapping software (no QMK/VIA)",
         "Plastic case clips are tight and tricky to open for mods"
       ],
-      "verdict": "AliExpress saves nearly half the price if you can wait 7-10 days; Amazon is best for instant returns."
+      "verdict": "Check Amazon US for fast switch/keycap return flexibility, or compare AliExpress direct for broader switch options and seasonal coupon events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 65,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -110,16 +118,10 @@
     "category": "powerbanks",
     "brand": "Anker",
     "model": "Anker Prime 20,000mAh Power Bank (200W, A1336)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 169000,
     "msrp_usd": 129.99,
-    "prices": {
-      "coupang_krw": 139000,
-      "ali_krw": 108000,
-      "amazon_usd": 99.99,
-      "ali_usd": 82.5
-    },
     "urls": {
       "coupang_query": "앤커 프라임 20000mAh 200W 보조배터리 A1336",
       "ali_query": "Anker Prime 20000mAh 200W Power Bank A1336",
@@ -142,7 +144,7 @@
         "544g으로 일반 스마트폰용 보조배터리보다 묵직함",
         "리튬배터리 특성상 직구 시 통관·배송이 일반 공산품보다 느림"
       ],
-      "verdict": "배터리류는 통관 지연과 초기 불량 교환 편의성 때문에 가격 차이가 2만 원 이내면 쿠팡이 유리합니다."
+      "verdict": "기내 반입 일정이 촉박하거나 초기 불량 교환이 중요하면 쿠팡 국내 배송을, 직구 세일 코드 적용 조건이 맞으면 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "Anker Prime 20,000mAh 200W Laptop Power Bank with Smart Display",
@@ -156,6 +158,16 @@
         "Battery shipping via overseas air mail takes longer on AliExpress"
       ],
       "verdict": "Amazon is strongly preferred for Anker's 18-month warranty and fast domestic battery shipping."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -163,16 +175,10 @@
     "category": "minipc",
     "brand": "Beelink",
     "model": "Beelink SER8 Ryzen 7 8745HS Mini PC (32GB / 1TB)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 820000,
     "msrp_usd": 649.0,
-    "prices": {
-      "coupang_krw": 719000,
-      "ali_krw": 565000,
-      "amazon_usd": 499.0,
-      "ali_usd": 419.0
-    },
     "urls": {
       "coupang_query": "Beelink SER8 8745HS 미니PC 32GB 1TB",
       "ali_query": "Beelink SER8 Ryzen 7 8745HS 32GB 1TB Mini PC",
@@ -195,7 +201,7 @@
         "메탈 하우징 특성상 공유기와 거리가 멀면 Wi-Fi 수신 감도가 다소 약함 (유선 랜 권장)",
         "150달러 초과 직구 시 관부가세 별도 부과 여부를 반드시 계산해야 함"
       ],
-      "verdict": "알리 할인가에 예상 부가세(10%)를 더해도 쿠팡보다 9만 원 이상 저렴할 때 직구 메리트가 큽니다."
+      "verdict": "초기 불량 반품 편의·국내 전원 어댑터 구성을 우선하면 쿠팡을, 베어본/용량 옵션과 통관 부가세 포함 총액을 따져볼 때는 알리를 비교하세요."
     },
     "en": {
       "title": "Beelink SER8 AMD Ryzen 7 8745HS Mini PC (32GB DDR5, 1TB PCIe 4.0)",
@@ -209,6 +215,16 @@
         "NPU is disabled on the 8745HS variant compared to the pricier 8845HS"
       ],
       "verdict": "Check import tax rules in your region first; Amazon wins on 30-day hassle-free returns for pricey PC hardware."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -216,16 +232,10 @@
     "category": "keyboards",
     "brand": "Keychron",
     "model": "Keychron K2 Max QMK/VIA Wireless Mechanical Keyboard",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 158000,
     "msrp_usd": 119.0,
-    "prices": {
-      "coupang_krw": 134000,
-      "ali_krw": 104500,
-      "amazon_usd": 99.0,
-      "ali_usd": 81.0
-    },
     "urls": {
       "coupang_query": "키크론 K2 Max 무선 기계식 키보드",
       "ali_query": "Keychron K2 Max QMK VIA Wireless Mechanical Keyboard",
@@ -252,7 +262,7 @@
     },
     "en": {
       "title": "Keychron K2 Max QMK/VIA 75% Wireless Mac/Windows Mechanical Keyboard",
-      "summary": "Upgraded classic 75% Mac-friendly board adding 2.4GHz 1000Hz wireless, acoustic foam, and browser-based VIA remapping.",
+      "summary": "Upgraded classic  Mac-friendly board adding 2.4GHz 1000Hz wireless, acoustic foam, and browser-based VIA remapping.",
       "pros": [
         "Instant browser-based VIA key remapping with zero bloatware",
         "Native macOS media row keycaps and physical OS toggle included"
@@ -262,6 +272,16 @@
         "South-facing RGB does not shine through the stock PBT legends"
       ],
       "verdict": "Great productivity workhorse; compare Amazon coupon clip price vs AliExpress Official Store."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -269,16 +289,10 @@
     "category": "mice",
     "brand": "Logitech",
     "model": "Logitech MX Master 3S Wireless Performance Mouse",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 139000,
     "msrp_usd": 99.99,
-    "prices": {
-      "coupang_krw": 114000,
-      "ali_krw": 96500,
-      "amazon_usd": 89.99,
-      "ali_usd": 74.9
-    },
     "urls": {
       "coupang_query": "로지텍 MX Master 3S 무선 마우스 정품",
       "ali_query": "Logitech MX Master 3S Wireless Mouse Original",
@@ -315,6 +329,16 @@
         "Soft-touch rubber coating wears over time, especially on Pale Gray"
       ],
       "verdict": "Stick to Amazon for guaranteed authentic retail packaging and full manufacturer warranty."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -322,16 +346,10 @@
     "category": "powerbanks",
     "brand": "Baseus",
     "model": "Baseus Blade HD 100W 20,000mAh Ultra-Thin Laptop Power Bank",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 99000,
     "msrp_usd": 79.99,
-    "prices": {
-      "coupang_krw": 74900,
-      "ali_krw": 51200,
-      "amazon_usd": 59.99,
-      "ali_usd": 39.5
-    },
     "urls": {
       "coupang_query": "베이스어스 블레이드 HD 100W 20000mAh 슬림 보조배터리",
       "ali_query": "Baseus Blade HD 100W 20000mAh Laptop Power Bank",
@@ -354,7 +372,7 @@
         "넓은 면적 때문에 카페 좁은 테이블 위에 올려둘 때 자리를 차지함",
         "고부하 100W 연속 방전 후반부에는 발열 보호로 65W로 스로틀링될 수 있음"
       ],
-      "verdict": "베이스어스 공식 스토어가 입점한 알리 직구 가격 메리트가 약 30% 이상으로 매우 큽니다."
+      "verdict": "기내 반입 일정이 촉박하거나 초기 불량 교환이 중요하면 쿠팡 국내 배송을, 직구 세일 코드 적용 조건이 맞으면 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "Baseus Blade HD 100W 20,000mAh Flat Laptop Power Bank",
@@ -368,6 +386,16 @@
         "Steps down from 100W to 65W below ~20% remaining charge"
       ],
       "verdict": "Baseus runs aggressive coupons on both Amazon and AliExpress—compare final checkout price."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -375,16 +403,10 @@
     "category": "audio",
     "brand": "FIFINE",
     "model": "FIFINE AmpliGame AM8 USB/XLR Dynamic Microphone",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 79000,
     "msrp_usd": 56.99,
-    "prices": {
-      "coupang_krw": 58900,
-      "ali_krw": 39800,
-      "amazon_usd": 48.99,
-      "ali_usd": 31.2
-    },
     "urls": {
       "coupang_query": "파이파인 FIFINE AM8 다이나믹 마이크 USB XLR",
       "ali_query": "FIFINE AM8 USB XLR Dynamic Microphone",
@@ -407,7 +429,7 @@
         "입과 마이크 거리가 15cm 이상 멀어지면 수음 볼륨이 급격히 작아짐 (마이크 암 권장)",
         "플라스틱 바디라 책상 진동에 다소 민감함"
       ],
-      "verdict": "4만 원 언더로 자주 풀리는 알리 직구 최고 인기 품목이며, 당장 방송/회의 세팅이 급하면 쿠팡 추천."
+      "verdict": "빠른 수령과 초기 노이즈 불량 교환은 쿠팡이 편리하며, 해외 오디오 전문 스토어 프로모션 기간에는 알리 조건을 함께 확인하세요."
     },
     "en": {
       "title": "FIFINE AM8 USB/XLR Dynamic Streaming & Podcast Microphone",
@@ -421,6 +443,16 @@
         "Lightweight plastic body transmits desk bumps without a shock mount"
       ],
       "verdict": "Under 35 USD on AliExpress is a steal; Amazon bundles with a boom arm are also worth checking."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -428,16 +460,10 @@
     "category": "storage",
     "brand": "Samsung",
     "model": "Samsung T7 Shield 2TB Portable SSD (USB 3.2 Gen 2, MU-PE2T0S)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 289000,
     "msrp_usd": 229.99,
-    "prices": {
-      "coupang_krw": 229000,
-      "ali_krw": 218000,
-      "amazon_usd": 159.99,
-      "ali_usd": 168.0
-    },
     "urls": {
       "coupang_query": "삼성전자 포터블 SSD T7 Shield 2TB 외장SSD",
       "ali_query": "Samsung T7 Shield 2TB Portable SSD Original",
@@ -474,6 +500,16 @@
         "Avoid unverified third-party sellers due to counterfeit SSD risks"
       ],
       "verdict": "Buy from Amazon Shipped & Sold by Amazon rather than marketplace/AliExpress for storage authenticity."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -481,16 +517,10 @@
     "category": "lighting",
     "brand": "Xiaomi",
     "model": "Xiaomi Mi Computer Monitor Light Bar 1S (MJGJD02YL)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 69000,
     "msrp_usd": 59.99,
-    "prices": {
-      "coupang_krw": 52900,
-      "ali_krw": 36900,
-      "amazon_usd": 54.99,
-      "ali_usd": 29.9
-    },
     "urls": {
       "coupang_query": "샤오미 모니터 라이트바 1S 무선 컨트롤러 스크린바",
       "ali_query": "Xiaomi Mijia Monitor Light Bar 1S Ra95 Wireless Puck",
@@ -513,7 +543,7 @@
         "곡률이 심한 커브드 모니터(1000R 등)나 상단 베젤이 아주 얇은 모니터는 거치가 불안정할 수 있음",
         "1S 버전 스마트홈 연동은 중국 내수 지역 설정이 필요함"
       ],
-      "verdict": "초기 불량률이 낮고 가격 차이가 1.5만 원 이상 벌어져 알리 직구 가성비가 가장 빛나는 제품입니다."
+      "verdict": "모니터 두께·곡률 장착 후 반품 편의가 중요하면 쿠팡을, 배송 대기가 가능하고 할인코드가 열렸을 때는 알리를 비교하세요."
     },
     "en": {
       "title": "Xiaomi Mijia Monitor Light Bar 1S with Wireless Control Puck",
@@ -527,6 +557,16 @@
         "Mi Home app pairing requires Mainland China server region on 1S"
       ],
       "verdict": "AliExpress pricing (~30 USD) easily beats Amazon markups on Xiaomi ecosystem gear."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -534,16 +574,10 @@
     "category": "productivity",
     "brand": "Elgato",
     "model": "Elgato Stream Deck MK.2 (15 Macro LCD Keys)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 209000,
     "msrp_usd": 149.99,
-    "prices": {
-      "coupang_krw": 179000,
-      "ali_krw": 172000,
-      "amazon_usd": 129.99,
-      "ali_usd": 138.0
-    },
     "urls": {
       "coupang_query": "엘가토 스트림덱 MK.2 15키 정품",
       "ali_query": "Elgato Stream Deck MK2 15 Keys",
@@ -580,6 +614,16 @@
         "Significantly pricier than budget knockoffs if you only need simple hotkeys"
       ],
       "verdict": "Buy on Amazon during frequent 129 USD sales; AliExpress offers zero savings on genuine Elgato hardware."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -587,16 +631,10 @@
     "category": "hubs",
     "brand": "UGREEN",
     "model": "UGREEN Revodok Pro 209 9-in-1 Dual 4K@60Hz USB-C Docking Station",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 159000,
     "msrp_usd": 119.99,
-    "prices": {
-      "coupang_krw": 119000,
-      "ali_krw": 84500,
-      "amazon_usd": 89.99,
-      "ali_usd": 64.9
-    },
     "urls": {
       "coupang_query": "유그린 Revodok Pro 209 도킹스테이션 듀얼 4K 맥북 M1 M2 M3",
       "ali_query": "UGREEN Revodok Pro 209 9 in 1 USB C Docking Station DisplayLink",
@@ -619,7 +657,7 @@
         "DisplayLink 드라이버를 별도 설치해야 하며 넷플릭스 등 HDCP 저작권 영상 재생 시 검은 화면 제약 발생 가능 (브라우저 하드웨어 가속 해제 필요)",
         "100W 충전 어댑터는 박스에 미포함(별매)"
       ],
-      "verdict": "알리 세일 시 8만 원대 초반으로 떨어져 쿠팡 대비 3만 원 이상 절약할 수 있는 대표 직구 꿀템입니다."
+      "verdict": "맥북·모니터 호환성 테스트 후 반품 편의가 중요하면 쿠팡을, 배송 여유가 있고 프로모션 코드가 열렸을 때는 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "UGREEN Revodok Pro 209 9-in-1 DisplayLink Dual 4K@60Hz USB-C Dock",
@@ -633,6 +671,16 @@
         "100W power adapter is not included in the box"
       ],
       "verdict": "AliExpress saves ~25 USD over Amazon on identical UGREEN retail stock."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -640,16 +688,10 @@
     "category": "chargers",
     "brand": "Anker",
     "model": "Anker Prime 100W GaN Wall Charger (A2688)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 99000,
     "msrp_usd": 84.99,
-    "prices": {
-      "coupang_krw": 79900,
-      "ali_krw": 62500,
-      "amazon_usd": 69.99,
-      "ali_usd": 49.9
-    },
     "urls": {
       "coupang_query": "앤커 프라임 100W 충전기 A2688",
       "ali_query": "Anker Prime 100W GaN Wall Charger (A2688)",
@@ -672,7 +714,7 @@
         "비접지 플러그라 메탈 바디 노트북 충전 시 미세 전류(찌릿함)가 느껴질 수 있음",
         "포트 추가 연결 시 1초간 출력 재분배 끊김 발생"
       ],
-      "verdict": "국내 18개월 AS가 필요하면 쿠팡 정품, 1만 7천 원 이상 아끼려면 알리 공식 스토어 권장."
+      "verdict": "국내 콘센트 규격(KR 플러그)·빠른 교환이 중요하면 쿠팡을, 프로모션 코드 시즌에 여유 있게 직구하려면 알리 공식 스토어를 결제창 기준으로 비교하세요."
     },
     "en": {
       "title": "Anker Prime 100W 3-Port Compact GaN Wall Charger (A2688)",
@@ -685,7 +727,17 @@
         "2-prong ungrounded plug can cause slight tingling on aluminum MacBook palm rests",
         "Brief power renegotiation pause when plugging a second cable"
       ],
-      "verdict": "Pick AliExpress Anker Store when discounted below $52; Amazon wins for hassle-free warranty swaps."
+      "verdict": "Compare Amazon US when you want domestic US fulfillment and NEMA plug verification, or check AliExpress brand stores when promo codes offset longer shipping."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -693,16 +745,10 @@
     "category": "chargers",
     "brand": "UGREEN",
     "model": "UGREEN Nexode Pro 160W 4-Port PD 3.1 Charger (X763)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 139000,
     "msrp_usd": 119.99,
-    "prices": {
-      "coupang_krw": 109000,
-      "ali_krw": 76900,
-      "amazon_usd": 94.99,
-      "ali_usd": 59.9
-    },
     "urls": {
       "coupang_query": "유그린 넥소드 프로 160W 충전기",
       "ali_query": "UGREEN Nexode Pro 160W 4-Port PD 3.1 Charger (X763)",
@@ -725,7 +771,7 @@
         "140W 충전을 위해서는 별도의 240W EPR 호환 또는 MagSafe 3 케이블 필수",
         "풀로드 시 표면 온도가 55도 전후까지 상승함"
       ],
-      "verdict": "쿠팡과 알리 가격차가 3만 원 이상 벌어져 직구 메리트가 확실한 고출력 모델."
+      "verdict": "국내 콘센트 규격(KR 플러그)·빠른 교환이 중요하면 쿠팡을, 프로모션 코드 시즌에 여유 있게 직구하려면 알리 공식 스토어를 결제창 기준으로 비교하세요."
     },
     "en": {
       "title": "UGREEN Nexode Pro 160W 4-Port GaN PD 3.1 Fast Charger",
@@ -738,7 +784,17 @@
         "Requires a 240W EPR USB-C or MagSafe 3 cable to unlock 140W",
         "Runs hot under sustained 160W combined load"
       ],
-      "verdict": "AliExpress routinely undercuts Amazon by $30+ on this exact retail SKU."
+      "verdict": "Compare Amazon US when you want domestic US fulfillment and NEMA plug verification, or check AliExpress brand stores when promo codes offset longer shipping."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -746,16 +802,10 @@
     "category": "chargers",
     "brand": "Baseus",
     "model": "Baseus Nomos 5-in-1 140W Desktop Charging Station",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 119000,
     "msrp_usd": 99.99,
-    "prices": {
-      "coupang_krw": 89900,
-      "ali_krw": 61800,
-      "amazon_usd": 79.99,
-      "ali_usd": 48.5
-    },
     "urls": {
       "coupang_query": "베이스어스 노모스 140W 충전 스테이션",
       "ali_query": "Baseus Nomos 5-in-1 140W Desktop Charging Station",
@@ -778,7 +828,7 @@
         "내장 릴케이블 고장 시 단품 교체가 불가능한 일체형 구조",
         "휴대용이 아닌 AC 전원코드 거치형이라 무게와 부피가 있음"
       ],
-      "verdict": "알리 직구가 6만 원대 초반이라 데스크 셋업용으로 직구 가성비가 높음."
+      "verdict": "국내 콘센트 규격(KR 플러그)·빠른 교환이 중요하면 쿠팡을, 프로모션 코드 시즌에 여유 있게 직구하려면 알리 공식 스토어를 결제창 기준으로 비교하세요."
     },
     "en": {
       "title": "Baseus Nomos 140W 5-in-1 Qi2 Desktop Charger with Retractable Cable",
@@ -791,7 +841,17 @@
         "Non-replaceable internal reel mechanism if worn out after years of pulls",
         "Bulky AC cord footprint makes it strictly a desk-bound unit"
       ],
-      "verdict": "Save ~$30 via AliExpress Baseus Official Store over Amazon US."
+      "verdict": "Compare Amazon US when you want domestic US fulfillment and NEMA plug verification, or check AliExpress brand stores when promo codes offset longer shipping."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -799,16 +859,10 @@
     "category": "chargers",
     "brand": "CUKTECH",
     "model": "CUKTECH 15 GaN Charger 140W 4-Port (AD1404U)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 79000,
     "msrp_usd": 69.99,
-    "prices": {
-      "coupang_krw": 59900,
-      "ali_krw": 38900,
-      "amazon_usd": 49.99,
-      "ali_usd": 31.9
-    },
     "urls": {
       "coupang_query": "CUKTECH 140W GaN 충전기",
       "ali_query": "CUKTECH 15 GaN Charger 140W 4-Port (AD1404U)",
@@ -831,7 +885,7 @@
         "US 110V 납작 플러그 직구판 구매 시 한국 콘센트용 돼지코 결합 시 흔들림 있음 (KR/EU 플러그 옵션 확인 필수)",
         "브랜드 인지도 대비 국내 정식 AS 센터 부재"
       ],
-      "verdict": "반드시 KR 플러그 옵션을 선택해 알리 직구로 3만 원대에 구매하는 것이 가장 유리함."
+      "verdict": "국내 콘센트 규격(KR 플러그)·빠른 교환이 중요하면 쿠팡을, 프로모션 코드 시즌에 여유 있게 직구하려면 알리 공식 스토어를 결제창 기준으로 비교하세요."
     },
     "en": {
       "title": "CUKTECH 15 140W 4-Port PD 3.1 GaN Wall Charger (240W Cable Included)",
@@ -844,7 +898,17 @@
         "Slightly longer body than Anker Prime can protrude from shallow power strips",
         "Port renegotiation briefly interrupts power when adding devices"
       ],
-      "verdict": "Unbeatable watts-per-dollar around $32 on AliExpress."
+      "verdict": "Compare Amazon US when you want domestic US fulfillment and NEMA plug verification, or check AliExpress brand stores when promo codes offset longer shipping."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -852,16 +916,10 @@
     "category": "chargers",
     "brand": "INIU",
     "model": "INIU 100W 3-Port Compact GaN Charger (AI-611)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 59000,
     "msrp_usd": 49.99,
-    "prices": {
-      "coupang_krw": 44900,
-      "ali_krw": 31500,
-      "amazon_usd": 35.99,
-      "ali_usd": 26.8
-    },
     "urls": {
       "coupang_query": "INIU 100W GaN 충전기",
       "ali_query": "INIU 100W 3-Port Compact GaN Charger (AI-611)",
@@ -898,6 +956,16 @@
         "Matte plastic shell scuffs easily in crowded tech pouches"
       ],
       "verdict": "Amazon US frequent clip-coupons bring it close to AliExpress pricing with 3-year coverage."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -905,16 +973,10 @@
     "category": "powerbanks",
     "brand": "CUKTECH",
     "model": "CUKTECH 20 Power Bank 25,000mAh 210W (P23)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 149000,
     "msrp_usd": 119.99,
-    "prices": {
-      "coupang_krw": 118000,
-      "ali_krw": 79500,
-      "amazon_usd": 95.99,
-      "ali_usd": 64.9
-    },
     "urls": {
       "coupang_query": "쿸테크 20호 25000mAh 210W 보조배터리",
       "ali_query": "CUKTECH 20 Power Bank 25,000mAh 210W (P23)",
@@ -928,7 +990,7 @@
     },
     "ko": {
       "title": "쿸테크 CUKTECH 20호 25000mAh 210W 대용량 노트북 보조배터리 (P23)",
-      "summary": "단일 포트 140W 출력과 컬러 전력 그래프 화면을 탑재하고도 앤커 대비 절반 가까운 직구가의 괴물 보조배터리.",
+      "summary": "단일 포트 140W 출력과 컬러 전력 그래프 화면을 탑재하고도 앤커 대비  가까운 직구가의 괴물 보조배터리.",
       "pros": [
         "단일 포트 PD 3.1 140W 출력 및 90Wh로 항공 기내 반입 한도 충족",
         "실시간 입출력 와트 곡선을 보여주는 TFT 디스플레이 탑재"
@@ -937,7 +999,7 @@
         "632g의 묵직한 무게와 길쭉한 기둥 형태라 주머니 휴대는 불가능",
         "배터리 직구 특성상 해상/특송 통관에 10~14일 이상 소요됨"
       ],
-      "verdict": "배송 기간 여유가 있다면 알리 직구가 쿠팡 대비 약 3만 8천 원 저렴해 압도적으로 유리함."
+      "verdict": "기내 반입 일정이 촉박하거나 초기 불량 교환이 중요하면 쿠팡 국내 배송을, 직구 세일 코드 적용 조건이 맞으면 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "CUKTECH 20 Power Bank 25,000mAh 210W PD 3.1 Laptop Battery",
@@ -950,7 +1012,17 @@
         "Hefty 632g pillar shape requires a backpack compartment",
         "Slow overseas battery shipping when ordered from AliExpress"
       ],
-      "verdict": "Save ~$30 on AliExpress if you don't mind 2-week battery transit; Amazon for urgent trips."
+      "verdict": "Check Amazon US for faster domestic battery ground shipping and easy returns, or compare AliExpress direct when travel timelines allow longer transit."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -958,16 +1030,10 @@
     "category": "powerbanks",
     "brand": "CUKTECH",
     "model": "CUKTECH 10 Power Bank 10,000mAh 100W (PB100P)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 69000,
     "msrp_usd": 54.99,
-    "prices": {
-      "coupang_krw": 52900,
-      "ali_krw": 33900,
-      "amazon_usd": 39.99,
-      "ali_usd": 26.9
-    },
     "urls": {
       "coupang_query": "쿸테크 10호 10000mAh 100W 보조배터리",
       "ali_query": "CUKTECH 10 Power Bank 10,000mAh 100W (PB100P)",
@@ -990,7 +1056,7 @@
         "10,000mAh 용량 한계상 노트북 연결 시 약 45~55% 보충 후 방전됨",
         "100W 연속 방전 시 소형 바디 발열로 후반부 출력이 65W로 내려감"
       ],
-      "verdict": "알리 코인딜 활용 시 3만 원 초반대로 구매 가능해 직구 가성비 최상위권."
+      "verdict": "기내 반입 일정이 촉박하거나 초기 불량 교환이 중요하면 쿠팡 국내 배송을, 직구 세일 코드 적용 조건이 맞으면 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "CUKTECH 10 Mini 10,000mAh 100W PD 3.0 Power Bank with TFT Screen",
@@ -1003,7 +1069,17 @@
         "36Wh capacity only tops up a laptop by ~50% in real-world conversion",
         "Steps down from 100W to 65W under thermal load"
       ],
-      "verdict": "AliExpress under $28 is an easy impulse buy for handheld gaming & commuter bags."
+      "verdict": "Check Amazon US for faster domestic battery ground shipping and easy returns, or compare AliExpress direct when travel timelines allow longer transit."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1011,16 +1087,10 @@
     "category": "powerbanks",
     "brand": "Anker",
     "model": "Anker MagGo Power Bank 10,000mAh Qi2 15W (A1654)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
-    "prices": {
-      "coupang_krw": 89000,
-      "ali_krw": 74000,
-      "amazon_usd": 69.99,
-      "ali_usd": 61.5
-    },
     "urls": {
       "coupang_query": "앤커 맥고 10000 Qi2 보조배터리 A1654",
       "ali_query": "Anker MagGo Power Bank 10,000mAh Qi2 15W (A1654)",
@@ -1057,6 +1127,16 @@
         "Wireless heat buildup slows charging above 80% in warm environments"
       ],
       "verdict": "Small price spread—buy on Coupang/Amazon for fast battery shipping and 24-month Anker warranty."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1064,16 +1144,10 @@
     "category": "powerbanks",
     "brand": "SHARGE",
     "model": "SHARGE Shargeek 170 Transparent 24,000mAh Power Bank",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 219000,
     "msrp_usd": 169.0,
-    "prices": {
-      "coupang_krw": 179000,
-      "ali_krw": 134000,
-      "amazon_usd": 139.0,
-      "ali_usd": 108.0
-    },
     "urls": {
       "coupang_query": "샤지 Shargeek 170 보조배터리",
       "ali_query": "SHARGE Shargeek 170 Transparent 24,000mAh Power Bank",
@@ -1096,7 +1170,7 @@
         "투명 폴리카보네이트 외관에 미세 스크래치가 잘 생겨 파우치 수납 필수",
         "동급 스펙(쿸테크·유그린) 대비 감성값으로 가격이 1.5배 이상 높음"
       ],
-      "verdict": "쿠팡과 알리 가격차가 4만 원 이상이면서 미화 150달러 미만(면세)이라 알리 직구가 유리함."
+      "verdict": "기내 반입 일정이 촉박하거나 초기 불량 교환이 중요하면 쿠팡 국내 배송을, 직구 세일 코드 적용 조건이 맞으면 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "SHARGE Shargeek 170 Transparent Prism 24,000mAh IP66 Power Bank",
@@ -1109,7 +1183,17 @@
         "Glossy polycarbonate prism scratches easily against metal keys or cables",
         "Priced at a steep design premium over utilitarian 25,000mAh bricks"
       ],
-      "verdict": "AliExpress SHARGE Official Store saves ~$30 over Amazon while staying under customs thresholds."
+      "verdict": "Check Amazon US for faster domestic battery ground shipping and easy returns, or compare AliExpress direct when travel timelines allow longer transit."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1117,16 +1201,10 @@
     "category": "powerbanks",
     "brand": "UGREEN",
     "model": "UGREEN Nexode Power Bank 20,000mAh 130W (PB721)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
-    "prices": {
-      "coupang_krw": 79900,
-      "ali_krw": 54900,
-      "amazon_usd": 64.99,
-      "ali_usd": 43.9
-    },
     "urls": {
       "coupang_query": "유그린 넥소드 20000mAh 130W PB721",
       "ali_query": "UGREEN Nexode Power Bank 20,000mAh 130W (PB721)",
@@ -1149,7 +1227,7 @@
         "자체 재충전 입력이 최대 65W로 제한되어 완충에 약 2시간 소요",
         "세워두었을 때 두꺼운 케이블 연결 시 중심이 흔들릴 수 있음"
       ],
-      "verdict": "알리 세일가 5만 원 중반대로 앤커 프라임 대비 절반 가격에 실속 세팅 가능."
+      "verdict": "기내 반입 일정이 촉박하거나 초기 불량 교환이 중요하면 쿠팡 국내 배송을, 직구 세일 코드 적용 조건이 맞으면 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "UGREEN Nexode 20,000mAh 130W Vertical Laptop Power Bank (PB721)",
@@ -1162,7 +1240,17 @@
         "Self-recharging caps at 65W (~2 hours full charge) vs 100W rivals",
         "Tall profile can tip over if pulled by stiff braided cables"
       ],
-      "verdict": "AliExpress offers ~32% savings over domestic retail."
+      "verdict": "Check Amazon US for faster domestic battery ground shipping and easy returns, or compare AliExpress direct when travel timelines allow longer transit."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1170,16 +1258,10 @@
     "category": "keyboards",
     "brand": "WOBKEY",
     "model": "WOBKEY Rainy 75 CNC Aluminum Tri-Mode Mechanical Keyboard",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 169000,
     "msrp_usd": 129.0,
-    "prices": {
-      "coupang_krw": 139000,
-      "ali_krw": 102000,
-      "amazon_usd": 119.0,
-      "ali_usd": 84.0
-    },
     "urls": {
       "coupang_query": "레이니75 Rainy 75 알루미늄 키보드",
       "ali_query": "WOBKEY Rainy 75 CNC Aluminum Tri-Mode Mechanical Keyboard",
@@ -1193,7 +1275,7 @@
     },
     "ko": {
       "title": "레이니75 WOBKEY Rainy 75 풀 알루미늄 유무선 커스텀 키보드",
-      "summary": "10만 원 초반대에 풀 알루미늄 하우징과 특유의 빗소리(조약돌) 타건음으로 품절 대란을 일으킨 75% 키보드.",
+      "summary": "초반대에 풀 알루미늄 하우징과 특유의 빗소리(조약돌) 타건음으로 품절 대란을 일으킨  키보드.",
       "pros": [
         "플라스틱 키보드와 차원이 다른 1.8kg 통알루미늄 마감과 청량한 하이피치 타건음",
         "VIA 웹 설정 지원으로 윈도우·맥 키 배열 변경이 간편함"
@@ -1202,11 +1284,11 @@
         "1.8kg에 달해 휴대 사용은 불가능하며 유무선 전환 물리 스위치가 캡스락 키캡 아래 숨겨져 있어 불편함",
         "직구 초기 불량 당첨 시 무거운 무게 때문에 반품 배송비·절차가 번거로움"
       ],
-      "verdict": "3만 7천 원 저렴한 알리 직구가 대세이나, 스위치 초기 불량 교환 편의를 원하면 쿠팡 정발 고려."
+      "verdict": "한글 각인·빠른 초기 불량 교환을 원하면 쿠팡을, 스위치 옵션 선택 폭과 직구 프로모션 혜택을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "WOBKEY Rainy 75 CNC Aluminum Wireless VIA Mechanical Keyboard",
-      "summary": "Viral 1.8kg CNC aluminum 75% board delivering 'raindrop/marbly' acoustics and VIA support at entry-level pricing.",
+      "summary": "Viral 1.8kg CNC aluminum  board delivering 'raindrop/marbly' acoustics and VIA support at entry-level pricing.",
       "pros": [
         "Anodized CNC aluminum build and glass/mirror backplate punch way above $100",
         "Native VIA browser remapping with tri-mode wireless"
@@ -1215,7 +1297,17 @@
         "Power toggle switch is awkwardly hidden underneath the Caps Lock keycap",
         "1.8kg weight makes it strictly stationary"
       ],
-      "verdict": "AliExpress saves ~$35 over Amazon markup, making direct import the enthusiast favorite."
+      "verdict": "Check Amazon US for fast switch/keycap return flexibility, or compare AliExpress direct for broader switch options and seasonal coupon events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1223,16 +1315,10 @@
     "category": "keyboards",
     "brand": "AULA",
     "model": "AULA F99 96% Wireless Gasket Mechanical Keyboard with Numpad",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 99000,
     "msrp_usd": 79.99,
-    "prices": {
-      "coupang_krw": 72900,
-      "ali_krw": 48900,
-      "amazon_usd": 68.99,
-      "ali_usd": 39.9
-    },
     "urls": {
       "coupang_query": "독거미 키보드 AULA F99",
       "ali_query": "AULA F99 96% Wireless Gasket Mechanical Keyboard with Numpad",
@@ -1255,11 +1341,11 @@
         "F75 모델에 있던 회전식 볼륨 노브가 제외됨",
         "우측 0번 키와 방향키 간격이 좁아 처음 며칠간 오타 적응 기간 필요"
       ],
-      "verdict": "사무용 가성비 최강 모델로 알리 직구 시 4만 원대 후반에 구매 가능."
+      "verdict": "한글 각인·빠른 초기 불량 교환을 원하면 쿠팡을, 스위치 옵션 선택 폭과 직구 프로모션 혜택을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "AULA F99 96% Tri-Mode Gasket Mechanical Keyboard (8000mAh)",
-      "summary": "Compact 96% numpad-equipped sibling to the AULA F75 packing a massive 8000mAh dual battery.",
+      "summary": "Compact  numpad-equipped sibling to the AULA F75 packing a massive 8000mAh dual battery.",
       "pros": [
         "Retains full number pad for spreadsheets in a compact footprint",
         "Huge 8000mAh battery lasts weeks with RGB off"
@@ -1268,7 +1354,17 @@
         "Drops the rotary volume knob found on the smaller F75",
         "1u '0' numpad key next to arrow cluster takes muscle-memory adjustment"
       ],
-      "verdict": "At ~$40 on AliExpress vs $69 on Amazon, direct import saves over 40%."
+      "verdict": "Check Amazon US for fast switch/keycap return flexibility, or compare AliExpress direct for broader switch options and seasonal coupon events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 65,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1276,16 +1372,10 @@
     "category": "keyboards",
     "brand": "NuPhy",
     "model": "NuPhy Air75 V2 QMK/VIA Low-Profile Wireless Keyboard",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 179000,
     "msrp_usd": 129.95,
-    "prices": {
-      "coupang_krw": 159000,
-      "ali_krw": 129000,
-      "amazon_usd": 119.95,
-      "ali_usd": 102.0
-    },
     "urls": {
       "coupang_query": "누피 Air75 V2 키보드",
       "ali_query": "NuPhy Air75 V2 QMK/VIA Low-Profile Wireless Keyboard",
@@ -1308,11 +1398,11 @@
         "낮은 키캡 간격 특성상 일반 높이 기계식 대비 인접 키 오타가 잦을 수 있음",
         "전용 투톤 폴리오 케이스는 별매 옵션임"
       ],
-      "verdict": "쿠팡과 알리 가격차가 20% 내외이므로 한글 정발 AS 여부에 따라 선택."
+      "verdict": "한글 각인·빠른 초기 불량 교환을 원하면 쿠팡을, 스위치 옵션 선택 폭과 직구 프로모션 혜택을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "NuPhy Air75 V2 Ultra-Slim QMK/VIA Low-Profile Wireless Keyboard",
-      "summary": "MacBook-top compatible low-profile 75% mechanical keyboard upgraded with 1000Hz wireless and QMK/VIA.",
+      "summary": "MacBook-top compatible low-profile  mechanical keyboard upgraded with 1000Hz wireless and QMK/VIA.",
       "pros": [
         "Rubber feet sit directly over MacBook built-in keys without pressing them",
         "Low-profile switches require no wrist rest for travel setups"
@@ -1322,6 +1412,16 @@
         "NuFolio carrying cover costs extra"
       ],
       "verdict": "Modest price gap—grab Amazon for quick switch-variant exchanges, or AliExpress during coupon events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1329,16 +1429,10 @@
     "category": "keyboards",
     "brand": "Lofree",
     "model": "Lofree Flow 84 Low-Profile Gasket Kailh POM Keyboard",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 219000,
     "msrp_usd": 159.0,
-    "prices": {
-      "coupang_krw": 189000,
-      "ali_krw": 142000,
-      "amazon_usd": 159.0,
-      "ali_usd": 118.0
-    },
     "urls": {
       "coupang_query": "로프리 플로우 84 키보드",
       "ali_query": "Lofree Flow 84 Low-Profile Gasket Kailh POM Keyboard",
@@ -1361,7 +1455,7 @@
         "2.4GHz 무선 동글 미지원(블루투스·유선만 가능) 및 전용 키매핑 소프트웨어 미지원",
         "하단 각도 조절 다리가 고정형이라 경사 변경 불가"
       ],
-      "verdict": "알리 할인 시 14만 원대(미화 118달러, 무관세)로 내려가 직구 절약 폭이 4만 원 이상으로 큼."
+      "verdict": "한글 각인·빠른 초기 불량 교환을 원하면 쿠팡을, 스위치 옵션 선택 폭과 직구 프로모션 혜택을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "Lofree Flow 84 Low-Profile Gasket Aluminum Mechanical Keyboard",
@@ -1374,7 +1468,17 @@
         "Lacks 2.4GHz dongle (Bluetooth/wired only) and has no QMK/VIA remapping",
         "Fixed typing angle with no flip-out kickstands"
       ],
-      "verdict": "AliExpress saves ~$40 off Lofree's strict $159 Amazon MSRP."
+      "verdict": "Check Amazon US for fast switch/keycap return flexibility, or compare AliExpress direct for broader switch options and seasonal coupon events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1382,16 +1486,10 @@
     "category": "keyboards",
     "brand": "MonsGeek",
     "model": "MonsGeek M1 V5 VIA Rapid-Disassembly Aluminum 75% Keyboard",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 169000,
     "msrp_usd": 129.99,
-    "prices": {
-      "coupang_krw": 145000,
-      "ali_krw": 99000,
-      "amazon_usd": 119.99,
-      "ali_usd": 79.9
-    },
     "urls": {
       "coupang_query": "몬스긱 M1 V5 키보드",
       "ali_query": "MonsGeek M1 V5 VIA Rapid-Disassembly Aluminum 75% Keyboard",
@@ -1414,11 +1512,11 @@
         "약 1.9kg 중량으로 책상 위 이동조차 묵직함",
         "측면 노브가 다소 뻑뻑해 한 손가락으로 빠르게 돌리기엔 저항감이 있음"
       ],
-      "verdict": "알리 직구가 9만 원대 후반으로 쿠팡 대비 4만 5천 원 이상 저렴함."
+      "verdict": "한글 각인·빠른 초기 불량 교환을 원하면 쿠팡을, 스위치 옵션 선택 폭과 직구 프로모션 혜택을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "MonsGeek M1 V5 VIA Ball-Catch Aluminum 75% Wireless Keyboard",
-      "summary": "Tool-less ball-catch CNC aluminum 75% board with rotary knob, 8000mAh battery, and VIA support.",
+      "summary": "Tool-less ball-catch CNC aluminum  board with rotary knob, 8000mAh battery, and VIA support.",
       "pros": [
         "Tool-free ball-catch top frame pops off in seconds for effortless modding",
         "Combines rotary encoder, 8000mAh battery, and VIA under $85 direct"
@@ -1427,7 +1525,17 @@
         "Nearly 2kg weight stays planted on the desk",
         "Stock knob detent feels stiff out of the box"
       ],
-      "verdict": "Huge ~33% savings on AliExpress Akko/MonsGeek Official Store."
+      "verdict": "Check Amazon US for fast switch/keycap return flexibility, or compare AliExpress direct for broader switch options and seasonal coupon events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1435,16 +1543,10 @@
     "category": "keyboards",
     "brand": "Keychron",
     "model": "Keychron B1 Pro Ultra-Slim ZMK Wireless Scissor Keyboard",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 54000,
     "msrp_usd": 39.99,
-    "prices": {
-      "coupang_krw": 46900,
-      "ali_krw": 36900,
-      "amazon_usd": 39.99,
-      "ali_usd": 31.5
-    },
     "urls": {
       "coupang_query": "키크론 B1 Pro 무소음 키보드",
       "ali_query": "Keychron B1 Pro Ultra-Slim ZMK Wireless Scissor Keyboard",
@@ -1458,7 +1560,7 @@
     },
     "ko": {
       "title": "키크론 B1 Pro 초슬림 무소음 팬터그래프 유무선 키보드 (로지텍 MX Keys 대안)",
-      "summary": "도서관·스터디카페·조용한 사무실에서 눈치 안 보이는 4만 원대 ZMK 웹 매핑 지원 팬터그래프 키보드.",
+      "summary": "도서관·스터디카페·조용한 사무실에서 눈치 안 보이는 대 ZMK 웹 매핑 지원 팬터그래프 키보드.",
       "pros": [
         "로지텍 MX Keys Mini의 1/3 가격에 2.4GHz 동글과 ZMK 웹 키매핑까지 지원",
         "기본 실리콘 키스킨 동봉 및 1회 충전 시 수개월 지속 배터리"
@@ -1467,11 +1569,11 @@
         "백라이트(키보드 조명)가 아예 없어 어두운 곳에서 자판 식별이 불편함",
         "바디가 얇은 플라스틱이라 강하게 누르면 중앙부가 미세하게 휘어짐"
       ],
-      "verdict": "가격대 자체가 낮아 1만 원 이내 차이면 빠른 배송과 한글 각인이 있는 쿠팡 정발이 편리함."
+      "verdict": "한글 각인·빠른 초기 불량 교환을 원하면 쿠팡을, 스위치 옵션 선택 폭과 직구 프로모션 혜택을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "Keychron B1 Pro Ultra-Slim Wireless Scissor Keyboard (ZMK)",
-      "summary": "Budget $39 alternative to Logitech MX Keys Mini adding 2.4GHz wireless and browser-based ZMK key remapping.",
+      "summary": "Budget  alternative to Logitech MX Keys Mini adding 2.4GHz wireless and browser-based ZMK key remapping.",
       "pros": [
         "Costs a third of MX Keys Mini while including 1000Hz 2.4GHz dongle and ZMK web config",
         "Whisper-quiet scissor keys with 1,200-hour battery life"
@@ -1481,6 +1583,16 @@
         "Lightweight plastic chassis has slight deck flex"
       ],
       "verdict": "Low dollar gap—buy on Amazon/Coupang for fast delivery and localized legends."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1488,16 +1600,10 @@
     "category": "mice",
     "brand": "VXE",
     "model": "VXE Dragonfly R1 Pro Max PAW3395 Ultralight Wireless Mouse",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 65000,
     "msrp_usd": 52.99,
-    "prices": {
-      "coupang_krw": 49900,
-      "ali_krw": 31900,
-      "amazon_usd": 46.99,
-      "ali_usd": 25.9
-    },
     "urls": {
       "coupang_query": "잠자리 마우스 VXE R1 Pro Max",
       "ali_query": "VXE Dragonfly R1 Pro Max PAW3395 Ultralight Wireless Mouse",
@@ -1511,7 +1617,7 @@
     },
     "ko": {
       "title": "잠자리 마우스 VXE R1 Pro Max PAW3395 초경량 무선 게이밍 마우스",
-      "summary": "15만 원대 대기업 게이밍 마우스와 동일한 PAW3395 센서·노르딕 칩셋을 넣고 3만 원대에 파는 대륙의 실수.",
+      "summary": "대 대기업 게이밍 마우스와 동일한 PAW3395 센서·노르딕 칩셋을 넣고 대에 파는 대륙의 실수.",
       "pros": [
         "54g 가벼운 무게에 500mAh 대용량 배터리로 주 1회 충전도 불필요",
         "미끄러지지 않는 매트 아이스 코팅 마감"
@@ -1520,7 +1626,7 @@
         "4K 폴링레이트 무선 수신기(동글)는 기본 박스에 미포함되어 별도 구매해야 함",
         "카이화 화이트 블레이드 스위치 특유의 클릭압이 사람에 따라 약간 단단하게 느껴질 수 있음"
       ],
-      "verdict": "알리 직구 대표 스테디셀러로 3만 원 초반대에 구매하는 것이 국룰."
+      "verdict": "정식 유통 A/S와 빠른 수령이 우선이면 쿠팡을, 세일 코드 적용 시점과 해외 배치 옵션을 본다면 알리를 함께 확인하세요."
     },
     "en": {
       "title": "VXE Dragonfly R1 Pro Max PAW3395 54g Wireless Gaming Mouse",
@@ -1533,7 +1639,17 @@
         "4KHz wireless dongle is sold separately",
         "Kailh White Sword clicks feel slightly stiffer than Omron opticals"
       ],
-      "verdict": "Buy on AliExpress (~$26) to save over 40% compared to Amazon reseller markups."
+      "verdict": "Compare Amazon US for straightforward warranty/return handling, or check AliExpress official brand listings when direct-import promos apply."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 65,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1541,16 +1657,10 @@
     "category": "mice",
     "brand": "Logitech",
     "model": "Logitech Lift Vertical Ergonomic Quiet Wireless Mouse",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 99000,
     "msrp_usd": 69.99,
-    "prices": {
-      "coupang_krw": 79000,
-      "ali_krw": 68500,
-      "amazon_usd": 64.99,
-      "ali_usd": 58.9
-    },
     "urls": {
       "coupang_query": "로지텍 Lift 버티컬 마우스 정품",
       "ali_query": "Logitech Lift Vertical Ergonomic Quiet Wireless Mouse",
@@ -1587,6 +1697,16 @@
         "4000 DPI sensor isn't suited for fast-paced gaming"
       ],
       "verdict": "Stick to Coupang/Amazon retail stock for authentic warranty coverage."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1594,16 +1714,10 @@
     "category": "mice",
     "brand": "Pulsar",
     "model": "Pulsar X2V2 Symmetrical 53g Wireless Gaming Mouse",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 119000,
     "msrp_usd": 99.95,
-    "prices": {
-      "coupang_krw": 89000,
-      "ali_krw": 86000,
-      "amazon_usd": 79.95,
-      "ali_usd": 76.0
-    },
     "urls": {
       "coupang_query": "펄사 X2V2 무선 마우스",
       "ali_query": "Pulsar X2V2 Symmetrical 53g Wireless Gaming Mouse",
@@ -1640,6 +1754,16 @@
         "4K wireless dongle requires a separate purchase"
       ],
       "verdict": "Domestic Coupang / Amazon Prime matches AliExpress pricing with full official warranty."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1647,16 +1771,10 @@
     "category": "mice",
     "brand": "Razer",
     "model": "Razer Viper V3 HyperSpeed Focus Pro 30K Wireless Mouse",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 109000,
     "msrp_usd": 69.99,
-    "prices": {
-      "coupang_krw": 84900,
-      "ali_krw": 78000,
-      "amazon_usd": 59.99,
-      "ali_usd": 57.5
-    },
     "urls": {
       "coupang_query": "레이저 바이퍼 V3 하이퍼스피드 정품",
       "ali_query": "Razer Viper V3 HyperSpeed Focus Pro 30K Wireless Mouse",
@@ -1670,7 +1788,7 @@
     },
     "ko": {
       "title": "레이저 바이퍼 V3 하이퍼스피드 Focus Pro 30K 무선 게이밍 마우스",
-      "summary": "20만 원짜리 바이퍼 V3 프로와 동일한 최신 쉘 형상과 최상급 30K 센서를 절반 가격에 제공하는 실속형.",
+      "summary": "짜리 바이퍼 V3 프로와 동일한 최신 쉘 형상과 최상급 30K 센서를  가격에 제공하는 실속형.",
       "pros": [
         "프로 게이머 채택률 1위급 최신 바이퍼 V3 쉘 그립감과 최고급 Focus Pro 30K 센서 탑재",
         "리튬 AAA 건전지+홀더 조합 시 약 70g 초반대로 무게 감량 가능"
@@ -1683,7 +1801,7 @@
     },
     "en": {
       "title": "Razer Viper V3 HyperSpeed Focus Pro 30K Wireless Esports Mouse",
-      "summary": "Delivers the flagship Viper V3 shape and Focus Pro 30K sensor at under $60 using replaceable AA power.",
+      "summary": "Delivers the flagship Viper V3 shape and Focus Pro 30K sensor at  using replaceable AA power.",
       "pros": [
         "Top-tier Focus Pro 30K optical sensor and tournament-proven Viper V3 shape",
         "Up to 280 hours per AA battery (drop to ~72g with AAA lithium converter)"
@@ -1693,6 +1811,16 @@
         "Avoid unverified AliExpress sellers due to counterfeit Razer shells that fail Synapse check"
       ],
       "verdict": "Buy strictly on Amazon or Coupang authorized retail to guarantee Razer Synapse authenticity."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1700,16 +1828,10 @@
     "category": "mice",
     "brand": "ATK",
     "model": "ATK Blazing Sky F1 Pro PAW3950 45g Wireless Mouse (8K Ready)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 99000,
     "msrp_usd": 79.99,
-    "prices": {
-      "coupang_krw": 79900,
-      "ali_krw": 54500,
-      "amazon_usd": 69.99,
-      "ali_usd": 44.9
-    },
     "urls": {
       "coupang_query": "ATK F1 Pro 8K 무선 마우스",
       "ali_query": "ATK Blazing Sky F1 Pro PAW3950 45g Wireless Mouse (8K Ready)",
@@ -1723,7 +1845,7 @@
     },
     "ko": {
       "title": "ATK F1 Pro PAW3950 45g 초경량 8K 동글 포함 무선 게이밍 마우스",
-      "summary": "별매 2만 원짜리 8K 무선 수신기를 박스에 기본 동봉하고 45g 무타공을 구현한 최신 PAW3950 게이밍 마우스.",
+      "summary": "별매 짜리 8K 무선 수신기를 박스에 기본 동봉하고 45g 무타공을 구현한 최신 PAW3950 게이밍 마우스.",
       "pros": [
         "최신 PAW3950 센서 + 옴론 광축 + 8K 무선 동글 기본 동봉 구성",
         "설치 프로그램 없이 크롬 웹드라이버(ATK Hub Web)에서 즉시 DPI·폴링 설정"
@@ -1732,7 +1854,7 @@
         "8000Hz 폴링 활성화 시 배터리가 약 25~30시간 내외로 빠르게 소모됨 (실사용 1K~2K 권장)",
         "45g 극초경량 특성상 외벽을 아주 세게 쥐면 미세한 유격음이 날 수 있음"
       ],
-      "verdict": "알리 직구 시 5만 원 중반대에 8K 동글까지 포함돼 쿠팡 대비 2만 5천 원 이상 이득."
+      "verdict": "정식 유통 A/S와 빠른 수령이 우선이면 쿠팡을, 세일 코드 적용 시점과 해외 배치 옵션을 본다면 알리를 함께 확인하세요."
     },
     "en": {
       "title": "ATK Blazing Sky F1 Pro 45g PAW3950 Wireless Mouse (8K Dongle Included)",
@@ -1745,7 +1867,17 @@
         "Running 8000Hz drains battery in ~28 hours and taxes older CPUs",
         "Ultra-thin shell walls can flex slightly under heavy side-squeeze"
       ],
-      "verdict": "AliExpress saves ~$25 over Amazon resellers on identical factory stock."
+      "verdict": "Compare Amazon US for straightforward warranty/return handling, or check AliExpress official brand listings when direct-import promos apply."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 65,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1753,16 +1885,10 @@
     "category": "mice",
     "brand": "Zaopin",
     "model": "Zaopin Z2 PAW3395 Hot-Swappable Switch Ergonomic Wireless Mouse",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 79000,
     "msrp_usd": 64.99,
-    "prices": {
-      "coupang_krw": 64900,
-      "ali_krw": 42900,
-      "amazon_usd": 56.99,
-      "ali_usd": 34.5
-    },
     "urls": {
       "coupang_query": "자오핀 Zaopin Z2 핫스왑 마우스",
       "ali_query": "Zaopin Z2 PAW3395 Hot-Swappable Switch Ergonomic Wireless Mouse",
@@ -1785,7 +1911,7 @@
         "스위치 교체 시 하판 피트 스티커 나사 구멍 캡을 열어야 함",
         "초경량(40g대) 마우스에 익숙한 유저에게는 65g이 약간 묵직하게 느껴짐"
       ],
-      "verdict": "알리 직구로 4만 원 초반대에 본품 + 여분 무소음 스위치까지 한 번에 맞추기 좋음."
+      "verdict": "정식 유통 A/S와 빠른 수령이 우선이면 쿠팡을, 세일 코드 적용 시점과 해외 배치 옵션을 본다면 알리를 함께 확인하세요."
     },
     "en": {
       "title": "Zaopin Z2 PAW3395 Hot-Swap Switch Wireless Mouse",
@@ -1798,7 +1924,17 @@
         "65g weight is heavier than 45g ultralight esports rivals",
         "Requires popping small bottom screw covers to access switch sockets"
       ],
-      "verdict": "AliExpress (~$34.50) beats Amazon third-party listings by nearly 40%."
+      "verdict": "Compare Amazon US for straightforward warranty/return handling, or check AliExpress official brand listings when direct-import promos apply."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 65,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1806,16 +1942,10 @@
     "category": "minipc",
     "brand": "GMKtec",
     "model": "GMKtec NucBox K8 Plus Ryzen 7 8845HS OCuLink Mini PC (32GB / 1TB)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 850000,
     "msrp_usd": 679.0,
-    "prices": {
-      "coupang_krw": 739000,
-      "ali_krw": 535000,
-      "amazon_usd": 549.0,
-      "ali_usd": 409.0
-    },
     "urls": {
       "coupang_query": "GMKtec K8 Plus 8845HS 미니PC",
       "ali_query": "GMKtec NucBox K8 Plus Ryzen 7 8845HS OCuLink Mini PC (32GB / 1TB)",
@@ -1838,7 +1968,7 @@
         "미화 150달러 초과 품목이라 알리 직구 시 통관 부가세(약 10%) 별도 납부 감안 필수",
         "기본 바이오스 팬 커브가 민감해 저소음을 원하면 BIOS Quiet 모드 변경 필요"
       ],
-      "verdict": "부가세 10%(약 5.3만 원)를 더해도 쿠팡가보다 약 15만 원 저렴해 직구 이점이 매우 큼."
+      "verdict": "초기 불량 반품 편의·국내 전원 어댑터 구성을 우선하면 쿠팡을, 베어본/용량 옵션과 통관 부가세 포함 총액을 따져볼 때는 알리를 비교하세요."
     },
     "en": {
       "title": "GMKtec NucBox K8 Plus Ryzen 7 8845HS Mini PC with OCuLink (32GB/1TB)",
@@ -1851,7 +1981,17 @@
         "Stock fan curve ramps audibly unless switched to Quiet mode in BIOS",
         "Import VAT/duties may apply on direct AliExpress orders depending on country"
       ],
-      "verdict": "Saves ~$140 on AliExpress; factor local import tax vs Amazon 30-day return convenience."
+      "verdict": "Compare Amazon US for easy dead-on-arrival return protection, or weigh AliExpress barebone/RAM options after checking US import charges at checkout."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1859,16 +1999,10 @@
     "category": "minipc",
     "brand": "Beelink",
     "model": "Beelink MINI S12 Pro Intel N100 Mini PC (16GB / 500GB)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 279000,
     "msrp_usd": 219.0,
-    "prices": {
-      "coupang_krw": 229000,
-      "ali_krw": 174000,
-      "amazon_usd": 169.0,
-      "ali_usd": 129.0
-    },
     "urls": {
       "coupang_query": "비링크 MINI S12 Pro N100 미니PC",
       "ali_query": "Beelink MINI S12 Pro Intel N100 Mini PC (16GB / 500GB)",
@@ -1891,11 +2025,11 @@
         "싱글채널 램 구조라 무거운 3D 게임 구동은 불가능(사무·4K 영상 재생 전용)",
         "동봉된 HDMI 케이블 길이가 짧아 모니터 배치에 따라 별도 케이블 필요"
       ],
-      "verdict": "150달러 미만 무관세 구간이라 세금 걱정 없이 알리 직구로 5만 원 이상 아끼기 좋음."
+      "verdict": "초기 불량 반품 편의·국내 전원 어댑터 구성을 우선하면 쿠팡을, 베어본/용량 옵션과 통관 부가세 포함 총액을 따져볼 때는 알리를 비교하세요."
     },
     "en": {
       "title": "Beelink MINI S12 Pro Intel N100 Low-Power Mini PC (16GB/500GB)",
-      "summary": "Sub-$170 6W-idle Intel N100 micro server ideal for Plex hardware transcoding, Home Assistant, and office browsing.",
+      "summary": "Sub- 6W-idle Intel N100 micro server ideal for Plex hardware transcoding, Home Assistant, and office browsing.",
       "pros": [
         "QuickSync AV1/HEVC hardware decoding sips just ~7W at idle",
         "Room inside for a secondary 2.5-inch SATA SSD/HDD"
@@ -1904,7 +2038,17 @@
         "Single-channel RAM limits 3D gaming to lightweight 2D/indie titles",
         "Bundled short HDMI cables may not reach tall monitor arms"
       ],
-      "verdict": "AliExpress drops it to ~$129 duty-free in most regions; Amazon is ~25% higher with next-day Prime."
+      "verdict": "Compare Amazon US for easy dead-on-arrival return protection, or weigh AliExpress barebone/RAM options after checking US import charges at checkout."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1912,16 +2056,10 @@
     "category": "minipc",
     "brand": "GMKtec",
     "model": "GMKtec NucBox G3 Plus Intel Twin Lake N150 Mini PC (16GB / 512GB)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 269000,
     "msrp_usd": 209.0,
-    "prices": {
-      "coupang_krw": 219000,
-      "ali_krw": 159000,
-      "amazon_usd": 159.99,
-      "ali_usd": 119.0
-    },
     "urls": {
       "coupang_query": "GMKtec G3 Plus N150 미니PC",
       "ali_query": "GMKtec NucBox G3 Plus Intel Twin Lake N150 Mini PC (16GB / 512GB)",
@@ -1935,7 +2073,7 @@
     },
     "ko": {
       "title": "GMKtec G3 Plus 인텔 최신 N150 초가성비 무관세 미니 PC (16GB/512GB)",
-      "summary": "기존 N100 대비 클럭을 높인 N150 프로세서와 2.5G 고속 랜포트를 탑재하고도 15만 원대에 풀리는 보급형 미니 PC.",
+      "summary": "기존 N100 대비 클럭을 높인 N150 프로세서와 2.5G 고속 랜포트를 탑재하고도 대에 풀리는 보급형 미니 PC.",
       "pros": [
         "미화 119달러 전후로 관부가세 완전 면제 및 2.5GbE 랜 기본 탑재",
         "상판 원터치 개방 구조라 램·SSD 업그레이드 접근성이 매우 편함"
@@ -1944,11 +2082,11 @@
         "USB-C 포트가 아예 없어(전면·후면 모두 USB-A 및 HDMI만 존재) C타입 주변기기 연결 시 젠더 필요",
         "고성능 작업 시 소형 블로워 팬 소리가 간헐적으로 들림"
       ],
-      "verdict": "15만 원대 무관세 직구 가성비가 압도적이나 C타입 포트 유무를 꼭 확인 후 구매."
+      "verdict": "초기 불량 반품 편의·국내 전원 어댑터 구성을 우선하면 쿠팡을, 베어본/용량 옵션과 통관 부가세 포함 총액을 따져볼 때는 알리를 비교하세요."
     },
     "en": {
       "title": "GMKtec NucBox G3 Plus Intel N150 2.5GbE Mini PC (16GB/512GB)",
-      "summary": "Refreshed Twin Lake N150 budget mini PC featuring 2.5GbE networking and tool-easy top lid access under $125 direct.",
+      "summary": "Refreshed Twin Lake N150 budget mini PC featuring 2.5GbE networking and tool-easy top lid access  direct.",
       "pros": [
         "Upgraded 3.6GHz N150 boost clocks + 2.5GbE Ethernet at rock-bottom cost",
         "Snap-off top cover makes SSD/RAM swaps effortless"
@@ -1957,7 +2095,17 @@
         "Zero USB-C ports anywhere on the chassis (4x USB-A + 2x HDMI only)",
         "Single-channel DDR4 memory"
       ],
-      "verdict": "At ~$119 on AliExpress, it's the cheapest reliable होम서버 node available."
+      "verdict": "Compare Amazon US for easy dead-on-arrival return protection, or weigh AliExpress barebone/RAM options after checking US import charges at checkout."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -1965,16 +2113,10 @@
     "category": "minipc",
     "brand": "Minisforum",
     "model": "Minisforum Venus UM790 Pro Ryzen 9 7940HS Mini PC (32GB / 1TB)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 950000,
     "msrp_usd": 759.0,
-    "prices": {
-      "coupang_krw": 799000,
-      "ali_krw": 649000,
-      "amazon_usd": 599.0,
-      "ali_usd": 509.0
-    },
     "urls": {
       "coupang_query": "미니스포럼 UM790 Pro 미니PC",
       "ali_query": "Minisforum Venus UM790 Pro Ryzen 9 7940HS Mini PC (32GB / 1TB)",
@@ -1997,7 +2139,7 @@
         "150달러 초과로 직구 시 부가세 10%가 발생해 실결제가 기준 쿠팡과의 격차가 줄어듦",
         "초기 출시본 대비 개선되었으나 금속 케이스로 인해 무선 동글은 연장선 사용 권장"
       ],
-      "verdict": "부가세 포함 시 실차액이 8만 원 내외이므로 고가 PC 초기 불량 교환을 중시하면 국내 정발/아마존 권장."
+      "verdict": "초기 불량 반품 편의·국내 전원 어댑터 구성을 우선하면 쿠팡을, 베어본/용량 옵션과 통관 부가세 포함 총액을 따져볼 때는 알리를 비교하세요."
     },
     "en": {
       "title": "Minisforum UM790 Pro Ryzen 9 7940HS Dual-USB4 Mini PC (32GB/1TB)",
@@ -2010,7 +2152,17 @@
         "Metal chassis still attenuates 2.4GHz mouse/keyboard dongles without a short USB extender",
         "Factor local import VAT on >$500 AliExpress shipments"
       ],
-      "verdict": "Amazon Prime is safer for $500+ PC returns unless AliExpress runs a major coupon event."
+      "verdict": "Compare Amazon US for easy dead-on-arrival return protection, or weigh AliExpress barebone/RAM options after checking US import charges at checkout."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2018,16 +2170,10 @@
     "category": "hubs",
     "brand": "UGREEN",
     "model": "UGREEN Revodok 107 7-in-1 USB-C Hub 4K@60Hz 100W PD",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 42000,
     "msrp_usd": 34.99,
-    "prices": {
-      "coupang_krw": 28900,
-      "ali_krw": 17900,
-      "amazon_usd": 24.99,
-      "ali_usd": 14.2
-    },
     "urls": {
       "coupang_query": "유그린 Revodok 107 7in1 허브",
       "ali_query": "UGREEN Revodok 107 7-in-1 USB-C Hub 4K@60Hz 100W PD",
@@ -2050,7 +2196,7 @@
         "유선 랜(RJ45) 포트는 없는 휴대 특화 구성",
         "4K 60Hz + PD 충전 동시 사용 시 본체가 따뜻해지는 정상 발열 있음"
       ],
-      "verdict": "알리 천원마트/초이스 구매 시 1만 원대 중후반으로 부담 없이 구비하기 좋음."
+      "verdict": "맥북·모니터 호환성 테스트 후 반품 편의가 중요하면 쿠팡을, 배송 여유가 있고 프로모션 코드가 열렸을 때는 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "UGREEN Revodok 107 7-in-1 4K@60Hz 100W PD USB-C Hub",
@@ -2063,7 +2209,17 @@
         "No Gigabit Ethernet port (step up to Revodok 109 if wired LAN is needed)",
         "Gets warm to the touch when passing 85W + 4K60 simultaneously"
       ],
-      "verdict": "Easy ~$14 AliExpress add-on item; Coupang/Amazon if needed tomorrow morning."
+      "verdict": "Display and USB4 compatibility vary by host chip—check Amazon US for easy compatibility return testing, or compare AliExpress official stores if specs are pre-verified."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2071,16 +2227,10 @@
     "category": "hubs",
     "brand": "Hagibis",
     "model": "Hagibis MC100 MagSafe M.2 2230 NVMe SSD Enclosure (10Gbps + 100W PD)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 49000,
     "msrp_usd": 39.99,
-    "prices": {
-      "coupang_krw": 36900,
-      "ali_krw": 21500,
-      "amazon_usd": 29.99,
-      "ali_usd": 16.5
-    },
     "urls": {
       "coupang_query": "하기비스 MC100 맥세이프 2230 외장케이스",
       "ali_query": "Hagibis MC100 MagSafe M.2 2230 NVMe SSD Enclosure (10Gbps + 100W PD)",
@@ -2103,7 +2253,7 @@
         "일반 긴 SSD(2280)는 장착 불가하며 소형 M.2 2230 규격 SSD만 별도 구매해 장착해야 함",
         "두꺼운 비자성 폰케이스 사용 시 자력이 약해질 수 있음"
       ],
-      "verdict": "알리 직구가가 2만 원 초반대로 쿠팡 대비 약 40% 저렴함."
+      "verdict": "맥북·모니터 호환성 테스트 후 반품 편의가 중요하면 쿠팡을, 배송 여유가 있고 프로모션 코드가 열렸을 때는 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "Hagibis MC100 Magnetic M.2 2230 NVMe Enclosure with 100W PD Pass-Through",
@@ -2116,7 +2266,17 @@
         "Fits M.2 2230 short SSDs ONLY (SSD not included; 2280 sticks won't fit)",
         "Requires a MagSafe-ring phone case for secure grip"
       ],
-      "verdict": "AliExpress Hagibis Official Store saves ~45% over Amazon US."
+      "verdict": "Display and USB4 compatibility vary by host chip—check Amazon US for easy compatibility return testing, or compare AliExpress official stores if specs are pre-verified."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2124,16 +2284,10 @@
     "category": "hubs",
     "brand": "ORICO",
     "model": "ORICO USB4 40Gbps M.2 NVMe Aluminum Cooling SSD Enclosure (M2V01/TCM2)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
-    "prices": {
-      "coupang_krw": 79000,
-      "ali_krw": 52900,
-      "amazon_usd": 69.99,
-      "ali_usd": 41.5
-    },
     "urls": {
       "coupang_query": "오리코 40Gbps USB4 NVMe 인클로저",
       "ali_query": "ORICO USB4 40Gbps M.2 NVMe Aluminum Cooling SSD Enclosure (M2V01/TCM2)",
@@ -2156,7 +2310,7 @@
         "내장 소형 쿨링팬이 고회전할 때 고주파성 바람 소리가 조용한 방에서 들림",
         "고사양 PCIe 4.0 SSD 장착 시 써멀패드를 꼼꼼히 밀착시켜야 스로틀링이 없음"
       ],
-      "verdict": "완제품 썬더볼트 SSD 대신 알리에서 이 케이스(5만 원대)+국내 정발 SSD 조합이 가장 경제적임."
+      "verdict": "맥북·모니터 호환성 테스트 후 반품 편의가 중요하면 쿠팡을, 배송 여유가 있고 프로모션 코드가 열렸을 때는 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "ORICO 40Gbps USB4 / Thunderbolt Compatible M.2 NVMe SSD Enclosure",
@@ -2169,7 +2323,17 @@
         "Tiny internal cooling fan emits an audible whine in silent rooms",
         "Runs hot with DRAM-equipped Gen4 SSDs during massive file copies"
       ],
-      "verdict": "Save ~$28 on AliExpress and pair it with a locally warrantied NVMe drive."
+      "verdict": "Display and USB4 compatibility vary by host chip—check Amazon US for easy compatibility return testing, or compare AliExpress official stores if specs are pre-verified."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2177,16 +2341,10 @@
     "category": "hubs",
     "brand": "Satechi",
     "model": "Satechi USB4 NVMe SSD Pro Enclosure (40Gbps, Tool-Free)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 169000,
     "msrp_usd": 119.99,
-    "prices": {
-      "coupang_krw": 139000,
-      "ali_krw": 128000,
-      "amazon_usd": 99.99,
-      "ali_usd": 96.0
-    },
     "urls": {
       "coupang_query": "사테치 USB4 NVMe 프로 인클로저",
       "ali_query": "Satechi USB4 NVMe SSD Pro Enclosure (40Gbps, Tool-Free)",
@@ -2223,6 +2381,16 @@
         "Outer clear sleeve adds pocket bulk"
       ],
       "verdict": "Minimal direct-import discount—buy on Amazon or Coupang during seasonal promos."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2230,16 +2398,10 @@
     "category": "hubs",
     "brand": "Anker",
     "model": "Anker 575 USB-C Docking Station (13-in-1, 85W Laptop PD, A8392)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 249000,
     "msrp_usd": 199.99,
-    "prices": {
-      "coupang_krw": 189000,
-      "ali_krw": 169000,
-      "amazon_usd": 149.99,
-      "ali_usd": 142.0
-    },
     "urls": {
       "coupang_query": "앤커 575 13in1 도킹스테이션",
       "ali_query": "Anker 575 USB-C Docking Station (13-in-1, 85W Laptop PD, A8392)",
@@ -2276,6 +2438,16 @@
         "Minimal savings on AliExpress"
       ],
       "verdict": "Best suited for Windows laptops; buy on Amazon/Coupang for warranty & fast shipping."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2283,16 +2455,10 @@
     "category": "storage",
     "brand": "Crucial",
     "model": "Crucial X9 Pro 2TB Portable SSD (USB 3.2 Gen 2, CT2000X9PROSSD9)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 249000,
     "msrp_usd": 179.99,
-    "prices": {
-      "coupang_krw": 189000,
-      "ali_krw": 185000,
-      "amazon_usd": 129.99,
-      "ali_usd": 139.0
-    },
     "urls": {
       "coupang_query": "마이크론 Crucial X9 Pro 2TB 외장SSD",
       "ali_query": "Crucial X9 Pro 2TB Portable SSD (USB 3.2 Gen 2, CT2000X9PROSSD9)",
@@ -2306,7 +2472,7 @@
     },
     "ko": {
       "title": "마이크론 크루셜 Crucial X9 Pro 2TB 초소형 외장 SSD",
-      "summary": "삼성 T7 Shield 절반 이하 무게(38g)와 자동차 스마트키급 크기에 지속 쓰기 성능까지 챙긴 마이크론 정품 SSD.",
+      "summary": "삼성 T7 Shield  이하 무게(38g)와 자동차 스마트키급 크기에 지속 쓰기 성능까지 챙긴 마이크론 정품 SSD.",
       "pros": [
         "38g 초경량·초소형에 모서리 스트랩 홀까지 있어 휴대성이 최상급",
         "마이크론 정품 TLC 낸드 기반으로 대용량 연속 파일 복사 시 속도 저하가 적음"
@@ -2329,6 +2495,16 @@
         "Never buy storage from unverified overseas marketplace sellers"
       ],
       "verdict": "Amazon US & Coupang official distributors beat AliExpress on both price and 5-year warranty."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2336,16 +2512,10 @@
     "category": "storage",
     "brand": "Samsung",
     "model": "Samsung T9 2TB USB 3.2 Gen 2x2 (20Gbps) Portable SSD",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 359000,
     "msrp_usd": 299.99,
-    "prices": {
-      "coupang_krw": 279000,
-      "ali_krw": 289000,
-      "amazon_usd": 199.99,
-      "ali_usd": 215.0
-    },
     "urls": {
       "coupang_query": "삼성 포터블 SSD T9 2TB 정품",
       "ali_query": "Samsung T9 2TB USB 3.2 Gen 2x2 (20Gbps) Portable SSD",
@@ -2382,6 +2552,16 @@
         "Pricier and riskier on AliExpress"
       ],
       "verdict": "Buy strictly on Coupang or Amazon retail—and skip T9 if your primary computer is a Mac."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2389,16 +2569,10 @@
     "category": "storage",
     "brand": "SK hynix",
     "model": "SK hynix Beetle X31 1TB DRAM-Equipped Portable SSD",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 149000,
     "msrp_usd": 109.99,
-    "prices": {
-      "coupang_krw": 114000,
-      "ali_krw": 119000,
-      "amazon_usd": 79.99,
-      "ali_usd": 88.0
-    },
     "urls": {
       "coupang_query": "SK하이닉스 비틀 X31 1TB 외장SSD",
       "ali_query": "SK hynix Beetle X31 1TB DRAM-Equipped Portable SSD",
@@ -2435,6 +2609,16 @@
         "Rounded metallic finish is slippery without the bundled bumper"
       ],
       "verdict": "Coupang and Amazon Official SK hynix Store beat AliExpress on price and warranty."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2442,16 +2626,10 @@
     "category": "storage",
     "brand": "Lexar",
     "model": "Lexar SL500 2TB 20Gbps Ultra-Thin Portable SSD (6mm)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 259000,
     "msrp_usd": 199.99,
-    "prices": {
-      "coupang_krw": 199000,
-      "ali_krw": 164000,
-      "amazon_usd": 149.99,
-      "ali_usd": 124.0
-    },
     "urls": {
       "coupang_query": "렉사 Lexar SL500 2TB 외장SSD",
       "ali_query": "Lexar SL500 2TB 20Gbps Ultra-Thin Portable SSD (6mm)",
@@ -2474,7 +2652,7 @@
         "맥북 연결 시에는 20Gbps가 아닌 10Gbps(약 1,000MB/s)로 작동함",
         "마그네틱 부착용 실리콘 링 세트는 단품 옵션과 세트 옵션을 구분해 주문해야 함"
       ],
-      "verdict": "미화 124달러 무관세 구간으로 풀릴 때 알리 렉사 공식 스토어 직구가 약 3만 5천 원 저렴함."
+      "verdict": "외장 저장장치는 가품 플래시 위험과 국내 정식 보증 확인이 중요하므로 공식 판매처 여부를 최우선으로 대조하세요."
     },
     "en": {
       "title": "Lexar SL500 2TB Ultra-Thin 4.8mm Aluminum 20Gbps Portable SSD",
@@ -2487,7 +2665,17 @@
         "Falls back to 10Gbps (~1,000 MB/s) on Apple Silicon Macs",
         "Magnetic sleeve kit is only included in the 'with Magnetic Set' bundle"
       ],
-      "verdict": "AliExpress Lexar Official Store saves ~$25 while staying duty-free under $150."
+      "verdict": "Portable SSDs carry counterfeit-flash risk on unverified listings; prioritize verified Amazon US fulfillment or official brand storefronts."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2495,16 +2683,10 @@
     "category": "audio",
     "brand": "Moondrop",
     "model": "Moondrop CHU II DSP USB-C In-Ear Monitor Earphones",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 38000,
     "msrp_usd": 25.99,
-    "prices": {
-      "coupang_krw": 31900,
-      "ali_krw": 21900,
-      "amazon_usd": 23.99,
-      "ali_usd": 16.9
-    },
     "urls": {
       "coupang_query": "수월우 츄2 CHU II DSP C타입 이어폰",
       "ali_query": "Moondrop CHU II DSP USB-C In-Ear Monitor Earphones",
@@ -2518,7 +2700,7 @@
     },
     "ko": {
       "title": "수월우 Moondrop 츄2 CHU II DSP C타입 유선 이어폰 (마이크 내장)",
-      "summary": "스마트폰·노트북 C타입 단자에 젠더 없이 바로 꽂아 고음질 음감과 통화까지 해결하는 2만 원대 입문용 차이파이 표준.",
+      "summary": "스마트폰·노트북 C타입 단자에 젠더 없이 바로 꽂아 고음질 음감과 통화까지 해결하는 대 입문용 차이파이 표준.",
       "pros": [
         "묵직하고 단단한 소형 금속 유닛 마감과 분리형 2핀 케이블 지원",
         "내장 DSP 칩셋 튜닝으로 별도 꼬다리 DAC 없이도 깔끔한 밸런스 사운드"
@@ -2527,11 +2709,11 @@
         "노즐 황동 필터에 습기(결로)가 차면 한쪽 소리가 작아질 수 있어 제습 보관 및 필터 관리 필요",
         "앱 EQ 설정(Moondrop Link)이 아이폰(iOS)에서는 제약이 많고 안드로이드 중심임"
       ],
-      "verdict": "알리 코인/초이스 구매 시 2만 원 초반대로 가볍게 입문하기 최고."
+      "verdict": "빠른 수령과 초기 노이즈 불량 교환은 쿠팡이 편리하며, 해외 오디오 전문 스토어 프로모션 기간에는 알리 조건을 함께 확인하세요."
     },
     "en": {
       "title": "Moondrop CHU II DSP USB-C In-Ear Monitors with Inline Mic",
-      "summary": "Tiny cast-alloy USB-C IEM with built-in DSP tuning, inline mic, and detachable 0.78mm 2-pin cable under $20.",
+      "summary": "Tiny cast-alloy USB-C IEM with built-in DSP tuning, inline mic, and detachable 0.78mm 2-pin cable .",
       "pros": [
         "Plug-and-play USB-C DAC + inline mic works directly with modern phones and laptops",
         "Compact metal shells fit small ears comfortably"
@@ -2540,7 +2722,17 @@
         "Brass acoustic nozzles can clog from humidity/condensation without silica-gel storage",
         "Moondrop Link app EQ configuration is clunky and Android-focused"
       ],
-      "verdict": "Grab on AliExpress (~$17) for an easy 30% saving over domestic listings."
+      "verdict": "Check Amazon US for quick domestic delivery and easy mic/earbud exchange, or compare AliExpress brand stores during direct-sale events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 65,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2548,16 +2740,10 @@
     "category": "audio",
     "brand": "TRUTHEAR",
     "model": "TRUTHEAR HEXA 1DD+3BA Hybrid In-Ear Monitor",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 119000,
     "msrp_usd": 89.99,
-    "prices": {
-      "coupang_krw": 99000,
-      "ali_krw": 74500,
-      "amazon_usd": 79.99,
-      "ali_usd": 59.9
-    },
     "urls": {
       "coupang_query": "트루이어 헥사 HEXA 이어폰",
       "ali_query": "TRUTHEAR HEXA 1DD+3BA Hybrid In-Ear Monitor",
@@ -2571,7 +2757,7 @@
     },
     "ko": {
       "title": "트루이어 TRUTHEAR 헥사 HEXA 1DD+3BA 하이브리드 모니터링 이어폰",
-      "summary": "10만 원 이하 유선 이어폰 중 해상력과 보컬·악기 분리도에서 레퍼런스로 꼽히는 4드라이버 하이브리드 IEM.",
+      "summary": "이하 유선 이어폰 중 해상력과 보컬·악기 분리도에서 레퍼런스로 꼽히는 4드라이버 하이브리드 IEM.",
       "pros": [
         "자극적인 고음 쏘임 없이 세밀한 디테일을 들려주는 정교한 크로스오버 튜닝",
         "3D 프린팅 의료용 레진 쉘로 착용감이 가벼움"
@@ -2580,11 +2766,11 @@
         "이어팁 끼우는 노즐 두께(약 6.3mm)가 두꺼워 귓구멍이 작은 유저는 소형 스핀핏 등 별매 이어팁 권장",
         "기본 케이블에 통화용 마이크가 없음"
       ],
-      "verdict": "알리 세일 시 7만 원대(미화 60달러 전후)로 쿠팡 대비 2만 5천 원가량 저렴함."
+      "verdict": "빠른 수령과 초기 노이즈 불량 교환은 쿠팡이 편리하며, 해외 오디오 전문 스토어 프로모션 기간에는 알리 조건을 함께 확인하세요."
     },
     "en": {
       "title": "TRUTHEAR HEXA 1DD + 3BA Hybrid Studio Reference IEM",
-      "summary": "Benchmark sub-$80 4-driver hybrid IEM praised by audio reviewers for neutral midrange clarity and smooth treble.",
+      "summary": "Benchmark sub- 4-driver hybrid IEM praised by audio reviewers for neutral midrange clarity and smooth treble.",
       "pros": [
         "Neutral-with-subbass tuning rivals $200+ studio monitors in detail retrieval",
         "Lightweight DLP 3D-printed resin shell"
@@ -2593,7 +2779,17 @@
         "Wide ~6.3mm nozzle lip can cause ear-canal fatigue for small ears",
         "Stock 2-pin cable has no inline microphone"
       ],
-      "verdict": "Save ~$20 via AliExpress ShenzhenAudio Official Store during sales."
+      "verdict": "Check Amazon US for quick domestic delivery and easy mic/earbud exchange, or compare AliExpress brand stores during direct-sale events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "direct",
+      "amazon_priority_score": 50,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2601,16 +2797,10 @@
     "category": "audio",
     "brand": "EarFun",
     "model": "EarFun Air Pro 4 Adaptive ANC Wireless Earbuds (aptX Lossless / LDAC)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
-    "prices": {
-      "coupang_krw": 79900,
-      "ali_krw": 62900,
-      "amazon_usd": 65.99,
-      "ali_usd": 54.9
-    },
     "urls": {
       "coupang_query": "이어펀 Air Pro 4 무선 이어폰",
       "ali_query": "EarFun Air Pro 4 Adaptive ANC Wireless Earbuds (aptX Lossless / LDAC)",
@@ -2624,7 +2814,7 @@
     },
     "ko": {
       "title": "이어펀 EarFun Air Pro 4 노이즈캔슬링 고음질 무선 이어폰 (LDAC + aptX)",
-      "summary": "보통 둘 중 하나만 넣어주는 소니 LDAC과 퀄컴 aptX Lossless 고음질 코덱을 6~7만 원대에 동시 탑재한 올라운더.",
+      "summary": "보통 둘 중 하나만 넣어주는 소니 LDAC과 퀄컴 aptX Lossless 고음질 코덱을 6~대에 동시 탑재한 올라운더.",
       "pros": [
         "멀티포인트·착용 감지·무선 충전·구글 패스트페어 등 편의 기능이 빈틈없이 다 들어감",
         "배터리 수명(ANC 켠 상태 약 7.5시간)과 전용 앱 한글화 우수"
@@ -2633,11 +2823,11 @@
         "통화 품질은 시끄러운 지하철·강풍 환경에서 목소리가 다소 먹먹해짐",
         "LDAC과 멀티포인트 동시 활성화 시 간헐적 끊김이 생길 수 있음"
       ],
-      "verdict": "1만 7천 원 차이면 알리 직구가 저렴하나, 배터리 불량 무상교환 18개월 보증을 챙기려면 쿠팡·아마존 정품 추천."
+      "verdict": "빠른 수령과 초기 노이즈 불량 교환은 쿠팡이 편리하며, 해외 오디오 전문 스토어 프로모션 기간에는 알리 조건을 함께 확인하세요."
     },
     "en": {
       "title": "EarFun Air Pro 4 Adaptive ANC Earbuds with LDAC & aptX Lossless",
-      "summary": "Feature-packed sub-$70 wireless earbuds supporting both Sony LDAC and Qualcomm aptX Lossless plus 52-hour total battery.",
+      "summary": "Feature-packed sub- wireless earbuds supporting both Sony LDAC and Qualcomm aptX Lossless plus 52-hour total battery.",
       "pros": [
         "Rare dual support for both LDAC and aptX Lossless + multipoint + wireless charging",
         "Strong low-frequency ANC and polished EQ companion app"
@@ -2646,7 +2836,17 @@
         "Windy outdoor mic pickup still trails flagship Sony/Apple earbuds",
         "Enabling LDAC + multipoint together reduces Bluetooth range"
       ],
-      "verdict": "Amazon clip-coupons often get within $10 of AliExpress while including fast Prime returns."
+      "verdict": "Check Amazon US for quick domestic delivery and easy mic/earbud exchange, or compare AliExpress brand stores during direct-sale events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2654,16 +2854,10 @@
     "category": "audio",
     "brand": "Soundcore",
     "model": "Anker Soundcore Space One LDAC Wireless ANC Headphones (A3035)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 129000,
     "msrp_usd": 99.99,
-    "prices": {
-      "coupang_krw": 99000,
-      "ali_krw": 76500,
-      "amazon_usd": 79.99,
-      "ali_usd": 63.9
-    },
     "urls": {
       "coupang_query": "앤커 사운드코어 스페이스 원 헤드폰",
       "ali_query": "Anker Soundcore Space One LDAC Wireless ANC Headphones (A3035)",
@@ -2677,7 +2871,7 @@
     },
     "ko": {
       "title": "앤커 사운드코어 스페이스 원 Space One LDAC 노이즈캔슬링 헤드폰",
-      "summary": "소니 WH-1000XM5 가격이 부담스러운 학생·직장인을 위한 10만 원 언더 가성비 오버이어 ANC 헤드폰.",
+      "summary": "소니 WH-1000XM5 가격이 부담스러운 학생·직장인을 위한  언더 가성비 오버이어 ANC 헤드폰.",
       "pros": [
         "가벼운 263g 착용감과 카페 말소리 차단에 특화된 노이즈캔슬링",
         "LDAC 무선 고음질 및 착용을 벗으면 음악이 자동 정지되는 센서 탑재"
@@ -2686,11 +2880,11 @@
         "기본 음색이 저음 과다 성향이라 전용 앱에서 HearID 또는 플랫 EQ 조절이 사실상 필수",
         "하드 케이스가 아닌 얇은 방수 파우치만 기본 동봉됨"
       ],
-      "verdict": "알리 앤커 공식 스토어 세일 시 7만 원대 중반으로 쿠팡 대비 2만 원 이상 절약 가능."
+      "verdict": "빠른 수령과 초기 노이즈 불량 교환은 쿠팡이 편리하며, 해외 오디오 전문 스토어 프로모션 기간에는 알리 조건을 함께 확인하세요."
     },
     "en": {
       "title": "Soundcore by Anker Space One Wireless ANC Over-Ear Headphones",
-      "summary": "Lightweight 263g sub-$100 ANC headphones adding wear-detection sensors, LDAC audio, and 40-hour ANC battery life.",
+      "summary": "Lightweight 263g sub- ANC headphones adding wear-detection sensors, LDAC audio, and 40-hour ANC battery life.",
       "pros": [
         "Comfortable swiveling earcups with wear-pause sensor rarely seen at this price",
         "40 hours of ANC playback + 5-minute quick charge for 4 hours"
@@ -2699,7 +2893,17 @@
         "Stock bass-heavy tuning sounds muddy until dialed back in the Soundcore app EQ",
         "Ships with a soft drawstring pouch instead of a hard travel case"
       ],
-      "verdict": "Save ~20% on AliExpress Anker Official Store or watch for Amazon $79 Lightning Deals."
+      "verdict": "Check Amazon US for quick domestic delivery and easy mic/earbud exchange, or compare AliExpress brand stores during direct-sale events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2707,16 +2911,10 @@
     "category": "audio",
     "brand": "Maono",
     "model": "Maono PD200X USB/XLR Dynamic Broadcast Microphone",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 95000,
     "msrp_usd": 74.99,
-    "prices": {
-      "coupang_krw": 69900,
-      "ali_krw": 48500,
-      "amazon_usd": 59.99,
-      "ali_usd": 39.9
-    },
     "urls": {
       "coupang_query": "마오노 PD200X 다이나믹 마이크",
       "ali_query": "Maono PD200X USB/XLR Dynamic Broadcast Microphone",
@@ -2739,7 +2937,7 @@
         "전용 앱 기능은 USB 연결 시에만 작동하며 XLR 연결 시에는 순수 아날로그로만 동작",
         "기본 구성에 탁상용 스탠드가 없는 단품 옵션이 있으니 마이크 암 보유 여부 확인 필수"
       ],
-      "verdict": "알리 직구가가 4만 원 후반대라 마이크 암과 세트로 맞춰도 국내 단품가 수준."
+      "verdict": "빠른 수령과 초기 노이즈 불량 교환은 쿠팡이 편리하며, 해외 오디오 전문 스토어 프로모션 기간에는 알리 조건을 함께 확인하세요."
     },
     "en": {
       "title": "Maono PD200X Metal USB/XLR Dynamic Microphone with Shock Mount",
@@ -2752,7 +2950,17 @@
         "DSP software features don't carry over when switching to analog XLR mode",
         "Check bundle carefully—base SKU includes boom-arm adapter but no weighted desk base"
       ],
-      "verdict": "AliExpress (~$40) undercuts Amazon by a clean 33%."
+      "verdict": "Check Amazon US for quick domestic delivery and easy mic/earbud exchange, or compare AliExpress brand stores during direct-sale events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2760,16 +2968,10 @@
     "category": "audio",
     "brand": "FIFINE",
     "model": "FIFINE K688 Studio USB/XLR Dynamic Podcast Microphone",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 99000,
     "msrp_usd": 72.99,
-    "prices": {
-      "coupang_krw": 74900,
-      "ali_krw": 49900,
-      "amazon_usd": 59.99,
-      "ali_usd": 41.5
-    },
     "urls": {
       "coupang_query": "파이파인 FIFINE K688 마이크",
       "ali_query": "FIFINE K688 Studio USB/XLR Dynamic Podcast Microphone",
@@ -2792,7 +2994,7 @@
         "본체에 RGB 조명이 없는 수수한 스튜디오 디자인이며 탁상 스탠드 미포함(마이크 암 필수)",
         "터치 음소거 버튼 위치가 상단 앞쪽이라 말하다 실수로 스치면 음소거될 수 있음"
       ],
-      "verdict": "알리 직구 5만 원 언더 가격대가 가장 합리적임."
+      "verdict": "빠른 수령과 초기 노이즈 불량 교환은 쿠팡이 편리하며, 해외 오디오 전문 스토어 프로모션 기간에는 알리 조건을 함께 확인하세요."
     },
     "en": {
       "title": "FIFINE K688 USB/XLR Dynamic Studio Microphone with Shock Mount",
@@ -2805,7 +3007,17 @@
         "Boom arm or desk stand is NOT included in the standard box (5/8-inch thread only)",
         "Capacitive tap-to-mute button sits close to the grille"
       ],
-      "verdict": "AliExpress (~$41.50) saves ~30% vs domestic retail."
+      "verdict": "Check Amazon US for quick domestic delivery and easy mic/earbud exchange, or compare AliExpress brand stores during direct-sale events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2813,16 +3025,10 @@
     "category": "lighting",
     "brand": "Yeelight",
     "model": "Yeelight LED Screen Light Bar Pro (Razer Chroma / Matter RGB Backlight)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
-    "prices": {
-      "coupang_krw": 79900,
-      "ali_krw": 54900,
-      "amazon_usd": 74.99,
-      "ali_usd": 44.9
-    },
     "urls": {
       "coupang_query": "이라이트 모니터 스크린바 프로",
       "ali_query": "Yeelight LED Screen Light Bar Pro (Razer Chroma / Matter RGB Backlight)",
@@ -2845,7 +3051,7 @@
         "일반 USB 포트 전력으로는 부족해 동봉된 전용 전원 어댑터를 멀티탭에 꽂아야 함",
         "1000R 급격한 커브드 모니터에서는 양 끝 빛 간섭이 생길 수 있음"
       ],
-      "verdict": "알리 직구가 5만 원 중반으로 쿠팡 대비 2만 5천 원 저렴함."
+      "verdict": "모니터 두께·곡률 장착 후 반품 편의가 중요하면 쿠팡을, 배송 대기가 가능하고 할인코드가 열렸을 때는 알리를 비교하세요."
     },
     "en": {
       "title": "Yeelight Monitor Light Bar Pro with RGB Ambient Backlight & Wireless Dial",
@@ -2858,7 +3064,17 @@
         "Requires its own wall power brick rather than running off a monitor USB port",
         "Heavy magnetic mount isn't ideal for ultra-steep 1000R curved panels"
       ],
-      "verdict": "Save ~$30 ordering via AliExpress over Amazon."
+      "verdict": "Curved-bezel fit varies by monitor—check Amazon US if you may need an easy fit return, or compare AliExpress direct with shipping lead time in mind."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2866,16 +3082,10 @@
     "category": "lighting",
     "brand": "Baseus",
     "model": "Baseus i-Wok2 Asymmetric Touch Monitor Light Bar (Ra95)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 49000,
     "msrp_usd": 39.99,
-    "prices": {
-      "coupang_krw": 36900,
-      "ali_krw": 22900,
-      "amazon_usd": 32.99,
-      "ali_usd": 17.9
-    },
     "urls": {
       "coupang_query": "베이스어스 i-Wok2 모니터 조명",
       "ali_query": "Baseus i-Wok2 Asymmetric Touch Monitor Light Bar (Ra95)",
@@ -2889,7 +3099,7 @@
     },
     "ko": {
       "title": "베이스어스 i-Wok2 비대칭 광원 터치식 모니터 라이트바",
-      "summary": "책상 위 무선 리모컨 공간조차 아끼고 모니터 USB 포트 하나로 가볍게 구동하는 2만 원대 입문용 스크린바.",
+      "summary": "책상 위 무선 리모컨 공간조차 아끼고 모니터 USB 포트 하나로 가볍게 구동하는 대 입문용 스크린바.",
       "pros": [
         "별도 어댑터나 건전지 리모컨 없이 모니터 뒤 USB 포트에 꽂으면 바로 작동",
         "2만 원 초반 직구가로 야간 스탠드 대용 가성비 우수"
@@ -2898,7 +3108,7 @@
         "조명 바 상단을 직접 손으로 터치해 밝기를 조절할 때 모니터 각도가 살짝 흔들릴 수 있음",
         "샤오미 1S 대비 최대 광량(밝기)이 한 단계 낮음"
       ],
-      "verdict": "알리 2만 원 초반 구매 시 가성비 좋고, 무선 리모컨이 꼭 필요하면 샤오미 1S로 가는 것을 추천."
+      "verdict": "모니터 두께·곡률 장착 후 반품 편의가 중요하면 쿠팡을, 배송 대기가 가능하고 할인코드가 열렸을 때는 알리를 비교하세요."
     },
     "en": {
       "title": "Baseus i-Wok2 Asymmetric USB-C Touch Monitor Light Bar",
@@ -2911,7 +3121,17 @@
         "Touch controls on the bar itself can nudge the light angle when tapped",
         "Lower peak lux output than Xiaomi 1S or Yeelight Pro"
       ],
-      "verdict": "Great sub-$18 AliExpress budget pick if you don't mind bar-mounted touch controls."
+      "verdict": "Curved-bezel fit varies by monitor—check Amazon US if you may need an easy fit return, or compare AliExpress direct with shipping lead time in mind."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2919,16 +3139,10 @@
     "category": "controllers",
     "brand": "8BitDo",
     "model": "8BitDo Ultimate 2C Wireless Controller (Hall Effect, 1000Hz, PC/Android)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 45000,
     "msrp_usd": 29.99,
-    "prices": {
-      "coupang_krw": 36900,
-      "ali_krw": 23900,
-      "amazon_usd": 29.99,
-      "ali_usd": 19.9
-    },
     "urls": {
       "coupang_query": "8BitDo 얼티밋 2C 무선 패드",
       "ali_query": "8BitDo Ultimate 2C Wireless Controller (Hall Effect, 1000Hz, PC/Android)",
@@ -2942,7 +3156,7 @@
     },
     "ko": {
       "title": "팔얼도 8BitDo 얼티밋 2C 1000Hz 홀이펙트 무선 게임패드 (PC/안드로이드)",
-      "summary": "엑스박스 정품 패드 절반도 안 되는 가격에 스틱 쏠림 없는 홀이펙트 센서와 1000Hz 초저지연 동글까지 넣은 스팀 게임용 패드.",
+      "summary": "엑스박스 정품 패드 도 안 되는 가격에 스틱 쏠림 없는 홀이펙트 센서와 1000Hz 초저지연 동글까지 넣은 스팀 게임용 패드.",
       "pros": [
         "유무선 모두 1000Hz 폴링레이트로 반응속도가 최상급이며 스틱 드리프트(쏠림) 걱정 없음",
         "프로그램 설치 없이 패드 자체 조합키로 L4/R4 추가 버튼 즉시 매핑"
@@ -2951,11 +3165,11 @@
         "충전 크래들(독)은 미포함된 실속형이며 닌텐도 스위치와는 호환되지 않음(스위치용은 별도 블루투스 2C 모델 선택 필수!)",
         "그립 폭이 엑스박스 패드보다 약간 좁아 손이 아주 큰 유저는 호불호 있음"
       ],
-      "verdict": "알리 세일 시 2만 원 초반대에 구매 가능한 PC 스팀 게임 입문 1순위 패드."
+      "verdict": "동글·스틱 초기 불량 교환과 빠른 배송은 쿠팡이 유리하며, 직구 세일 코드 시즌에는 알리 공식 스토어 조건을 함께 대조하세요."
     },
     "en": {
       "title": "8BitDo Ultimate 2C 1000Hz Hall-Effect Wireless Controller (PC/Android)",
-      "summary": "Sub-$30 wireless PC controller packing drift-free Hall Effect sticks/triggers, 1000Hz 2.4GHz polling, and remappable L4/R4 bumpers.",
+      "summary": "Sub- wireless PC controller packing drift-free Hall Effect sticks/triggers, 1000Hz 2.4GHz polling, and remappable L4/R4 bumpers.",
       "pros": [
         "1000Hz polling over both 2.4GHz dongle and USB-C beats controllers costing 3x more",
         "Hall Effect sticks + tactile bumpers + software-free L4/R4 mapping"
@@ -2964,7 +3178,17 @@
         "PC/Android version does NOT pair with Nintendo Switch (Switch requires the separate Bluetooth edition)",
         "No charging dock included"
       ],
-      "verdict": "AliExpress (~$20) saves 33%, though Amazon's $29.99 Prime price is already phenomenal value."
+      "verdict": "Check Amazon US for fast domestic delivery and hassle-free stick/dongle exchange, or compare AliExpress official brand stores during promo events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -2972,16 +3196,10 @@
     "category": "controllers",
     "brand": "8BitDo",
     "model": "8BitDo Ultimate Bluetooth & 2.4G Controller with Charging Dock (Switch/PC)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
-    "prices": {
-      "coupang_krw": 69900,
-      "ali_krw": 49500,
-      "amazon_usd": 59.99,
-      "ali_usd": 41.9
-    },
     "urls": {
       "coupang_query": "8BitDo 얼티밋 블루투스 충전독 패드",
       "ali_query": "8BitDo Ultimate Bluetooth & 2.4G Controller with Charging Dock (Switch/PC)",
@@ -3004,7 +3222,7 @@
         "버튼 각인이 닌텐도 배열(B-A / Y-X) 기준이라 PC 스팀 게임 화면 안내(A-B)와 글자 위치가 반대임",
         "2C 신형 대비 무선 폴링레이트는 표준 수준임"
       ],
-      "verdict": "스위치와 PC를 한 패드로 쓰려면 이 모델이 정답이며 알리 직구가 2만 원 저렴함."
+      "verdict": "동글·스틱 초기 불량 교환과 빠른 배송은 쿠팡이 유리하며, 직구 세일 코드 시즌에는 알리 공식 스토어 조건을 함께 대조하세요."
     },
     "en": {
       "title": "8BitDo Ultimate Bluetooth Controller with Charging Dock (Switch & PC)",
@@ -3017,7 +3235,17 @@
         "Physical face buttons use Nintendo BAYX legends rather than Xbox ABXY",
         "Standard polling rate compared to the newer PC-only 2C"
       ],
-      "verdict": "Save ~$18 via AliExpress 8BitDo Official Store."
+      "verdict": "Check Amazon US for fast domestic delivery and hassle-free stick/dongle exchange, or compare AliExpress official brand stores during promo events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3025,16 +3253,10 @@
     "category": "controllers",
     "brand": "GameSir",
     "model": "GameSir Cyclone 2 TMR Sticks + Trigger Lock Wireless Controller (Dock Edition)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 79000,
     "msrp_usd": 55.99,
-    "prices": {
-      "coupang_krw": 64900,
-      "ali_krw": 44900,
-      "amazon_usd": 55.99,
-      "ali_usd": 38.5
-    },
     "urls": {
       "coupang_query": "GameSir 사이클론2 무선 컨트롤러",
       "ali_query": "GameSir Cyclone 2 TMR Sticks + Trigger Lock Wireless Controller (Dock Edition)",
@@ -3057,7 +3279,7 @@
         "반투명 RGB 조명이 화려해 차분한 오피스 데스크 톤과는 이질감이 있을 수 있음(LED 끄기 가능)",
         "단품 옵션과 충전독 포함 에디션의 가격이 다르므로 구매 전 옵션 확인 필수"
       ],
-      "verdict": "충전독 포함 에디션도 알리 직구 시 4만 원 중반대에 풀려 가성비가 매우 높음."
+      "verdict": "동글·스틱 초기 불량 교환과 빠른 배송은 쿠팡이 유리하며, 직구 세일 코드 시즌에는 알리 공식 스토어 조건을 함께 대조하세요."
     },
     "en": {
       "title": "GameSir Cyclone 2 TMR Wireless Controller with Physical Trigger Stops",
@@ -3070,7 +3292,17 @@
         "Flashy RGB light strips aren't subtle until disabled in software",
         "Double-check SKU—base edition omits the aluminum charging stand"
       ],
-      "verdict": "AliExpress Dock Edition (~$38.50) beats Amazon by ~30%."
+      "verdict": "Check Amazon US for fast domestic delivery and hassle-free stick/dongle exchange, or compare AliExpress official brand stores during promo events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3078,16 +3310,10 @@
     "category": "controllers",
     "brand": "GameSir",
     "model": "GameSir G8 Galileo Type-C Mobile Gaming Controller (Pass-Through Charging)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 99000,
     "msrp_usd": 79.99,
-    "prices": {
-      "coupang_krw": 76900,
-      "ali_krw": 51900,
-      "amazon_usd": 69.99,
-      "ali_usd": 44.9
-    },
     "urls": {
       "coupang_query": "GameSir G8 갈릴레오 모바일 패드",
       "ali_query": "GameSir G8 Galileo Type-C Mobile Gaming Controller (Pass-Through Charging)",
@@ -3110,7 +3336,7 @@
         "두꺼운 범퍼형 스마트폰 케이스나 카메라 섬이 과도하게 돌출된 기종은 케이스를 벗겨야 끝까지 결착됨",
         "폴더블 폰(갤럭시 Z 폴드)에는 펼쳤을 때 카메라 위치 간섭이 있어 G8 Plus 블루투스 모델이 더 적합함"
       ],
-      "verdict": "알리 직구가 5만 원 초반으로 쿠팡 대비 2만 5천 원 저렴한 인기 직구 품목."
+      "verdict": "동글·스틱 초기 불량 교환과 빠른 배송은 쿠팡이 유리하며, 직구 세일 코드 시즌에는 알리 공식 스토어 조건을 함께 대조하세요."
     },
     "en": {
       "title": "GameSir G8 Galileo USB-C Mobile Controller for iPhone 15/16 & Android",
@@ -3123,7 +3349,17 @@
         "Thick rugged phone cases must be removed for full USB-C seating",
         "Doesn't fit book-style foldables cleanly (pick Bluetooth G8+ for Galaxy Fold)"
       ],
-      "verdict": "Save ~$25 on AliExpress over Amazon Prime."
+      "verdict": "Check Amazon US for fast domestic delivery and hassle-free stick/dongle exchange, or compare AliExpress official brand stores during promo events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 100,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3131,16 +3367,10 @@
     "category": "productivity",
     "brand": "Elgato",
     "model": "Elgato Stream Deck Neo (8 LCD Keys + Infobar + Touch Points)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 139000,
     "msrp_usd": 99.99,
-    "prices": {
-      "coupang_krw": 124000,
-      "ali_krw": 119000,
-      "amazon_usd": 89.99,
-      "ali_usd": 92.0
-    },
     "urls": {
       "coupang_query": "엘가토 스트림덱 네오 8키 정품",
       "ali_query": "Elgato Stream Deck Neo (8 LCD Keys + Infobar + Touch Points)",
@@ -3177,6 +3407,16 @@
         "Only sold in white colorway"
       ],
       "verdict": "Zero AliExpress advantage—buy exclusively on Coupang or Amazon."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3184,16 +3424,10 @@
     "category": "productivity",
     "brand": "TourBox",
     "model": "TourBox Lite One-Handed Photo & Video Editing Controller",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 129000,
     "msrp_usd": 95.0,
-    "prices": {
-      "coupang_krw": 109000,
-      "ali_krw": 89000,
-      "amazon_usd": 85.0,
-      "ali_usd": 74.9
-    },
     "urls": {
       "coupang_query": "투어박스 라이트 TourBox Lite",
       "ali_query": "TourBox Lite One-Handed Photo & Video Editing Controller",
@@ -3216,7 +3450,7 @@
         "무선 블루투스 및 햅틱 진동 피드백이 빠진 유선 전용 보급형임",
         "전용 상주 프로그램(TourBox Console)을 백그라운드에 항상 켜두어야 작동함"
       ],
-      "verdict": "알리 공식 스토어 쿠폰 적용 시 8만 원대 구매 가능, 빠른 수령 시 쿠팡 선택."
+      "verdict": "업무용 장비 특성상 빠른 수령·교환이 필요하면 쿠팡을, 여유 일정에서 프로모션 조건을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "TourBox Lite USB-C Creative Console for Premiere, Photoshop & Clip Studio",
@@ -3229,7 +3463,17 @@
         "Wired USB-C only (omits Bluetooth and haptic motor feedback of Elite)",
         "Requires TourBox Console background software running"
       ],
-      "verdict": "Modest ~$10–$15 spread; check AliExpress TourBox Official Store coupons vs Amazon."
+      "verdict": "Compare Amazon US for quick domestic fulfillment on daily workflow gear, or check AliExpress direct when lead time is flexible."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3237,16 +3481,10 @@
     "category": "productivity",
     "brand": "Insta360",
     "model": "Insta360 Link 2C 1/2-inch Sensor 4K AI Webcam",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 219000,
     "msrp_usd": 149.99,
-    "prices": {
-      "coupang_krw": 189000,
-      "ali_krw": 159000,
-      "amazon_usd": 129.99,
-      "ali_usd": 118.0
-    },
     "urls": {
       "coupang_query": "인스타360 Link 2C 4K 웹캠",
       "ali_query": "Insta360 Link 2C 1/2-inch Sensor 4K AI Webcam",
@@ -3269,7 +3507,7 @@
         "짐벌 회전 모터가 없는 고정형이라 걸어 다니며 판서하는 자동 추적은 디지털 줌 프레이밍으로만 동작",
         "장시간 4K 구동 시 소형 알루미늄 본체 발열이 꽤 높음"
       ],
-      "verdict": "알리 세일 시 미화 118달러(무관세)로 쿠팡 대비 약 3만 원 절약 가능."
+      "verdict": "업무용 장비 특성상 빠른 수령·교환이 필요하면 쿠팡을, 여유 일정에서 프로모션 조건을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "Insta360 Link 2C 4K AI Webcam with 1/2-inch Sensor & Privacy Shutter",
@@ -3282,7 +3520,17 @@
         "Auto-framing uses digital crop rather than the motorized 2-axis gimbal of Link 2",
         "Runs noticeably warm during hour-long 4K calls"
       ],
-      "verdict": "Under $120 on AliExpress stays duty-free in KR; Amazon Prime is close behind during sales."
+      "verdict": "Compare Amazon US for quick domestic fulfillment on daily workflow gear, or check AliExpress direct when lead time is flexible."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3290,16 +3538,10 @@
     "category": "productivity",
     "brand": "EMEET",
     "model": "EMEET SmartCam S600 4K Sony Sensor Dual-Mic Webcam",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
-    "prices": {
-      "coupang_krw": 64900,
-      "ali_krw": 41900,
-      "amazon_usd": 49.99,
-      "ali_usd": 31.9
-    },
     "urls": {
       "coupang_query": "EMEET S600 4K 웹캠",
       "ali_query": "EMEET SmartCam S600 4K Sony Sensor Dual-Mic Webcam",
@@ -3313,7 +3555,7 @@
     },
     "ko": {
       "title": "이미트 EMEET S600 소니 센서 탑재 가성비 4K 화상회의 웹캠",
-      "summary": "10만 원 넘는 로지텍 구형 1080p 웹캠(C920) 살 돈보다 싸게 소니 센서 4K 화질과 물리 가림막을 챙기는 가성비 웹캠.",
+      "summary": "넘는 로지텍 구형 1080p 웹캠(C920) 살 돈보다 싸게 소니 센서 4K 화질과 물리 가림막을 챙기는 가성비 웹캠.",
       "pros": [
         "4만 원대 가격에 PDAF 빠른 자동 초점과 렌즈 링을 돌려서 닫는 직관적인 프라이버시 커버 내장",
         "73도 적당한 화각으로 방 주변 지저분한 배경이 덜 찍힘"
@@ -3322,7 +3564,7 @@
         "역광이나 형광등 직사 환경에서는 화이트밸런스가 약간 차갑게(푸른빛) 잡혀 전용 앱 보정 권장",
         "내장 마이크 음질은 평범해 중요 회의 시 별도 이어폰/마이크 병행 추천"
       ],
-      "verdict": "알리 직구가 4만 원 초반으로 화상회의·온라인 면접용 가성비 최적."
+      "verdict": "업무용 장비 특성상 빠른 수령·교환이 필요하면 쿠팡을, 여유 일정에서 프로모션 조건을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "EMEET S600 4K Webcam with Sony 1/2.8-inch Sensor & Rotary Privacy Cover",
@@ -3335,7 +3577,17 @@
         "Auto white balance leans slightly cool/blue under mixed indoor lighting",
         "Built-in mics sound thin compared to dedicated USB mics"
       ],
-      "verdict": "AliExpress (~$32) saves ~35% vs regular retail."
+      "verdict": "Compare Amazon US for quick domestic fulfillment on daily workflow gear, or check AliExpress direct when lead time is flexible."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3343,16 +3595,10 @@
     "category": "productivity",
     "brand": "AJAZZ",
     "model": "AJAZZ AKP153E 15-Key + Side Status Screen Macro Deck",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
-    "prices": {
-      "coupang_krw": 64900,
-      "ali_krw": 39800,
-      "amazon_usd": 55.99,
-      "ali_usd": 31.5
-    },
     "urls": {
       "coupang_query": "AJAZZ AKP153 스트림덱 매크로 키패드",
       "ali_query": "AJAZZ AKP153E 15-Key + Side Status Screen Macro Deck",
@@ -3366,7 +3612,7 @@
     },
     "ko": {
       "title": "아자즈 AJAZZ AKP153 15키 + 사이드 정보창 가성비 스트림덱 호환형 컨트롤러",
-      "summary": "정품 엘가토 스트림덱(17만 원대)이 부담스러운 입문자를 위한 3만 원대 후반 15키 LCD 단축키 패드.",
+      "summary": "정품 엘가토 스트림덱(대)이 부담스러운 입문자를 위한 대 후반 15키 LCD 단축키 패드.",
       "pros": [
         "엘가토 MK.2의 1/4 가격에 15개 컬러 아이콘 키 + 우측 시스템 리소스 표시창까지 제공",
         "단순 프로그램 실행·상용구 입력·단축키 매크로 용도로는 가성비 압도적"
@@ -3375,11 +3621,11 @@
         "엘가토 공식 마켓플레이스 플러그인과 호환되지 않으며 자체 스토어 플러그인 번역·종류가 훨씬 빈약함",
         "맥(macOS) 환경에서는 간헐적으로 절전 복귀 후 앱 재실행이 필요한 경우가 있음"
       ],
-      "verdict": "고급 방송 연동(OBS 심화 등)이면 엘가토 정품을 사고, 단순 직장인 단축키 실행기 용도면 알리 3만 원대 직구 추천."
+      "verdict": "업무용 장비 특성상 빠른 수령·교환이 필요하면 쿠팡을, 여유 일정에서 프로모션 조건을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "AJAZZ AKP153 15-Key LCD Macro Studio Deck with Side Info Strip",
-      "summary": "Budget ~$32 alternative to Stream Deck MK.2 offering 15 LCD shortcut keys plus a side CPU/weather readout strip.",
+      "summary": "Budget ~ alternative to Stream Deck MK.2 offering 15 LCD shortcut keys plus a side CPU/weather readout strip.",
       "pros": [
         "Costs under a quarter of genuine Elgato hardware for basic app/hotkey launchers",
         "Detachable USB-C cable and crisp LCD key icons"
@@ -3388,7 +3634,17 @@
         "Incompatible with Elgato's official plugin store—smaller third-party integration library",
         "macOS companion software occasionally needs a restart after sleep"
       ],
-      "verdict": "Grab on AliExpress (~$31.50) strictly for simple hotkeys; buy genuine Elgato if you rely on deep plugins."
+      "verdict": "Compare Amazon US for quick domestic fulfillment on daily workflow gear, or check AliExpress direct when lead time is flexible."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3396,16 +3652,10 @@
     "category": "productivity",
     "brand": "UGREEN",
     "model": "UGREEN Dual-Slot Adjustable Aluminum Vertical Laptop Stand (LP258)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 35000,
     "msrp_usd": 27.99,
-    "prices": {
-      "coupang_krw": 24900,
-      "ali_krw": 14900,
-      "amazon_usd": 21.99,
-      "ali_usd": 11.9
-    },
     "urls": {
       "coupang_query": "유그린 듀얼 노트북 수직 거치대",
       "ali_query": "UGREEN Dual-Slot Adjustable Aluminum Vertical Laptop Stand (LP258)",
@@ -3428,7 +3678,7 @@
         "게이밍 노트북은 덮개를 닫고 고부하 게임 구동 시 키보드 상판 배기구가 막혀 발열에 불리할 수 있음",
         "슬롯 2개 중 앞뒤 폭이 독립 조절이 아닌 연동형이라 두께 차이가 큰 두 기기를 꽂으면 얇은 쪽이 살짝 여유 있음"
       ],
-      "verdict": "알리 초이스 배송으로 1만 원 중반에 구매하기 좋은 데스크테리어 기본 아이템."
+      "verdict": "업무용 장비 특성상 빠른 수령·교환이 필요하면 쿠팡을, 여유 일정에서 프로모션 조건을 노린다면 알리를 확인하세요."
     },
     "en": {
       "title": "UGREEN Dual-Slot Tool-Free Aluminum Vertical Laptop Dock Stand",
@@ -3441,7 +3691,17 @@
         "Both slots adjust together rather than independently",
         "Avoid closed-lid heavy gaming on laptops that intake air through the keyboard deck"
       ],
-      "verdict": "Under $12 on AliExpress Choice vs $22 on Amazon."
+      "verdict": "Compare Amazon US for quick domestic fulfillment on daily workflow gear, or check AliExpress direct when lead time is flexible."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 95,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "대한민국 수령 시 중국·기타국발 미화 150달러 이하(미국발 목록통관 적격 200달러 이하) 면세 기준이 적용되며, 합산과세·실결제가를 결제창에서 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3449,16 +3709,10 @@
     "category": "powerbanks",
     "brand": "Anker",
     "model": "Anker 737 Power Bank (PowerCore 24K, 140W PD 3.1, A1289)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 169000,
     "msrp_usd": 149.99,
-    "prices": {
-      "coupang_krw": 129000,
-      "ali_krw": 96000,
-      "amazon_usd": 109.99,
-      "ali_usd": 79.9
-    },
     "urls": {
       "coupang_query": "앤커 737 24000mAh 140W 보조배터리",
       "ali_query": "Anker 737 Power Bank (PowerCore 24K, 140W PD 3.1, A1289)",
@@ -3481,7 +3735,7 @@
         "630g 묵직한 바 형태라 데일리 가방 무게 부담이 있음",
         "신형 쿸테크 20호 등 후발주자 대비 가성비는 다소 밀림"
       ],
-      "verdict": "검증된 앤커 안정성을 원하면서 3만 원 이상 아끼려면 알리 공식몰 세일가 추천."
+      "verdict": "기내 반입 일정이 촉박하거나 초기 불량 교환이 중요하면 쿠팡 국내 배송을, 직구 세일 코드 적용 조건이 맞으면 알리 공식 스토어를 비교하세요."
     },
     "en": {
       "title": "Anker 737 Power Bank (PowerCore 24K) 140W Bidirectional PD 3.1",
@@ -3494,7 +3748,17 @@
         "630g triangular prism is heavy in smaller bags",
         "Newer rivals offer higher 200W+ multi-port totals for less money"
       ],
-      "verdict": "Wait for Amazon $99/$89 promos or grab ~$80 on AliExpress Anker Official Store."
+      "verdict": "Check Amazon US for faster domestic battery ground shipping and easy returns, or compare AliExpress direct when travel timelines allow longer transit."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "direct",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3502,16 +3766,10 @@
     "category": "mice",
     "brand": "Logitech",
     "model": "Logitech G PRO X SUPERLIGHT 2 (HERO 2, 60g, 8K Polling Update)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 199000,
     "msrp_usd": 159.0,
-    "prices": {
-      "coupang_krw": 164000,
-      "ali_krw": 159000,
-      "amazon_usd": 139.0,
-      "ali_usd": 142.0
-    },
     "urls": {
       "coupang_query": "로지텍 지슈라2 G PRO X SUPERLIGHT 2 정품",
       "ali_query": "Logitech G PRO X SUPERLIGHT 2 (HERO 2, 60g, 8K Polling Update)",
@@ -3548,6 +3806,16 @@
         "High counterfeit risk on overseas marketplaces with zero real savings"
       ],
       "verdict": "Buy strictly from Amazon Shipped & Sold by Amazon or Coupang official retail."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3555,16 +3823,10 @@
     "category": "audio",
     "brand": "Sony",
     "model": "Sony WH-1000XM5 Wireless Industry-Leading Noise Canceling Headphones",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 449000,
     "msrp_usd": 399.99,
-    "prices": {
-      "coupang_krw": 359000,
-      "ali_krw": 345000,
-      "amazon_usd": 298.0,
-      "ali_usd": 315.0
-    },
     "urls": {
       "coupang_query": "소니 WH-1000XM5 정품",
       "ali_query": "Sony WH-1000XM5 Wireless Industry-Leading Noise Canceling Headphones",
@@ -3587,7 +3849,7 @@
         "전작(XM4)처럼 헤드밴드가 안쪽으로 접히지 않아 휴대 케이스 부피가 매우 큼",
         "150달러 초과 고가품이라 직구 시 관부가세가 붙으면 국내 정품보다 오히려 비싸짐!"
       ],
-      "verdict": "관부가세와 소니코리아 정품 등록 보증을 고려하면 국내 쿠팡 정품(해외는 아마존 세일) 구매가 100% 유리합니다."
+      "verdict": "빠른 수령과 초기 노이즈 불량 교환은 쿠팡이 편리하며, 해외 오디오 전문 스토어 프로모션 기간에는 알리 조건을 함께 확인하세요."
     },
     "en": {
       "title": "Sony WH-1000XM5 Wireless Noise Canceling Over-Ear Headphones",
@@ -3600,7 +3862,17 @@
         "Ear cups no longer fold compactly like the XM4—bulky carrying case",
         "Direct import makes zero sense once import taxes and warranty loss are factored"
       ],
-      "verdict": "Always buy on Amazon Prime ($298 sales) or Coupang official retail—never grey-market direct."
+      "verdict": "Check Amazon US for quick domestic delivery and easy mic/earbud exchange, or compare AliExpress brand stores during direct-sale events."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 80,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   },
   {
@@ -3608,16 +3880,10 @@
     "category": "hubs",
     "brand": "CalDigit",
     "model": "CalDigit TS4 Thunderbolt 4 Dock (18 Ports, 98W Charging, 2.5GbE)",
-    "updated_at": "2026-11-24",
+    "updated_at": "2026-11-26",
     "in_stock": true,
     "msrp_krw": 549000,
     "msrp_usd": 399.95,
-    "prices": {
-      "coupang_krw": 499000,
-      "ali_krw": 510000,
-      "amazon_usd": 379.95,
-      "ali_usd": 395.0
-    },
     "urls": {
       "coupang_query": "칼디짓 TS4 썬더볼트4 독 정품",
       "ali_query": "CalDigit TS4 Thunderbolt 4 Dock (18 Ports, 98W Charging, 2.5GbE)",
@@ -3654,6 +3920,16 @@
         "Base non-Pro M1/M2/M3 MacBooks still support only 1 external monitor over native TB4"
       ],
       "verdict": "Buy exclusively via Amazon authorized retail or Coupang official distributor."
+    },
+    "msrp_source": "제조사·공식 출시 참고 출고가 (실제 판매가·할인 기준가 아님) / Manufacturer reference MSRP",
+    "msrp_checked_at": "2026-11-26",
+    "buying_profile": {
+      "preferred_route_ko": "domestic",
+      "preferred_route_en": "amazon",
+      "amazon_priority_score": 90,
+      "kr_customs_rule": "china_150_us_200",
+      "kr_customs_note": "참고 출고가가 미화 150달러 부근 이상인 품목입니다. 대한민국 수령 시 중국·기타국발 미화 150달러 이하, 미국발 목록통관 적격 200달러 이하 면세 기준을 실제 결제창 금액으로 확인하세요.",
+      "us_import_note": "US buyers: verify 'Ships from US / Amazon' for domestic delivery, or check 'Import charges included' at checkout on cross-border AliExpress shipments."
     }
   }
 ]

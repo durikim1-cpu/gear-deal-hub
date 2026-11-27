@@ -1,4 +1,10 @@
-"""Shadowban-safe social feed builder & Meta Threads official free API publisher (Strategy A)."""
+"""Shadowban-safe social feed builder & Meta Threads official free API publisher.
+
+Implements Topic 1 & Topic 3 Consensus:
+- Irregular <= 1 post/day cap (strictly ONLY when a genuine live promo/signal match exists — zero 4x/day template spam).
+- Zero static retailer prices or % spread claims; includes observation timestamp & Hub bridge URL (?utm_source=threads).
+- Verifies public Hub URL HTTP 200 + idempotency key before publishing.
+"""
 
 from __future__ import annotations
 
@@ -8,48 +14,46 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 
 from src.affiliate import DISCLOSURE_EN, DISCLOSURE_KO
+from src.deal_sniper import load_sent_history, save_sent_history
+from src.notifier import verify_public_hub_url
 from src.site_builder import product_slug
 
 
 def build_threads_pair_ko(item: dict, base_url: str) -> dict:
-    """Build 2-part Korean Threads post (Part 1: pure info, zero links -> Part 2: reply with bridge URL)."""
-    p = item["prices"]
-    m = item["metrics"]
+    """Build 2-part price-free Korean Threads post (Part 1: caveat + promo signal -> Part 2: Hub URL + disclosure)."""
     sniper = item.get("sniper", {})
     slug = product_slug(item["id"])
-    bridge_url = f"{base_url.rstrip('/')}/ko/p/{slug}/"
-
-    cheaper_kr = m["kr_cheaper"] == "aliexpress"
-    headline_diff = (
-        f"알리 직구가 {m['kr_diff_krw']:,}원 ({m['kr_savings_pct']:.0f}%) 저렴"
-        if cheaper_kr
-        else f"쿠팡 정발이 오히려 유리 (차액 {m['kr_diff_krw']:,}원)"
+    bridge_url = f"{base_url.rstrip('/')}/ko/p/{slug}/?utm_source=threads"
+    obs = sniper.get("observed_at") or datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    promo_line = (
+        f"\n· 포착된 프로모션 코드: {sniper['promo_code']} (선착순·적용조건 변동 가능)"
+        if sniper.get("promo_code")
+        else ""
     )
-    promo_line = f"\n· 감지된 할인코드: {sniper['promo_code']}" if sniper.get("promo_code") else ""
-    duty_line = "\n· 주의: 미화 150달러 초과로 직구 시 통관 부가세(10%) 별도 계산 필요" if float(p["ali_usd"]) > 150 else ""
 
     main_post = (
-        f"{item['ko']['title']}\n\n"
-        f"· 쿠팡 시세: {int(p['coupang_krw']):,}원\n"
-        f"· 알리 직구: {int(p['ali_krw']):,}원 ({headline_diff})"
-        f"{promo_line}{duty_line}\n\n"
-        f"구매 전 단점 체크:\n"
+        f"{item['ko']['title']}\n"
+        f"(관측 시각: {obs}){promo_line}\n\n"
+        f"구매 전 꼭 확인할 단점:\n"
         f"- {item['ko']['cons'][0]}\n\n"
-        f"한줄 판단: {item['ko']['verdict']}\n"
-        f"(상세 스펙표와 양쪽 판매처 링크는 첫 댓글에 남겨둡니다)"
+        f"선택 기준: {item['ko']['verdict']}\n"
+        f"(사양·통관 체크표와 실시간 판매처 확인 링크는 첫 댓글에 남겨둡니다)"
     )
 
     reply_post = (
-        f"쿠팡 vs 알리 스펙·가격 비교표 바로가기:\n"
+        f"사양·통관 체크표 및 판매처 확인 허브:\n"
         f"{bridge_url}\n\n"
         f"[광고 고지] {DISCLOSURE_KO}"
     )
 
     return {
         "product_id": item["id"],
+        "event_id": sniper.get("event_id", ""),
+        "live_matched": bool(sniper.get("live_matched")),
         "promo_code": sniper.get("promo_code"),
         "main_text": main_post,
         "reply_text": reply_post,
@@ -58,39 +62,35 @@ def build_threads_pair_ko(item: dict, base_url: str) -> dict:
 
 
 def build_social_pair_en(item: dict, base_url: str) -> dict:
-    """Build 2-part English X / Threads post (Part 1: link-free price spread -> Part 2: reply with bridge URL)."""
-    p = item["prices"]
-    m = item["metrics"]
+    """Build 2-part price-free English social post (Part 1: caveat + compatibility -> Part 2: Hub URL + disclosure)."""
     sniper = item.get("sniper", {})
     slug = product_slug(item["id"])
-    bridge_url = f"{base_url.rstrip('/')}/en/p/{slug}/"
-
-    cheaper_ali = m["en_cheaper"] == "aliexpress"
-    spread_str = (
-        f"Save USD {m['en_diff_usd']:.2f} ({m['en_savings_pct']:.0f}%) via AliExpress"
-        if cheaper_ali
-        else f"Amazon Prime preferred (within USD {m['en_diff_usd']:.2f})"
+    bridge_url = f"{base_url.rstrip('/')}/en/p/{slug}/?utm_source=threads"
+    obs = sniper.get("observed_at") or datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    promo_line = (
+        f"\n• Spotted promo code: {sniper['promo_code']} (subject to quota & checkout terms)"
+        if sniper.get("promo_code")
+        else ""
     )
-    promo_line = f"\n• Promo code spotted: {sniper['promo_code']}" if sniper.get("promo_code") else ""
 
     main_post = (
-        f"{item['en']['title']}\n\n"
-        f"• Amazon US: USD {p['amazon_usd']:.2f}\n"
-        f"• AliExpress: USD {p['ali_usd']:.2f} ({spread_str})"
-        f"{promo_line}\n\n"
-        f"Caveat before buying:\n"
+        f"{item['en']['title']}\n"
+        f"(Observed: {obs}){promo_line}\n\n"
+        f"Real-world caveat before buying:\n"
         f"- {item['en']['cons'][0]}\n\n"
-        f"Full spec comparison & store links in reply 👇"
+        f"Compatibility notes & store links in reply 👇"
     )
 
     reply_post = (
-        f"Spec sheet & live Amazon / AliExpress comparison:\n"
+        f"Compatibility checklist & store options on GearCompare Hub:\n"
         f"{bridge_url}\n\n"
-        f"[{DISCLOSURE_EN}]"
+        f"{DISCLOSURE_EN}"
     )
 
     return {
         "product_id": item["id"],
+        "event_id": sniper.get("event_id", ""),
+        "live_matched": bool(sniper.get("live_matched")),
         "promo_code": sniper.get("promo_code"),
         "main_text": main_post,
         "reply_text": reply_post,
@@ -99,7 +99,6 @@ def build_social_pair_en(item: dict, base_url: str) -> dict:
 
 
 def _threads_api_post(user_id: str, access_token: str, text: str, reply_to_id: str | None = None) -> str | None:
-    """Publish a single post via Meta's official free Threads Graph API; returns published media ID."""
     create_url = f"https://graph.threads.net/v1.0/{user_id}/threads"
     params = {"media_type": "TEXT", "text": text, "access_token": access_token}
     if reply_to_id:
@@ -122,11 +121,10 @@ def _threads_api_post(user_id: str, access_token: str, text: str, reply_to_id: s
         return None
 
 
-def publish_social_feeds(sniper_result: dict, cfg: dict, dist_dir: Path, live_publish: bool = False) -> dict:
-    """Generate shadowban-safe Threads/X queues and optionally auto-post to Meta Threads."""
+def stage_social_queues(sniper_result: dict, cfg: dict, dist_dir: Path) -> dict:
     base_url = cfg["site"]["base_url"]
-    ko_posts = [build_threads_pair_ko(it, base_url) for it in sniper_result["ko_picks"]]
-    en_posts = [build_social_pair_en(it, base_url) for it in sniper_result["en_picks"]]
+    ko_posts = [build_threads_pair_ko(it, base_url) for it in sniper_result.get("preview_ko", [])]
+    en_posts = [build_social_pair_en(it, base_url) for it in sniper_result.get("preview_en", [])]
 
     dist_dir.mkdir(parents=True, exist_ok=True)
     (dist_dir / "social_queue_ko.json").write_text(
@@ -135,20 +133,49 @@ def publish_social_feeds(sniper_result: dict, cfg: dict, dist_dir: Path, live_pu
     (dist_dir / "social_queue_en.json").write_text(
         json.dumps(en_posts, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
+    return {
+        "ko_queued": len(sniper_result.get("ko_picks", [])),
+        "en_queued": len(sniper_result.get("en_picks", [])),
+        "threads_published_ko": 0,
+    }
 
-    published_ko = 0
+
+def publish_verified_social(ko_picks: list[dict], cfg: dict, data_dir: Path, live_publish: bool = False) -> dict:
+    """Publish at most 1 Thread/day ONLY when a genuine live signal matched AND public Hub URL is verified."""
     threads_uid = os.getenv("THREADS_USER_ID", "").strip()
     threads_tok = os.getenv("THREADS_ACCESS_TOKEN", "").strip()
-    if live_publish and threads_uid and threads_tok and ko_posts:
-        # Publish top 1 fresh sniper deal per run (4 runs/day = 4 clean Threads/day, zero spam risk)
-        top_post = ko_posts[0]
-        root_id = _threads_api_post(threads_uid, threads_tok, top_post["main_text"])
-        if root_id:
-            _threads_api_post(threads_uid, threads_tok, top_post["reply_text"], reply_to_id=root_id)
-            published_ko += 1
+    if not (live_publish and threads_uid and threads_tok and ko_picks):
+        return {"threads_published_ko": 0}
 
-    return {
-        "ko_queued": len(ko_posts),
-        "en_queued": len(en_posts),
-        "threads_published_ko": published_ko,
-    }
+    history = load_sent_history(data_dir, cooldown_days=30)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    # Topic 1 Consensus #3: Irregular <= 1 post/day cap on Threads
+    if history.get("threads_daily_cap", {}).get("sent_date") == today:
+        return {"threads_published_ko": 0}
+
+    base_url = cfg["site"]["base_url"].rstrip("/")
+    top_item = ko_picks[0]
+    sniper = top_item.get("sniper", {})
+    if not sniper.get("live_matched"):
+        return {"threads_published_ko": 0}
+
+    ev_id = sniper.get("event_id", "")
+    if ev_id and f"threads_event:{ev_id}" in history:
+        return {"threads_published_ko": 0}
+
+    slug = product_slug(top_item["id"])
+    if not verify_public_hub_url(f"{base_url}/ko/p/{slug}/", top_item["brand"]):
+        return {"threads_published_ko": 0}
+
+    post = build_threads_pair_ko(top_item, base_url)
+    root_id = _threads_api_post(threads_uid, threads_tok, post["main_text"])
+    published = 0
+    if root_id:
+        _threads_api_post(threads_uid, threads_tok, post["reply_text"], reply_to_id=root_id)
+        published = 1
+        history["threads_daily_cap"] = {"sent_date": today}
+        if ev_id:
+            history[f"threads_event:{ev_id}"] = {"sent_date": today}
+        save_sent_history(data_dir, history)
+
+    return {"threads_published_ko": published}

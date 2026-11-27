@@ -1,4 +1,4 @@
-"""Automated model discovery enricher: turns raw deal leads into Gatekeeper-verified catalog entries."""
+"""Automated model discovery enricher: turns raw deal leads into price-free Gatekeeper-verified catalog entries."""
 
 from __future__ import annotations
 
@@ -29,8 +29,12 @@ VALID_CATEGORIES = (
 )
 
 ENRICH_PROMPT_TEMPLATE = """You are a strict hardware catalog curator for GearCompare Hub.
-Given these newly spotted cross-border deal leads, select ONLY genuine standalone hardware models
-(NEVER cables, cases, keycap-only sets, or screen protectors) that are sold on Coupang, Amazon US, and AliExpress.
+Given these newly spotted cross-border hardware leads, select ONLY genuine standalone hardware models
+(NEVER cables, cases, keycap-only sets, or screen protectors) sold across Coupang, Amazon US, and AliExpress.
+IMPORTANT COMPLIANCE RULES:
+- Do NOT include static retailer `prices` (`coupang_krw`, `amazon_usd`, `ali_usd`, `ali_krw`).
+- Only include manufacturer reference `msrp_krw`, `msrp_usd`, and `msrp_source` ("Manufacturer official spec reference").
+- Never write exact dollar/won savings or unverified blanket seller guarantees ("100% free returns") in `verdict`.
 Return ONLY a valid JSON array (0 to {limit} objects, no markdown fences) matching this exact schema:
 [
   {{
@@ -42,11 +46,13 @@ Return ONLY a valid JSON array (0 to {limit} objects, no markdown fences) matchi
     "in_stock": true,
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
-    "prices": {{
-      "coupang_krw": 69000,
-      "ali_krw": 46000,
-      "amazon_usd": 54.99,
-      "ali_usd": 35.50
+    "msrp_source": "Manufacturer official MSRP reference ({today})",
+    "buying_profile": {{
+      "preferred_route_ko": "domestic or direct",
+      "preferred_route_en": "amazon or direct",
+      "amazon_priority_score": 80,
+      "kr_origin_note": "중국발 직구 시 미화 150달러 / 미국발 목록통관 적격 시 200달러 면세 기준 결제창 확인",
+      "us_import_note": "Amazon US: check Ships from US · AliExpress: verify import charges at checkout"
     }},
     "urls": {{
       "coupang_query": "정확한 한국어 브랜드+모델명 검색어",
@@ -64,14 +70,14 @@ Return ONLY a valid JSON array (0 to {limit} objects, no markdown fences) matchi
       "summary": "광고 어투 없는 건조한 1문장 스펙·용도 요약.",
       "pros": ["구체적 장점 1", "구체적 장점 2"],
       "cons": ["실사용에서 지적되는 구체적 단점 1 (최소 15자 이상)", "구체적 단점 2"],
-      "verdict": "쿠팡 정발과 알리 직구 중 어떤 조건에서 무엇이 유리한지 1문장 판단."
+      "verdict": "정적 가격 숫자 없이 국내 배송·교환 편의와 직구 프로모션·대기시간 기준의 1문장 구매 판단."
     }},
     "en": {{
       "title": "Clean English Product Title with Model Number",
       "summary": "Dry, factual 1-sentence hardware summary without marketing fluff.",
       "pros": ["Specific strength 1", "Specific strength 2"],
       "cons": ["Specific real-world drawback 1 (at least 20 chars)", "Specific drawback 2"],
-      "verdict": "1-sentence practical verdict comparing Amazon fast returns vs AliExpress savings."
+      "verdict": "Price-free 1-sentence buying verdict comparing domestic US shipping convenience vs direct-import lead time."
     }}
   }}
 ]
@@ -144,7 +150,7 @@ def _enrich_via_claude_cli(prompt: str) -> list[dict]:
 
 
 def auto_grow_catalog(project_root: Path, cfg: dict, max_new: int = 5) -> dict:
-    """Process queued leads, enrich into full product records, Gatekeeper-verify, and append to products.json."""
+    """Process queued leads, enrich into price-free records, Gatekeeper-verify, and append to products.json."""
     if max_new <= 0:
         return {"attempted": 0, "added": 0, "rejected": 0, "added_ids": []}
 
@@ -188,6 +194,7 @@ def auto_grow_catalog(project_root: Path, cfg: dict, max_new: int = 5) -> dict:
             continue
         if item.get("category") not in VALID_CATEGORIES:
             item["category"] = "hubs"
+        item.pop("prices", None)
 
         res, _ = verify_product(item, cfg)
         if res.passed:

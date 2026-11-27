@@ -1,7 +1,14 @@
-"""Hot-deal & promo-code sniper: pairs live discount/coupon signals with vetted catalog models."""
+"""Promo-code & deal-signal sniper with idempotency keys and Amazon price-tracking exclusion.
+
+Implements Topic 1 & Topic 3 Consensus:
+- Never tracks or alerts on Amazon price drops unless separate written approval is explicitly enabled.
+- Generates deterministic `event_id` idempotency keys so retries never send duplicate notifications.
+- Distinguishes genuine `live_matched` promo/signal events from local preview samples (zero daily spam).
+"""
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from datetime import datetime, timedelta, timezone
@@ -12,16 +19,17 @@ PROMO_CODE_RE = re.compile(
     re.IGNORECASE,
 )
 HOT_KEYWORDS_RE = re.compile(
-    r"(역대가|최저가|코인딜|타임딜|핫딜|할인코드|프로모션|all[- ]time low|promo code|coupon|lightning deal)",
+    r"(할인코드|프로모션|쿠폰|코인딜|promo code|coupon|choice day)",
     re.IGNORECASE,
 )
+AMAZON_SIGNAL_RE = re.compile(r"\b(amazon|amzn\.to)\b", re.IGNORECASE)
 
 
 def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9가-힣]+", "", s.lower())
 
 
-def load_sent_history(data_dir: Path, cooldown_days: int = 7) -> dict[str, dict]:
+def load_sent_history(data_dir: Path, cooldown_days: int = 30) -> dict[str, dict]:
     path = data_dir / "sent_deals_history.json"
     if not path.exists():
         return {}
@@ -30,7 +38,7 @@ def load_sent_history(data_dir: Path, cooldown_days: int = 7) -> dict[str, dict]
     except json.JSONDecodeError:
         return {}
     cutoff = (datetime.now(timezone.utc) - timedelta(days=cooldown_days)).strftime("%Y-%m-%d")
-    return {k: v for k, v in raw.items() if v.get("sent_date", "") >= cutoff}
+    return {k: v for k, v in raw.items() if isinstance(v, dict) and v.get("sent_date", "9999") >= cutoff}
 
 
 def save_sent_history(data_dir: Path, history: dict[str, dict]) -> None:
@@ -38,26 +46,38 @@ def save_sent_history(data_dir: Path, history: dict[str, dict]) -> None:
     path.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def _make_event_id(lang: str, product_id: str, promo_code: str | None, date_str: str) -> str:
+    seed = f"{lang}:{product_id}:{promo_code or 'signal'}:{date_str}"
+    return hashlib.sha1(seed.encode("utf-8")).hexdigest()[:14]
+
+
 def snipe_hot_deals(
     approved_items: list[dict],
     live_signals: list[dict],
     data_dir: Path,
-    max_picks: int = 4,
-    record_history: bool = False,
+    cfg: dict | None = None,
+    max_picks: int = 2,
 ) -> dict:
-    """Match live promo/coupon signals to vetted products and pick fresh high-spread deals."""
-    history = load_sent_history(data_dir)
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    """Match verified non-Amazon promo/coupon signals to vetted products with idempotency keys."""
+    cfg = cfg or {}
+    allow_amazon_tracking = bool(cfg.get("affiliate", {}).get("allow_amazon_price_tracking", False))
+    history = load_sent_history(data_dir, cooldown_days=14)
+    now_utc = datetime.now(timezone.utc)
+    today = now_utc.strftime("%Y-%m-%d")
+    observed_at = now_utc.strftime("%Y-%m-%d %H:%M UTC")
 
-    # Map live signals (promo codes & hot mentions) onto catalog products
     signal_matches: dict[str, dict] = {}
     for sig in live_signals:
         title = sig.get("title", "")
+        # Amazon Operating Policies §5: never run unauthorized Amazon price-drop/tracking alerts.
+        if not allow_amazon_tracking and (AMAZON_SIGNAL_RE.search(title) or "amazon" in sig.get("url", "").lower()):
+            continue
+
         norm_title = _norm(title)
         code_m = PROMO_CODE_RE.search(title)
         promo_code = code_m.group(1).upper() if code_m else None
-        is_hot = bool(promo_code or HOT_KEYWORDS_RE.search(title) or sig.get("score", 0) >= 25)
-        if not is_hot:
+        is_actionable = bool(promo_code or HOT_KEYWORDS_RE.search(title))
+        if not is_actionable:
             continue
 
         for item in approved_items:
@@ -69,53 +89,55 @@ def snipe_hot_deals(
                         "promo_code": promo_code,
                         "signal_title": title,
                         "signal_source": sig.get("source", ""),
-                        "signal_url": sig.get("url", ""),
+                        "observed_at": observed_at,
                     }
                     break
 
-    def score_item(item: dict, lang: str) -> float:
-        m = item["metrics"]
-        pct = m["kr_savings_pct"] if lang == "ko" else m["en_savings_pct"]
-        msrp_drop = m["msrp_drop_kr_pct"] if lang == "ko" else m["msrp_drop_en_pct"]
-        sig_bonus = 50.0 if item["id"] in signal_matches else 0.0
-        code_bonus = 35.0 if signal_matches.get(item["id"], {}).get("promo_code") else 0.0
-        return sig_bonus + code_bonus + (pct * 1.2) + (msrp_drop * 0.5)
-
-    def select_for_lang(lang: str) -> list[dict]:
-        ranked = sorted(approved_items, key=lambda x: score_item(x, lang), reverse=True)
-        picked: list[dict] = []
-        for it in ranked:
-            if len(picked) >= max_picks:
-                break
+    def build_live_picks(lang: str) -> list[dict]:
+        picks: list[dict] = []
+        for it in approved_items:
             pid = it["id"]
-            sig_info = signal_matches.get(pid, {})
+            if pid not in signal_matches:
+                continue
+            sig_info = signal_matches[pid]
+            event_id = _make_event_id(lang, pid, sig_info.get("promo_code"), today)
+            if f"event:{event_id}" in history:
+                continue
             prev = history.get(f"{lang}:{pid}")
-            # Skip if already sent within cooldown UNLESS a fresh promo code was spotted
             if prev and not (sig_info.get("promo_code") and sig_info.get("promo_code") != prev.get("promo_code")):
                 continue
             entry = dict(it)
             entry["sniper"] = {
+                "event_id": event_id,
                 "promo_code": sig_info.get("promo_code"),
                 "signal_title": sig_info.get("signal_title"),
                 "signal_source": sig_info.get("signal_source"),
-                "live_matched": pid in signal_matches,
+                "observed_at": observed_at,
+                "live_matched": True,
             }
-            picked.append(entry)
-            if record_history:
-                history[f"{lang}:{pid}"] = {
-                    "sent_date": today,
-                    "promo_code": sig_info.get("promo_code"),
-                }
-        return picked
+            picks.append(entry)
+            if len(picks) >= max_picks:
+                break
+        return picks
 
-    ko_picks = select_for_lang("ko")
-    en_picks = select_for_lang("en")
+    ko_live = build_live_picks("ko")
+    en_live = build_live_picks("en")
 
-    if record_history:
-        save_sent_history(data_dir, history)
+    # Local dry-run preview sample (never auto-sent unless live_matched is True)
+    preview_ko = ko_live or [
+        dict(it, sniper={"event_id": "preview", "promo_code": None, "observed_at": observed_at, "live_matched": False})
+        for it in approved_items[:2]
+    ]
+    preview_en = en_live or [
+        dict(it, sniper={"event_id": "preview", "promo_code": None, "observed_at": observed_at, "live_matched": False})
+        for it in approved_items[:2]
+    ]
 
     return {
-        "ko_picks": ko_picks,
-        "en_picks": en_picks,
+        "ko_picks": ko_live,
+        "en_picks": en_live,
+        "preview_ko": preview_ko,
+        "preview_en": preview_en,
         "live_signal_matches": len(signal_matches),
+        "observed_at": observed_at,
     }

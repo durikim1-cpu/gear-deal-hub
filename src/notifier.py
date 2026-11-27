@@ -1,11 +1,22 @@
-"""Telegram dual-channel (KO & EN) deal alert formatter and sender."""
+"""Telegram dual-channel (KO & EN) Hub-routed alert formatter, public-URL verifier, and idempotent sender.
+
+Implements Topic 2 & Topic 3 Consensus + User Formatting Preference:
+- ZERO direct Amazon/Coupang/AliExpress affiliate links in Telegram (routes 100% through registered Hub URLs with ?utm_source=telegram).
+- ZERO static prices or unverified discount claims; includes UTC observation timestamp & checkout-change notice.
+- Verifies that the public Hub URL is live (HTTP 200 + expected slug) BEFORE sending any message, and records idempotency event_id.
+- Preserves clean body formatting without [대가성 광고 안내] inside Telegram messages (disclosures sit on the Hub landing page).
+"""
 
 from __future__ import annotations
 
 import html
 import json
+import urllib.error
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
+
+from src.deal_sniper import load_sent_history, save_sent_history
 from src.site_builder import product_slug
 
 
@@ -13,49 +24,60 @@ def _esc(val: object) -> str:
     return html.escape(str(val))
 
 
+def verify_public_hub_url(url: str, expected_marker: str, timeout_sec: int = 10) -> bool:
+    """Confirm the deployed GitHub Pages URL actually serves HTTP 200 with expected content before notifying."""
+    req = urllib.request.Request(url, headers={"User-Agent": "GearCompareHubVerifier/3.0", "Cache-Control": "no-cache"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+            if resp.status != 200:
+                return False
+            body = resp.read().decode("utf-8", errors="replace")
+            return expected_marker.lower() in body.lower()
+    except (urllib.error.URLError, TimeoutError, OSError):
+        return False
+
+
 def format_ko_alert(item: dict, base_url: str) -> str:
-    p = item["prices"]
-    m = item["metrics"]
-    links = item["affiliate_links"]
-    detail_url = f"{base_url}/ko/p/{product_slug(item['id'])}/"
-    cheaper_label = "알리 직구" if m["kr_cheaper"] == "aliexpress" else "쿠팡 정발"
-    promo = item.get("sniper", {}).get("promo_code")
-    promo_line = f"\n· 할인코드: <code>{_esc(promo)}</code>" if promo else ""
+    slug = product_slug(item["id"])
+    detail_url = f"{base_url.rstrip('/')}/ko/p/{slug}/?utm_source=telegram"
+    sniper = item.get("sniper", {})
+    promo = sniper.get("promo_code")
+    obs = sniper.get("observed_at") or datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    promo_line = (
+        f"\n· 포착된 프로모션 코드: <code>{_esc(promo)}</code> (대상국·최소주문액·선착순 소진 조건 결제창 확인)"
+        if promo
+        else ""
+    )
 
     return (
-        f"<b>{_esc(item['ko']['title'])}</b>\n\n"
-        f"· 쿠팡: {int(p['coupang_krw']):,}원\n"
-        f"· 알리 직구: {int(p['ali_krw']):,}원\n"
-        f"→ {cheaper_label} 기준 {m['kr_diff_krw']:,}원 ({m['kr_savings_pct']:.0f}%) 차이 (정가 대비 -{m['msrp_drop_kr_pct']:.0f}%)"
+        f"<b>{_esc(item['ko']['title'])}</b>\n"
+        f"· 관측 시각: {_esc(obs)} (가격·할인 조건 실시간 변동 가능)"
         f"{promo_line}\n\n"
         f"단점 체크: {_esc(item['ko']['cons'][0])}\n"
-        f"판단: {_esc(item['ko']['verdict'])}\n\n"
-        f'<a href="{_esc(links["coupang"])}">쿠팡 확인</a>  |  '
-        f'<a href="{_esc(links["aliexpress"])}">알리 최저가</a>  |  '
-        f'<a href="{_esc(detail_url)}">상세 스펙 비교표</a>'
+        f"선택 기준: {_esc(item['ko']['verdict'])}\n\n"
+        f'<a href="{_esc(detail_url)}">허브에서 사양·통관 기준 및 판매처 확인 →</a>'
     )
 
 
 def format_en_alert(item: dict, base_url: str) -> str:
-    p = item["prices"]
-    m = item["metrics"]
-    links = item["affiliate_links"]
-    detail_url = f"{base_url}/en/p/{product_slug(item['id'])}/"
-    cheaper_label = "AliExpress" if m["en_cheaper"] == "aliexpress" else "Amazon"
-    promo = item.get("sniper", {}).get("promo_code")
-    promo_line = f"\n• Promo code: <code>{_esc(promo)}</code>" if promo else ""
+    slug = product_slug(item["id"])
+    detail_url = f"{base_url.rstrip('/')}/en/p/{slug}/?utm_source=telegram"
+    sniper = item.get("sniper", {})
+    promo = sniper.get("promo_code")
+    obs = sniper.get("observed_at") or datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    promo_line = (
+        f"\n• Spotted promo code: <code>{_esc(promo)}</code> (subject to region, minimum spend &amp; quota)"
+        if promo
+        else ""
+    )
 
     return (
-        f"<b>{_esc(item['en']['title'])}</b>\n\n"
-        f"• Amazon US: ${p['amazon_usd']:.2f}\n"
-        f"• AliExpress: ${p['ali_usd']:.2f}\n"
-        f"→ Save ${m['en_diff_usd']:.2f} ({m['en_savings_pct']:.0f}%) via {cheaper_label} (-{m['msrp_drop_en_pct']:.0f}% vs MSRP)"
+        f"<b>{_esc(item['en']['title'])}</b>\n"
+        f"• Observed: {_esc(obs)} (live terms &amp; stock subject to change)"
         f"{promo_line}\n\n"
         f"Caveat: {_esc(item['en']['cons'][0])}\n"
-        f"Verdict: {_esc(item['en']['verdict'])}\n\n"
-        f'<a href="{_esc(links["amazon"])}">Amazon US</a>  |  '
-        f'<a href="{_esc(links["aliexpress"])}">AliExpress</a>  |  '
-        f'<a href="{_esc(detail_url)}">Full Spec Sheet</a>'
+        f"Buying check: {_esc(item['en']['verdict'])}\n\n"
+        f'<a href="{_esc(detail_url)}">View Compatibility &amp; Store Links on Hub →</a>'
     )
 
 
@@ -76,57 +98,90 @@ def _send_telegram_message(bot_token: str, chat_id: str, text: str) -> bool:
         return resp.status == 200
 
 
-def dispatch_alerts(
-    approved_items: list[dict], cfg: dict, dist_dir: Path, live_send: bool = False, max_alerts: int = 3
-) -> dict:
-    """Select top deals exceeding alert threshold, write previews, and optionally send to Telegram."""
-    min_pct = float(cfg["gatekeeper"].get("alert_min_savings_pct", 15.0))
+def stage_alerts_preview(sniper_res: dict, cfg: dict, dist_dir: Path) -> dict:
+    """Write preview files and stage live-matched events for post-deploy verified dispatch."""
     base_url = cfg["site"]["base_url"].rstrip("/")
-
-    hot_ko = [
-        it for it in approved_items if it["metrics"]["msrp_drop_kr_pct"] >= min_pct
-    ]
-    hot_ko.sort(key=lambda x: x["metrics"]["msrp_drop_kr_pct"], reverse=True)
-    hot_ko = hot_ko[:max_alerts]
-
-    hot_en = [
-        it for it in approved_items if it["metrics"]["msrp_drop_en_pct"] >= min_pct
-    ]
-    hot_en.sort(key=lambda x: x["metrics"]["msrp_drop_en_pct"], reverse=True)
-    hot_en = hot_en[:max_alerts]
-
-    ko_messages = [format_ko_alert(it, base_url) for it in hot_ko]
-    en_messages = [format_en_alert(it, base_url) for it in hot_en]
+    ko_previews = [format_ko_alert(it, base_url) for it in sniper_res.get("preview_ko", [])]
+    en_previews = [format_en_alert(it, base_url) for it in sniper_res.get("preview_en", [])]
 
     dist_dir.mkdir(parents=True, exist_ok=True)
     (dist_dir / "telegram_preview_ko.txt").write_text(
-        "\n\n" + ("\n\n" + "=" * 60 + "\n\n").join(ko_messages) + "\n",
-        encoding="utf-8",
+        "\n\n" + ("\n\n" + "=" * 60 + "\n\n").join(ko_previews) + "\n", encoding="utf-8"
     )
     (dist_dir / "telegram_preview_en.txt").write_text(
-        "\n\n" + ("\n\n" + "=" * 60 + "\n\n").join(en_messages) + "\n",
-        encoding="utf-8",
+        "\n\n" + ("\n\n" + "=" * 60 + "\n\n").join(en_previews) + "\n", encoding="utf-8"
     )
+    return {
+        "queued_ko": len(sniper_res.get("ko_picks", [])),
+        "queued_en": len(sniper_res.get("en_picks", [])),
+        "sent_ko": 0,
+        "sent_en": 0,
+    }
 
+
+def dispatch_verified_alerts(
+    ko_picks: list[dict],
+    en_picks: list[dict],
+    cfg: dict,
+    data_dir: Path,
+    live_send: bool = False,
+) -> dict:
+    """Send ONLY live-matched, idempotency-unchecked alerts AFTER verifying public Hub URL is live."""
+    base_url = cfg["site"]["base_url"].rstrip("/")
+    token = cfg["telegram"].get("bot_token", "").strip()
+    if not (live_send and token):
+        return {"queued_ko": len(ko_picks), "queued_en": len(en_picks), "sent_ko": 0, "sent_en": 0, "live_mode": False}
+
+    history = load_sent_history(data_dir, cooldown_days=30)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    chat_ko = cfg["telegram"].get("chat_id_ko", "").strip()
+    chat_en = cfg["telegram"].get("chat_id_en", "").strip()
     sent_ko = 0
     sent_en = 0
-    token = cfg["telegram"].get("bot_token", "").strip()
-    if live_send and token:
-        chat_ko = cfg["telegram"].get("chat_id_ko", "").strip()
-        chat_en = cfg["telegram"].get("chat_id_en", "").strip()
-        if chat_ko:
-            for msg in ko_messages:
-                if _send_telegram_message(token, chat_ko, msg):
-                    sent_ko += 1
-        if chat_en:
-            for msg in en_messages:
-                if _send_telegram_message(token, chat_en, msg):
-                    sent_en += 1
+
+    if chat_ko:
+        for it in ko_picks:
+            sniper = it.get("sniper", {})
+            if not sniper.get("live_matched"):
+                continue
+            ev_id = sniper.get("event_id", "")
+            if ev_id and f"event:{ev_id}" in history:
+                continue
+            slug = product_slug(it["id"])
+            pub_url = f"{base_url}/ko/p/{slug}/"
+            if not verify_public_hub_url(pub_url, it["brand"]):
+                continue
+            if _send_telegram_message(token, chat_ko, format_ko_alert(it, base_url)):
+                sent_ko += 1
+                history[f"ko:{it['id']}"] = {"sent_date": today, "promo_code": sniper.get("promo_code")}
+                if ev_id:
+                    history[f"event:{ev_id}"] = {"sent_date": today, "channel": "telegram_ko"}
+
+    if chat_en:
+        for it in en_picks:
+            sniper = it.get("sniper", {})
+            if not sniper.get("live_matched"):
+                continue
+            ev_id = sniper.get("event_id", "")
+            if ev_id and f"event:{ev_id}" in history:
+                continue
+            slug = product_slug(it["id"])
+            pub_url = f"{base_url}/en/p/{slug}/"
+            if not verify_public_hub_url(pub_url, "As an Amazon Associate I earn from qualifying purchases."):
+                continue
+            if _send_telegram_message(token, chat_en, format_en_alert(it, base_url)):
+                sent_en += 1
+                history[f"en:{it['id']}"] = {"sent_date": today, "promo_code": sniper.get("promo_code")}
+                if ev_id:
+                    history[f"event:{ev_id}"] = {"sent_date": today, "channel": "telegram_en"}
+
+    if sent_ko or sent_en:
+        save_sent_history(data_dir, history)
 
     return {
-        "queued_ko": len(ko_messages),
-        "queued_en": len(en_messages),
+        "queued_ko": len(ko_picks),
+        "queued_en": len(en_picks),
         "sent_ko": sent_ko,
         "sent_en": sent_en,
-        "live_mode": bool(live_send and token),
+        "live_mode": True,
     }

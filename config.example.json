@@ -5,13 +5,42 @@
     "telegram_channel_ko": "https://t.me/gearcompare_kr",
     "telegram_channel_en": "https://t.me/gearcompare_en",
     "pinterest_verify_code": "c942f8f94af69430d13208288ac28bf9",
-    "google_verify_code": "7nTiW3caL5QmvI2N7XiSU-k4wTYbv9qU_d3eVZChTXo"
+    "google_verify_code": "7nTiW3caL5QmvI2N7XiSU-k4wTYbv9qU_d3eVZChTXo",
+    "live_offers_endpoint": "",
+    "analytics_beacon_url": ""
   },
   "affiliate": {
     "coupang_partners_id": "AF8784203",
-    "coupang_sub_id": "gearhub_ko",
+    "coupang_sub_id": "gch_ko_web",
+    "coupang_sub_ids_by_source": {
+      "web": "gch_ko_web",
+      "telegram": "gch_ko_tg",
+      "threads": "gch_ko_th",
+      "tool": "gch_ko_tool",
+      "pinterest": "gch_ko_pin",
+      "unknown": "gch_ko_unk"
+    },
     "aliexpress_tracking_id": "gearhub_global",
-    "amazon_associate_tag": "gearcomparehu-20"
+    "aliexpress_tracking_by_source": {
+      "web_ko": "gch_ko_web",
+      "web_en": "gch_en_web",
+      "pinterest": "gch_en_pin",
+      "telegram_ko": "gch_ko_tg",
+      "telegram_en": "gch_en_tg",
+      "threads": "gch_ko_th",
+      "tool": "gch_tool",
+      "unknown": "gearhub_global"
+    },
+    "amazon_associate_tag": "gearcomparehu-20",
+    "amazon_tags_by_source": {
+      "default": "gearcomparehu-20",
+      "pinterest": "gearcomparehu-20",
+      "telegram": "gearcomparehu-20",
+      "threads": "gearcomparehu-20",
+      "tool": "gearcomparehu-20",
+      "unknown": "gearcomparehu-20"
+    },
+    "allow_amazon_price_tracking": false
   },
   "telegram": {
     "bot_token": "",
@@ -20,7 +49,6 @@
   },
   "gatekeeper": {
     "min_price_ratio_vs_msrp": 0.35,
-    "alert_min_savings_pct": 15.0,
     "forbidden_accessory_keywords": [
       "케이스 단품",
       "실리콘 케이스만",

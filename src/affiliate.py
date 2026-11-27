@@ -1,29 +1,52 @@
-"""Affiliate URL builder and mandatory legal disclosure constants."""
+"""Affiliate URL builder, PII-free source tracking map, and mandatory legal disclosure constants."""
 
 from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 from urllib.parse import quote_plus
 
 DISCLOSURE_KO = (
-    "이 페이지 및 알림은 쿠팡 파트너스 및 알리익스프레스 제휴 활동의 일환으로, "
+    "이 페이지는 쿠팡 파트너스 및 알리익스프레스 제휴 활동의 일환으로, "
     "이에 따른 일정액의 수수료를 제공받을 수 있습니다. (구매자에게 추가 비용은 발생하지 않습니다.)"
 )
 
+BUTTON_DISCLOSURE_KO = "제휴 링크 안내: 아래 판매처 이동 후 구매 시 쿠팡 파트너스·알리익스프레스로부터 일정액의 수수료를 제공받을 수 있습니다."
+
+# Exact Amazon Operating Agreement sentence ("As an Amazon Associate I earn from qualifying purchases.") included verbatim.
 DISCLOSURE_EN = (
-    "Disclosure: As an Amazon Associate and AliExpress Affiliate, we earn from qualifying "
-    "purchases at no additional cost to you. Prices and availability are accurate as of the "
-    "timestamp shown and are subject to change."
+    "As an Amazon Associate I earn from qualifying purchases. "
+    "GearCompare Hub also participates in the AliExpress Affiliate Program and may earn commissions "
+    "from qualifying store links at no extra cost to you."
 )
+
+BUTTON_DISCLOSURE_EN = (
+    "Paid affiliate links: As an Amazon Associate I earn from qualifying purchases "
+    "(AliExpress links may also earn a commission)."
+)
+
+_SAFE_TRACK_RE = re.compile(r"^[A-Za-z0-9_-]{2,32}$")
+
+
+def _clean_track_id(raw: str, fallback: str) -> str:
+    """Enforce alphanumeric/underscore/hyphen PII-free tracking tokens."""
+    val = (raw or "").strip()
+    return val if _SAFE_TRACK_RE.match(val) else fallback
 
 
 def load_config(project_root: Path) -> dict:
-    local_cfg = project_root / "config.local.json"
-    example_cfg = project_root / "config.example.json"
-    cfg_path = local_cfg if local_cfg.exists() else example_cfg
-    cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+    example_cfg = json.loads((project_root / "config.example.json").read_text(encoding="utf-8"))
+    local_path = project_root / "config.local.json"
+    if local_path.exists():
+        local_cfg = json.loads(local_path.read_text(encoding="utf-8"))
+        for section, values in local_cfg.items():
+            if isinstance(values, dict) and isinstance(example_cfg.get(section), dict):
+                example_cfg[section].update(values)
+            else:
+                example_cfg[section] = values
+    cfg = example_cfg
 
     # Allow environment variable overrides (useful for GitHub Actions Secrets)
     if os.getenv("TELEGRAM_BOT_TOKEN"):
@@ -33,7 +56,11 @@ def load_config(project_root: Path) -> dict:
     if os.getenv("TELEGRAM_CHAT_ID_EN"):
         cfg["telegram"]["chat_id_en"] = os.environ["TELEGRAM_CHAT_ID_EN"]
     if os.getenv("AMAZON_ASSOCIATE_TAG"):
-        cfg["affiliate"]["amazon_associate_tag"] = os.environ["AMAZON_ASSOCIATE_TAG"]
+        tag = os.environ["AMAZON_ASSOCIATE_TAG"].strip()
+        cfg["affiliate"]["amazon_associate_tag"] = tag
+        for k in list(cfg["affiliate"].get("amazon_tags_by_source", {})):
+            if cfg["affiliate"]["amazon_tags_by_source"][k] == "gearcomparehu-20":
+                cfg["affiliate"]["amazon_tags_by_source"][k] = tag
     if os.getenv("COUPANG_PARTNERS_ID"):
         cfg["affiliate"]["coupang_partners_id"] = os.environ["COUPANG_PARTNERS_ID"]
     if os.getenv("ALIEXPRESS_TRACKING_ID"):
@@ -42,21 +69,30 @@ def load_config(project_root: Path) -> dict:
         cfg["site"]["base_url"] = os.environ["SITE_BASE_URL"].rstrip("/")
     if os.getenv("PINTEREST_VERIFY_CODE"):
         cfg["site"]["pinterest_verify_code"] = os.environ["PINTEREST_VERIFY_CODE"].strip()
+    if os.getenv("LIVE_OFFERS_ENDPOINT"):
+        cfg["site"]["live_offers_endpoint"] = os.environ["LIVE_OFFERS_ENDPOINT"].strip()
     return cfg
 
 
-def build_affiliate_links(product: dict, affiliate_cfg: dict) -> dict[str, str]:
-    """Return affiliate-ready URLs.
-
-    If direct verified shortlinks (`coupang_direct`, `ali_direct`, `amazon_direct`) are set
-    on a product (e.g. from official APIs), use them directly; otherwise build tagged search
-    URLs that never break or 404 during initial approval stages.
-    """
+def build_affiliate_links(product: dict, affiliate_cfg: dict, source: str = "web") -> dict[str, str]:
+    """Return transparent destination affiliate URLs with PII-free channel attribution."""
     urls = product.get("urls", {})
-    cp_id = affiliate_cfg.get("coupang_partners_id", "AF8784203")
-    amz_tag = affiliate_cfg.get("amazon_associate_tag", "gearcomparehu-20")
-    cp_sub = affiliate_cfg.get("coupang_sub_id", "gearhub_ko")
-    ali_track = affiliate_cfg.get("aliexpress_tracking_id", "gearhub_global")
+    cp_id = _clean_track_id(affiliate_cfg.get("coupang_partners_id", "AF8784203"), "AF8784203")
+
+    cp_map = affiliate_cfg.get("coupang_sub_ids_by_source", {})
+    cp_sub = _clean_track_id(
+        cp_map.get(source) or affiliate_cfg.get("coupang_sub_id", "gch_ko_web"),
+        "gch_ko_web",
+    )
+
+    ali_default = _clean_track_id(affiliate_cfg.get("aliexpress_tracking_id", "gearhub_global"), "gearhub_global")
+    ali_map = affiliate_cfg.get("aliexpress_tracking_by_source", {})
+    ali_track = _clean_track_id(ali_map.get(source, ali_default), ali_default)
+
+    amz_default = _clean_track_id(affiliate_cfg.get("amazon_associate_tag", "gearcomparehu-20"), "gearcomparehu-20")
+    amz_map = affiliate_cfg.get("amazon_tags_by_source", {})
+    # Never invent unissued Amazon Associate tags; only use explicitly configured issued tags.
+    amz_tag = _clean_track_id(amz_map.get(source, amz_default), amz_default)
 
     coupang_url = urls.get("coupang_direct") or (
         f"https://link.coupang.com/re/AFFSRP?lptag={quote_plus(cp_id)}"
