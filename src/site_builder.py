@@ -286,9 +286,12 @@ button, input, select { font: inherit; color: inherit; }
 .seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
 
 .rows { list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.row { display: grid; grid-template-columns: minmax(0, 1fr) 210px 230px; gap: 10px 16px; padding: 14px 16px; border-top: 1px solid var(--line); align-items: center; }
+.row { display: grid; grid-template-columns: 78px minmax(0, 1fr) 210px 230px; gap: 10px 16px; padding: 14px 16px; border-top: 1px solid var(--line); align-items: center; }
 .row:first-child { border-top: 0; }
 .row:hover, .row[data-open] { background: #FBFCFD; }
+.r-thumb { display: grid; place-items: center; width: 78px; height: 78px; border-radius: 12px; border: 1px solid var(--line); background: #FFFFFF; padding: 5px; overflow: hidden; flex: none; }
+.r-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.r-thumb-fb { font-size: 11px; font-weight: 700; color: var(--muted); text-align: center; line-height: 1.2; }
 .r-meta { font-size: 12px; font-weight: 600; color: var(--muted); }
 .r-title { margin-top: 2px; font-size: 15px; line-height: 1.4; font-weight: 700; }
 .r-title a { text-decoration: none; }
@@ -317,6 +320,7 @@ button, input, select { font: inherit; color: inherit; }
 
 .hub[data-view="cards"] .rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; background: none; border: 0; }
 .hub[data-view="cards"] .row { grid-template-columns: 1fr; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.hub[data-view="cards"] .r-thumb { width: 100%; height: 168px; padding: 12px; background: #FFFFFF; }
 .hub[data-view="cards"] .r-act { justify-content: flex-start; }
 .hub[data-view="cards"] .row-disc { text-align: left; }
 
@@ -334,6 +338,9 @@ html.js .hub:not([data-ready]) .rows > li:nth-child(n+__PAGE_NEXT__) { display: 
 .crumbs a { text-decoration: none; color: var(--ink-2); }
 .detail { display: grid; grid-template-columns: minmax(0, 1fr) 370px; grid-template-areas: "intro aside" "body aside"; gap: 0 34px; padding: 16px 0 10px; align-items: start; }
 .d-intro { grid-area: intro; min-width: 0; }
+.d-hero { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; }
+.d-media { width: 200px; height: 200px; border-radius: 16px; border: 1px solid var(--line); background: #FFFFFF; padding: 14px; display: grid; place-items: center; box-shadow: var(--shadow); }
+.d-media img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .d-body { grid-area: body; }
 .d-aside { grid-area: aside; position: sticky; top: 82px; }
 .d-intro h1, .tool-hero h1 { margin-top: 10px; font-size: clamp(1.65rem, 1.2rem + 1.6vw, 2.35rem); line-height: 1.2; letter-spacing: -0.03em; font-weight: 780; }
@@ -367,6 +374,10 @@ html.js .hub:not([data-ready]) .rows > li:nth-child(n+__PAGE_NEXT__) { display: 
 .rel-grid, .tool-grid, .guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 14px; }
 .guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 22px; }
 .rel, .tool-card, .guide-card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.tc-top, .rel-top { display: flex; gap: 14px; align-items: center; }
+.tc-thumb, .rel-thumb { flex: none; width: 76px; height: 76px; border-radius: 12px; border: 1px solid var(--line); background: #FFFFFF; padding: 6px; display: grid; place-items: center; overflow: hidden; }
+.tc-thumb img, .rel-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.tc-meta { min-width: 0; display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
 .rel h3 a, .guide-card h2 a, .tool-card h4 a { text-decoration: none; }
 .rel h3 a:hover, .guide-card h2 a:hover, .tool-card h4 a:hover { text-decoration: underline; }
 .guide-card h2 { font-size: 1.12rem; line-height: 1.35; }
@@ -441,7 +452,11 @@ html.js .hub:not([data-ready]) .rows > li:nth-child(n+__PAGE_NEXT__) { display: 
   .scrim[data-open] { opacity: 1; visibility: visible; }
 }
 @media (max-width: 780px) {
-  .regions, .pc, .rel-grid, .tool-grid, .guide-grid, .tool-fields, .row, .summary, .drawer dl { grid-template-columns: 1fr; }
+  .regions, .pc, .rel-grid, .tool-grid, .guide-grid, .tool-fields, .summary, .drawer dl, .d-hero { grid-template-columns: 1fr; }
+  .row { grid-template-columns: 68px minmax(0, 1fr); }
+  .r-thumb { width: 68px; height: 68px; }
+  .r-verd, .r-act, .row-disc { grid-column: 1 / -1; }
+  .d-media { width: 168px; height: 168px; }
   .r-act { justify-content: flex-start; }
   .row-disc { text-align: left; }
   .brand-name, .head-nav .lbl-tg { display: none; }
@@ -948,7 +963,7 @@ def _aff_config_script(cfg: dict) -> str:
     return f'<script type="application/json" data-aff-config>{raw}</script>'
 
 
-def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: str, alternates: dict | None) -> str:
+def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: str, alternates: dict | None, og_image: str | None = None) -> str:
     base = cfg["site"]["base_url"].rstrip("/")
     alt = ""
     if alternates:
@@ -961,6 +976,7 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
     g_meta = f'\n  <meta name="google-site-verification" content="{_esc(g_verify)}">' if g_verify else ""
     rss_href = f"{base}/ko/feed.xml" if lang == "ko" else f"{base}/en/pinterest-feed.xml"
     rss_link = f'\n  <link rel="alternate" type="application/rss+xml" title="{_esc(cfg["site"]["brand_name"])} RSS" href="{_esc(rss_href)}">'
+    og_img_tag = f'\n  <meta property="og:image" content="{_esc(base + og_image)}">' if og_image else ""
     # Zero static prices in meta tags, OpenGraph, or structured data (Debate 3 Consensus #1)
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
@@ -975,7 +991,7 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
   <meta property="og:title" content="{_esc(title)}">
   <meta property="og:description" content="{_esc(description)}">
   <meta property="og:url" content="{_esc(base + path)}">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="website">{og_img_tag}
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="{FONT_CSS_URL}">
   <link rel="stylesheet" href="{up}assets/style.css">
@@ -1216,7 +1232,20 @@ HUB = {
 }
 
 
-def _render_row(it: dict, lang: str, pfx: str) -> str:
+def _has_product_image(slug: str) -> bool:
+    img_dir = Path(__file__).resolve().parent.parent / "data" / "product_images"
+    return (img_dir / f"{slug}.webp").exists()
+
+
+def _thumb_inner(it: dict, slug: str, up: str, size: int, eager: bool = False) -> str:
+    if _has_product_image(slug):
+        load_attr = "eager" if eager else "lazy"
+        alt = f"{it['brand']} {it['model']}"
+        return f'<img src="{up}assets/products/{slug}.webp" alt="{_esc(alt)}" width="{size}" height="{size}" loading="{load_attr}" decoding="async">'
+    return f'<span class="r-thumb-fb">{_esc(it["brand"])}</span>'
+
+
+def _render_row(it: dict, lang: str, pfx: str, up: str, idx: int = 99) -> str:
     t, h, d, loc = T[lang], HUB[lang], _profile(it, lang), it[lang]
     slug = product_slug(it["id"])
     href = f"{pfx}{slug}/"
@@ -1232,6 +1261,7 @@ def _render_row(it: dict, lang: str, pfx: str) -> str:
         f'data-r="{"ali" if d["direct_pick"] else "dom"}" data-prio="{d["prio"]}" '
         f'data-q="{_search_blob(it, lang)}"'
     )
+    thumb_html = f'<a class="r-thumb" href="{href}" tabindex="-1">{_thumb_inner(it, slug, up, 78, eager=(idx < 6))}</a>'
 
     def buy(store_cls: str, store_id: str, url: str, label: str, pick: bool) -> str:
         return (
@@ -1242,6 +1272,7 @@ def _render_row(it: dict, lang: str, pfx: str) -> str:
 
     return f"""
         <li class="row" {attrs}>
+          {thumb_html}
           <div class="r-info">
             <p class="r-meta">{_esc(_cat_label(it['category'], lang))} · {_esc(it['brand'])}</p>
             <h3 class="r-title"><a href="{href}">{_esc(loc['title'])}</a></h3>
@@ -1432,7 +1463,7 @@ def _render_hub(items: list[dict], cfg: dict, lang: str, cat: str | None = None,
           <div class="seg" role="group" aria-label="{h['view_lbl']}">{view_html}</div>
         </div>
         <h2 class="sr-only">{h['list_h']}</h2>
-        <ol class="rows" data-rows>{''.join(_render_row(it, lang, pfx) for it, _ in profiles)}</ol>
+        <ol class="rows" data-rows>{''.join(_render_row(it, lang, pfx, up, idx=i) for i, (it, _) in enumerate(profiles))}</ol>
         <div class="empty" data-empty hidden><strong>{h['empty_t']}</strong>{h['empty_d']}<br><button type="button" data-reset>{h['reset']}</button></div>
         <div class="pager"><p class="pager-status num" data-status></p><button type="button" class="primary" data-load></button><button type="button" data-all></button></div>
       </div>
@@ -1518,13 +1549,32 @@ def _render_detail_page(it: dict, lang: str, cfg: dict, items: list[dict] | None
         rel_cards = []
         for r in rel_items:
             rd = _profile(r, lang)
+            r_slug = product_slug(r["id"])
             rel_cards.append(f"""
         <article class="rel">
-          <span class="tag" style="align-self:flex-start">{_esc(_cat_label(r['category'], lang))} · {_esc(r['brand'])}</span>
-          <h3><a href="../{product_slug(r['id'])}/">{_esc(r[lang]['title'])}</a></h3>
+          <div class="rel-top">
+            <a class="rel-thumb" href="../{r_slug}/" tabindex="-1">{_thumb_inner(r, r_slug, up, 76)}</a>
+            <div class="tc-meta">
+              <span class="tag">{_esc(_cat_label(r['category'], lang))} · {_esc(r['brand'])}</span>
+              <h3><a href="../{r_slug}/">{_esc(r[lang]['title'])}</a></h3>
+            </div>
+          </div>
           {_pick_badge(rd, lang)}
         </article>""")
         related_html = f'<section class="related" aria-labelledby="rel-h"><h2 id="rel-h">{rel_h}</h2><div class="rel-grid">{"".join(rel_cards)}</div></section>'
+
+    has_img = _has_product_image(slug)
+    intro_inner = (
+        f'<span class="tag">{_esc(it["brand"])} · {_esc(it["model"])}</span>'
+        f'<h1>{_esc(loc["title"])}</h1>'
+        f'<p class="dek">{_esc(loc["summary"])}</p>'
+        f'{_chips(it, 4)}'
+        f'{dock_callout}'
+    )
+    if has_img:
+        hero_html = f'<div class="d-hero"><div class="d-media">{_thumb_inner(it, slug, up, 200, eager=True)}</div><div>{intro_inner}</div></div>'
+    else:
+        hero_html = intro_inner
 
     body = f"""
 <body class="{lang}">
@@ -1542,11 +1592,7 @@ def _render_detail_page(it: dict, lang: str, cfg: dict, items: list[dict] | None
 
     <div class="detail">
       <header class="d-intro">
-        <span class="tag">{_esc(it['brand'])} · {_esc(it['model'])}</span>
-        <h1>{_esc(loc['title'])}</h1>
-        <p class="dek">{_esc(loc['summary'])}</p>
-        {_chips(it, 4)}
-        {dock_callout}
+        {hero_html}
       </header>
 
       <aside class="d-aside" aria-label="{decide_h}">
@@ -1596,8 +1642,9 @@ def _render_detail_page(it: dict, lang: str, cfg: dict, items: list[dict] | None
 </body>
 </html>
 """
+    og_img = f"/assets/products/{slug}.webp" if has_img else None
     head = _head(lang=lang, title=title, description=loc["summary"], up=up, cfg=cfg, path=f"/{lang}/p/{slug}/",
-                 alternates={"ko": f"/ko/p/{slug}/", "en": f"/en/p/{slug}/"})
+                 alternates={"ko": f"/ko/p/{slug}/", "en": f"/en/p/{slug}/"}, og_image=og_img)
     return head + body
 
 
@@ -1751,6 +1798,14 @@ def build_site(approved_items: list[dict], cfg: dict, dist_dir: Path) -> dict:
     css = SHARED_CSS.strip().replace("__PAGE_NEXT__", str(PAGE_SIZE + 1))
     _write(dist_dir / "assets" / "style.css", css + "\n")
     _write(dist_dir / "assets" / "app.js", APP_JS.strip() + "\n")
+
+    # Copy vetted 360x360 WebP product images into dist/assets/products/
+    src_img_dir = Path(__file__).resolve().parent.parent / "data" / "product_images"
+    dst_img_dir = dist_dir / "assets" / "products"
+    if src_img_dir.exists():
+        dst_img_dir.mkdir(parents=True, exist_ok=True)
+        for img_file in src_img_dir.glob("*.webp"):
+            shutil.copy2(img_file, dst_img_dir / img_file.name)
     _write(dist_dir / "index.html", _render_root_gateway(cfg, approved_items))
     _write(dist_dir / "policy" / "index.html", _render_policy_page(cfg))
     _write(dist_dir / "ko" / "index.html", _render_hub(approved_items, cfg, "ko"))

@@ -69,6 +69,7 @@ def _render_card_canvas(
     footer_note: str,
     domain_label: str,
     out_path: Path,
+    thumb_path: Path | None = None,
 ) -> None:
     """Render a crisp 1000x1500 (2:3 vertical) price-free decision infographic PNG."""
     W, H = 1000, 1500
@@ -76,8 +77,8 @@ def _render_card_canvas(
     draw = ImageDraw.Draw(img)
 
     f_tag = _load_font(FONT_CANDIDATES_BOLD, 22)
-    f_h1 = _load_font(FONT_CANDIDATES_BOLD, 44)
-    f_sub = _load_font(FONT_CANDIDATES_REG, 26)
+    f_h1 = _load_font(FONT_CANDIDATES_BOLD, 42 if thumb_path else 44)
+    f_sub = _load_font(FONT_CANDIDATES_REG, 25 if thumb_path else 26)
     f_chip = _load_font(FONT_CANDIDATES_BOLD, 22)
     f_store = _load_font(FONT_CANDIDATES_BOLD, 25)
     f_box_body = _load_font(FONT_CANDIDATES_REG, 24)
@@ -93,17 +94,29 @@ def _render_card_canvas(
     draw.text((110, 100), _ascii_clean(badge_left)[:34].upper(), fill="#374151", font=f_tag)
     draw.text((W - 340, 100), _ascii_clean(badge_right)[:24].upper(), fill="#0F766E", font=f_tag)
 
+    has_thumb = bool(thumb_path and thumb_path.exists())
+    if has_thumb and thumb_path is not None:
+        draw.rounded_rectangle((W - 320, 168, W - 88, 400), radius=20, fill="#FFFFFF", outline="#E2E6EC", width=2)
+        try:
+            p_im = Image.open(thumb_path).convert("RGB").resize((208, 208), Image.Resampling.LANCZOS)
+            img.paste(p_im, (W - 308, 180))
+        except OSError:
+            has_thumb = False
+
+    head_w = 21 if has_thumb else 31
+    sub_w = 37 if has_thumb else 54
+
     y = 172
-    for line in textwrap.wrap(_ascii_clean(headline), width=31)[:3]:
+    for line in textwrap.wrap(_ascii_clean(headline), width=head_w)[:3]:
         draw.text((88, y), line, fill="#111827", font=f_h1)
-        y += 56
+        y += 52 if has_thumb else 56
 
-    y += 12
-    for line in textwrap.wrap(_ascii_clean(subtitle), width=54)[:3]:
+    y += 10
+    for line in textwrap.wrap(_ascii_clean(subtitle), width=sub_w)[:3]:
         draw.text((88, y), line, fill="#4B5563", font=f_sub)
-        y += 35
+        y += 34
 
-    y += 16
+    y = max(y + 16, 424 if has_thumb else y + 16)
     cx = 88
     for sp in chips[:3]:
         label = _ascii_clean(sp)[:26]
@@ -179,6 +192,8 @@ def render_pin_card(item: dict, out_path: Path, domain_label: str) -> None:
     """Render a price-free problem/compatibility Pinterest PNG card for a standalone product."""
     cat_name = CATEGORY_LABELS_EN.get(item["category"], item["category"])
     specs_clean = [_ascii_clean(v) for v in item.get("specs", {}).values() if len(_ascii_clean(v)) >= 3]
+    slug = product_slug(item["id"])
+    thumb = Path(__file__).resolve().parent.parent / "data" / "product_images" / f"{slug}.webp"
     _render_card_canvas(
         badge_left=f"{cat_name} · {item['brand']}",
         badge_right="BUYING CHECKLIST",
@@ -203,6 +218,7 @@ def render_pin_card(item: dict, out_path: Path, domain_label: str) -> None:
         footer_note=item["en"]["verdict"],
         domain_label=domain_label,
         out_path=out_path,
+        thumb_path=thumb if thumb.exists() else None,
     )
 
 

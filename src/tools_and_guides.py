@@ -580,7 +580,7 @@ DOCK_TOOL_JS = r"""
 """
 
 
-def _render_tool_product_card(it: dict, lang: str, detail_prefix: str, slug_fn: Callable[[str], str]) -> str:
+def _render_tool_product_card(it: dict, lang: str, detail_prefix: str, slug_fn: Callable[[str], str], up: str = "../../../") -> str:
     loc = it[lang]
     links = it["affiliate_links"]
     slug = slug_fn(it["id"])
@@ -590,10 +590,16 @@ def _render_tool_product_card(it: dict, lang: str, detail_prefix: str, slug_fn: 
     ali_lbl = "알리 직구 조건 확인" if lang == "ko" else "Check AliExpress"
     detail_lbl = "상세 스펙·단점 보기" if lang == "ko" else "Specs & Caveats"
     con_lbl = "주의할 단점:" if lang == "ko" else "Caveat:"
+    alt_txt = f"{it['brand']} {it['model']}"
     return (
         f'<article class="panel tool-card">'
-        f'<span class="tag">{_esc(it["brand"])} · {_esc(it["model"])}</span>'
-        f'<h4><a href="{detail_prefix}{slug}/">{_esc(loc["title"])}</a></h4>'
+        f'<div class="tc-top">'
+        f'<a class="tc-thumb" href="{detail_prefix}{slug}/" tabindex="-1">'
+        f'<img src="{up}assets/products/{slug}.webp" alt="{_esc(alt_txt)}" width="80" height="80" loading="lazy" decoding="async">'
+        f'</a>'
+        f'<div class="tc-meta"><span class="tag">{_esc(it["brand"])} · {_esc(it["model"])}</span>'
+        f'<h4><a href="{detail_prefix}{slug}/">{_esc(loc["title"])}</a></h4></div>'
+        f'</div>'
         f'<p class="tc-sum">{_esc(loc["summary"])}</p>'
         f'<p class="tc-con"><strong>{con_lbl}</strong> {_esc(loc["cons"][0])}</p>'
         f'<div class="actions">'
