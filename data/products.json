@@ -9,9 +9,9 @@
     "msrp_krw": 69000,
     "msrp_usd": 59.99,
     "urls": {
-      "coupang_query": "UGREEN 넥소드 100W GaN 충전기 CD226",
-      "ali_query": "UGREEN Nexode 100W GaN CD226",
-      "amazon_query": "UGREEN Nexode 100W USB C Charger 4-Port"
+      "coupang_query": "유그린 넥소드 100W 4포트 GaN 충전기 CD226",
+      "ali_query": "UGREEN Nexode 100W 4-Port GaN CD226",
+      "amazon_query": "UGREEN Nexode 100W 4-Port GaN Charger"
     },
     "specs": {
       "max_output": "100W PD 3.0",
@@ -72,9 +72,9 @@
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
     "urls": {
-      "coupang_query": "독거미 키보드 AULA F75 무선 기계식",
-      "ali_query": "AULA F75 75% Wireless Gasket Mechanical Keyboard",
-      "amazon_query": "AULA F75 75% Wireless Mechanical Keyboard"
+      "coupang_query": "독거미 AULA F75 무선 기계식 키보드",
+      "ali_query": "AULA F75 Wireless Mechanical Keyboard",
+      "amazon_query": "AULA F75 Wireless Mechanical Keyboard"
     },
     "specs": {
       "layout": "75% (80 Keys + Knob)",
@@ -137,7 +137,7 @@
     "urls": {
       "coupang_query": "앤커 프라임 20000mAh 200W 보조배터리 A1336",
       "ali_query": "Anker Prime 20000mAh 200W Power Bank A1336",
-      "amazon_query": "Anker Prime Power Bank 20000mAh 200W"
+      "amazon_query": "Anker Prime 20000mAh 200W Power Bank A1336"
     },
     "specs": {
       "capacity": "20,000mAh (72Wh, 기내 반입 가능)",
@@ -198,9 +198,9 @@
     "msrp_krw": 820000,
     "msrp_usd": 649.0,
     "urls": {
-      "coupang_query": "Beelink SER8 8745HS 미니PC 32GB 1TB",
-      "ali_query": "Beelink SER8 Ryzen 7 8745HS 32GB 1TB Mini PC",
-      "amazon_query": "Beelink SER8 AMD Ryzen 7 8745HS Mini PC 32GB 1TB"
+      "coupang_query": "비링크 Beelink SER8 8745HS 미니PC 32GB 1TB",
+      "ali_query": "Beelink SER8 8745HS Mini PC 32GB 1TB",
+      "amazon_query": "Beelink SER8 8745HS Mini PC 32GB 1TB"
     },
     "specs": {
       "cpu": "AMD Ryzen 7 8745HS (8C/16T) + Radeon 780M",
@@ -262,8 +262,8 @@
     "msrp_usd": 119.0,
     "urls": {
       "coupang_query": "키크론 K2 Max 무선 기계식 키보드",
-      "ali_query": "Keychron K2 Max QMK VIA Wireless Mechanical Keyboard",
-      "amazon_query": "Keychron K2 Max QMK Wireless Mechanical Keyboard"
+      "ali_query": "Keychron K2 Max Wireless Mechanical Keyboard",
+      "amazon_query": "Keychron K2 Max Wireless Mechanical Keyboard"
     },
     "specs": {
       "layout": "75% Compact (84 Keys)",
@@ -324,9 +324,9 @@
     "msrp_krw": 139000,
     "msrp_usd": 99.99,
     "urls": {
-      "coupang_query": "로지텍 MX Master 3S 무선 마우스 정품",
-      "ali_query": "Logitech MX Master 3S Wireless Mouse Original",
-      "amazon_query": "Logitech MX Master 3S Wireless Performance Mouse"
+      "coupang_query": "로지텍 MX Master 3S 무선 마우스",
+      "ali_query": "Logitech MX Master 3S Wireless Mouse",
+      "amazon_query": "Logitech MX Master 3S Wireless Mouse"
     },
     "specs": {
       "sensor": "8000 DPI Darkfield (유리 표면 인식)",
@@ -387,9 +387,9 @@
     "msrp_krw": 99000,
     "msrp_usd": 79.99,
     "urls": {
-      "coupang_query": "베이스어스 블레이드 HD 100W 20000mAh 슬림 보조배터리",
-      "ali_query": "Baseus Blade HD 100W 20000mAh Laptop Power Bank",
-      "amazon_query": "Baseus Blade HD Laptop Power Bank 100W 20000mAh"
+      "coupang_query": "베이스어스 블레이드 HD 100W 20000mAh 보조배터리",
+      "ali_query": "Baseus Blade HD 100W 20000mAh Power Bank",
+      "amazon_query": "Baseus Blade HD 100W 20000mAh Power Bank"
     },
     "specs": {
       "thickness": "18mm 슬림 평판형",
@@ -450,9 +450,9 @@
     "msrp_krw": 79000,
     "msrp_usd": 56.99,
     "urls": {
-      "coupang_query": "파이파인 FIFINE AM8 다이나믹 마이크 USB XLR",
-      "ali_query": "FIFINE AM8 USB XLR Dynamic Microphone",
-      "amazon_query": "FIFINE Dynamic Microphone XLR USB AM8"
+      "coupang_query": "파이파인 FIFINE AM8 USB XLR 다이나믹 마이크",
+      "ali_query": "FIFINE AmpliGame AM8 USB XLR Microphone",
+      "amazon_query": "FIFINE AmpliGame AM8 USB XLR Microphone"
     },
     "specs": {
       "capsule": "Cardioid Dynamic (주변 키보드 소음 억제)",
@@ -513,9 +513,9 @@
     "msrp_krw": 289000,
     "msrp_usd": 229.99,
     "urls": {
-      "coupang_query": "삼성전자 포터블 SSD T7 Shield 2TB 외장SSD",
-      "ali_query": "Samsung T7 Shield 2TB Portable SSD Original",
-      "amazon_query": "SAMSUNG T7 Shield 2TB Portable SSD"
+      "coupang_query": "삼성전자 포터블 SSD T7 Shield 2TB MU-PE2T0S",
+      "ali_query": "Samsung T7 Shield 2TB Portable SSD MU-PE2T0S",
+      "amazon_query": "Samsung T7 Shield 2TB Portable SSD MU-PE2T0S"
     },
     "specs": {
       "speed": "Read 1,050 MB/s / Write 1,000 MB/s",
@@ -576,9 +576,9 @@
     "msrp_krw": 69000,
     "msrp_usd": 59.99,
     "urls": {
-      "coupang_query": "샤오미 모니터 라이트바 1S 무선 컨트롤러 스크린바",
-      "ali_query": "Xiaomi Mijia Monitor Light Bar 1S Ra95 Wireless Puck",
-      "amazon_query": "Xiaomi Mi Computer Monitor Light Bar"
+      "coupang_query": "샤오미 모니터 라이트바 1S MJGJD02YL",
+      "ali_query": "Xiaomi Monitor Light Bar 1S MJGJD02YL",
+      "amazon_query": "Xiaomi Mi Computer Monitor Light Bar 1S"
     },
     "specs": {
       "cri": "Ra95 고연색성 LED",
@@ -639,9 +639,9 @@
     "msrp_krw": 209000,
     "msrp_usd": 149.99,
     "urls": {
-      "coupang_query": "엘가토 스트림덱 MK.2 15키 정품",
-      "ali_query": "Elgato Stream Deck MK2 15 Keys",
-      "amazon_query": "Elgato Stream Deck MK.2 15 Macro Keys"
+      "coupang_query": "엘가토 스트림덱 MK.2 15키",
+      "ali_query": "Elgato Stream Deck MK.2",
+      "amazon_query": "Elgato Stream Deck MK.2"
     },
     "specs": {
       "keys": "15x Customizable LCD Keys",
@@ -702,9 +702,9 @@
     "msrp_krw": 159000,
     "msrp_usd": 119.99,
     "urls": {
-      "coupang_query": "유그린 Revodok Pro 209 도킹스테이션 듀얼 4K 맥북 M1 M2 M3",
-      "ali_query": "UGREEN Revodok Pro 209 9 in 1 USB C Docking Station DisplayLink",
-      "amazon_query": "UGREEN Revodok Pro 209 USB C Docking Station Dual 4K"
+      "coupang_query": "유그린 Revodok Pro 209 DisplayLink 도킹스테이션",
+      "ali_query": "UGREEN Revodok Pro 209 DisplayLink Docking Station",
+      "amazon_query": "UGREEN Revodok Pro 209 DisplayLink Docking Station"
     },
     "specs": {
       "video": "2x HDMI + 2x DP (DisplayLink 지원, M1/M2/M3 듀얼 모니터 확장)",
@@ -765,9 +765,9 @@
     "msrp_krw": 99000,
     "msrp_usd": 84.99,
     "urls": {
-      "coupang_query": "앤커 프라임 100W 충전기 A2688",
-      "ali_query": "Anker Prime 100W GaN Wall Charger (A2688)",
-      "amazon_query": "Anker Prime 100W GaN Wall Charger (A2688)"
+      "coupang_query": "앤커 프라임 100W GaN 충전기 A2688",
+      "ali_query": "Anker Prime 100W GaN Charger A2688",
+      "amazon_query": "Anker Prime 100W GaN Wall Charger A2688"
     },
     "specs": {
       "max_output": "100W PD 3.1",
@@ -828,9 +828,9 @@
     "msrp_krw": 139000,
     "msrp_usd": 119.99,
     "urls": {
-      "coupang_query": "유그린 넥소드 프로 160W 충전기",
-      "ali_query": "UGREEN Nexode Pro 160W 4-Port PD 3.1 Charger (X763)",
-      "amazon_query": "UGREEN Nexode Pro 160W 4-Port PD 3.1 Charger (X763)"
+      "coupang_query": "유그린 넥소드 프로 160W 4포트 충전기 X763",
+      "ali_query": "UGREEN Nexode Pro 160W X763",
+      "amazon_query": "UGREEN Nexode Pro 160W 4-Port Charger"
     },
     "specs": {
       "max_output": "140W Single / 160W Total",
@@ -891,9 +891,9 @@
     "msrp_krw": 119000,
     "msrp_usd": 99.99,
     "urls": {
-      "coupang_query": "베이스어스 노모스 140W 충전 스테이션",
-      "ali_query": "Baseus Nomos 5-in-1 140W Desktop Charging Station",
-      "amazon_query": "Baseus Nomos 5-in-1 140W Desktop Charging Station"
+      "coupang_query": "베이스어스 노모스 140W 5in1 충전 스테이션",
+      "ali_query": "Baseus Nomos 5-in-1 140W Charging Station",
+      "amazon_query": "Baseus Nomos 5-in-1 140W Charging Station"
     },
     "specs": {
       "max_output": "140W Total",
@@ -954,9 +954,9 @@
     "msrp_krw": 79000,
     "msrp_usd": 69.99,
     "urls": {
-      "coupang_query": "CUKTECH 140W GaN 충전기",
-      "ali_query": "CUKTECH 15 GaN Charger 140W 4-Port (AD1404U)",
-      "amazon_query": "CUKTECH 15 GaN Charger 140W 4-Port (AD1404U)"
+      "coupang_query": "CUKTECH 15 GaN 140W 충전기 AD1404U",
+      "ali_query": "CUKTECH 15 GaN 140W AD1404U",
+      "amazon_query": "CUKTECH 15 GaN Charger 140W"
     },
     "specs": {
       "max_output": "140W PD 3.1",
@@ -1017,9 +1017,9 @@
     "msrp_krw": 59000,
     "msrp_usd": 49.99,
     "urls": {
-      "coupang_query": "INIU 100W GaN 충전기",
-      "ali_query": "INIU 100W 3-Port Compact GaN Charger (AI-611)",
-      "amazon_query": "INIU 100W 3-Port Compact GaN Charger (AI-611)"
+      "coupang_query": "INIU 100W 3포트 GaN 충전기 AI-611",
+      "ali_query": "INIU 100W GaN Charger AI-611",
+      "amazon_query": "INIU 100W 3-Port GaN Charger AI-611"
     },
     "specs": {
       "max_output": "100W PD 3.0",
@@ -1080,9 +1080,9 @@
     "msrp_krw": 149000,
     "msrp_usd": 119.99,
     "urls": {
-      "coupang_query": "쿸테크 20호 25000mAh 210W 보조배터리",
-      "ali_query": "CUKTECH 20 Power Bank 25,000mAh 210W (P23)",
-      "amazon_query": "CUKTECH 20 Power Bank 25,000mAh 210W (P23)"
+      "coupang_query": "CUKTECH 20 보조배터리 25000mAh 210W",
+      "ali_query": "CUKTECH 20 Power Bank 25000mAh 210W",
+      "amazon_query": "CUKTECH 20 Power Bank 25000mAh 210W"
     },
     "specs": {
       "capacity": "25,000mAh (90Wh 기내반입)",
@@ -1143,9 +1143,9 @@
     "msrp_krw": 69000,
     "msrp_usd": 54.99,
     "urls": {
-      "coupang_query": "쿸테크 10호 10000mAh 100W 보조배터리",
-      "ali_query": "CUKTECH 10 Power Bank 10,000mAh 100W (PB100P)",
-      "amazon_query": "CUKTECH 10 Power Bank 10,000mAh 100W (PB100P)"
+      "coupang_query": "CUKTECH 10 보조배터리 10000mAh 100W PB100P",
+      "ali_query": "CUKTECH 10 Power Bank 10000mAh 100W PB100P",
+      "amazon_query": "CUKTECH 10 Power Bank 10000mAh 100W"
     },
     "specs": {
       "capacity": "10,000mAh (36Wh)",
@@ -1206,9 +1206,9 @@
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
     "urls": {
-      "coupang_query": "앤커 맥고 10000 Qi2 보조배터리 A1654",
-      "ali_query": "Anker MagGo Power Bank 10,000mAh Qi2 15W (A1654)",
-      "amazon_query": "Anker MagGo Power Bank 10,000mAh Qi2 15W (A1654)"
+      "coupang_query": "앤커 맥고 10000mAh Qi2 보조배터리 A1654",
+      "ali_query": "Anker MagGo 10000mAh Qi2 Power Bank A1654",
+      "amazon_query": "Anker MagGo Power Bank 10000mAh Qi2 A1654"
     },
     "specs": {
       "capacity": "10,000mAh",
@@ -1269,9 +1269,9 @@
     "msrp_krw": 219000,
     "msrp_usd": 169.0,
     "urls": {
-      "coupang_query": "샤지 Shargeek 170 보조배터리",
-      "ali_query": "SHARGE Shargeek 170 Transparent 24,000mAh Power Bank",
-      "amazon_query": "SHARGE Shargeek 170 Transparent 24,000mAh Power Bank"
+      "coupang_query": "샤지 SHARGE Shargeek 170 보조배터리 24000mAh",
+      "ali_query": "SHARGE Shargeek 170 Power Bank 24000mAh",
+      "amazon_query": "SHARGE Shargeek 170 Power Bank 24000mAh"
     },
     "specs": {
       "capacity": "24,000mAh (86.4Wh)",
@@ -1332,9 +1332,9 @@
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
     "urls": {
-      "coupang_query": "유그린 넥소드 20000mAh 130W PB721",
-      "ali_query": "UGREEN Nexode Power Bank 20,000mAh 130W (PB721)",
-      "amazon_query": "UGREEN Nexode Power Bank 20,000mAh 130W (PB721)"
+      "coupang_query": "유그린 넥소드 20000mAh 130W 보조배터리 PB721",
+      "ali_query": "UGREEN Nexode 20000mAh 130W Power Bank PB721",
+      "amazon_query": "UGREEN Nexode Power Bank 20000mAh 130W"
     },
     "specs": {
       "capacity": "20,000mAh (72Wh)",
@@ -1395,9 +1395,9 @@
     "msrp_krw": 169000,
     "msrp_usd": 129.0,
     "urls": {
-      "coupang_query": "레이니75 Rainy 75 알루미늄 키보드",
-      "ali_query": "WOBKEY Rainy 75 CNC Aluminum Tri-Mode Mechanical Keyboard",
-      "amazon_query": "WOBKEY Rainy 75 CNC Aluminum Tri-Mode Mechanical Keyboard"
+      "coupang_query": "WOBKEY 레이니75 Rainy 75 알루미늄 키보드",
+      "ali_query": "WOBKEY Rainy 75 Mechanical Keyboard",
+      "amazon_query": "WOBKEY Rainy 75 Mechanical Keyboard"
     },
     "specs": {
       "case": "풀 CNC 알루미늄 + 하판 웨이트",
@@ -1458,9 +1458,9 @@
     "msrp_krw": 99000,
     "msrp_usd": 79.99,
     "urls": {
-      "coupang_query": "독거미 키보드 AULA F99",
-      "ali_query": "AULA F99 96% Wireless Gasket Mechanical Keyboard with Numpad",
-      "amazon_query": "AULA F99 96% Wireless Gasket Mechanical Keyboard with Numpad"
+      "coupang_query": "독거미 AULA F99 무선 기계식 키보드",
+      "ali_query": "AULA F99 Wireless Mechanical Keyboard",
+      "amazon_query": "AULA F99 Wireless Mechanical Keyboard"
     },
     "specs": {
       "layout": "96% 배열 (넘패드 포함 99키)",
@@ -1521,9 +1521,9 @@
     "msrp_krw": 179000,
     "msrp_usd": 129.95,
     "urls": {
-      "coupang_query": "누피 Air75 V2 키보드",
-      "ali_query": "NuPhy Air75 V2 QMK/VIA Low-Profile Wireless Keyboard",
-      "amazon_query": "NuPhy Air75 V2 QMK/VIA Low-Profile Wireless Keyboard"
+      "coupang_query": "누피 NuPhy Air75 V2 키보드",
+      "ali_query": "NuPhy Air75 V2 Keyboard",
+      "amazon_query": "NuPhy Air75 V2 Wireless Keyboard"
     },
     "specs": {
       "switch_type": "Gateron 로우프로파일 2.0",
@@ -1584,9 +1584,9 @@
     "msrp_krw": 219000,
     "msrp_usd": 159.0,
     "urls": {
-      "coupang_query": "로프리 플로우 84 키보드",
-      "ali_query": "Lofree Flow 84 Low-Profile Gasket Kailh POM Keyboard",
-      "amazon_query": "Lofree Flow 84 Low-Profile Gasket Kailh POM Keyboard"
+      "coupang_query": "로프리 Lofree Flow 84 키보드",
+      "ali_query": "Lofree Flow 84 Keyboard",
+      "amazon_query": "Lofree Flow 84 Low Profile Keyboard"
     },
     "specs": {
       "switch_type": "Kailh Full POM 로우프로파일",
@@ -1647,9 +1647,9 @@
     "msrp_krw": 169000,
     "msrp_usd": 129.99,
     "urls": {
-      "coupang_query": "몬스긱 M1 V5 키보드",
-      "ali_query": "MonsGeek M1 V5 VIA Rapid-Disassembly Aluminum 75% Keyboard",
-      "amazon_query": "MonsGeek M1 V5 VIA Rapid-Disassembly Aluminum 75% Keyboard"
+      "coupang_query": "몬스긱 MonsGeek M1 V5 키보드",
+      "ali_query": "MonsGeek M1 V5 Keyboard",
+      "amazon_query": "MonsGeek M1 V5 Keyboard"
     },
     "specs": {
       "case": "볼캐치 무나사 분해 알루미늄",
@@ -1710,9 +1710,9 @@
     "msrp_krw": 54000,
     "msrp_usd": 39.99,
     "urls": {
-      "coupang_query": "키크론 B1 Pro 무소음 키보드",
-      "ali_query": "Keychron B1 Pro Ultra-Slim ZMK Wireless Scissor Keyboard",
-      "amazon_query": "Keychron B1 Pro Ultra-Slim ZMK Wireless Scissor Keyboard"
+      "coupang_query": "키크론 B1 Pro 무선 키보드",
+      "ali_query": "Keychron B1 Pro Keyboard",
+      "amazon_query": "Keychron B1 Pro Wireless Keyboard"
     },
     "specs": {
       "switch_type": "팬터그래프 (가위식 무소음)",
@@ -1773,9 +1773,9 @@
     "msrp_krw": 65000,
     "msrp_usd": 52.99,
     "urls": {
-      "coupang_query": "잠자리 마우스 VXE R1 Pro Max",
-      "ali_query": "VXE Dragonfly R1 Pro Max PAW3395 Ultralight Wireless Mouse",
-      "amazon_query": "VXE Dragonfly R1 Pro Max PAW3395 Ultralight Wireless Mouse"
+      "coupang_query": "VXE 잠자리 R1 Pro Max 무선 마우스",
+      "ali_query": "VXE Dragonfly R1 Pro Max Mouse",
+      "amazon_query": "VXE Dragonfly R1 Pro Max Wireless Mouse"
     },
     "specs": {
       "sensor": "PAW3395 플래그십 센서",
@@ -1836,9 +1836,9 @@
     "msrp_krw": 99000,
     "msrp_usd": 69.99,
     "urls": {
-      "coupang_query": "로지텍 Lift 버티컬 마우스 정품",
-      "ali_query": "Logitech Lift Vertical Ergonomic Quiet Wireless Mouse",
-      "amazon_query": "Logitech Lift Vertical Ergonomic Quiet Wireless Mouse"
+      "coupang_query": "로지텍 Lift 버티컬 무선 마우스",
+      "ali_query": "Logitech Lift Vertical Ergonomic Mouse",
+      "amazon_query": "Logitech Lift Vertical Ergonomic Mouse"
     },
     "specs": {
       "angle": "57도 인체공학 수직 그립",
@@ -1899,9 +1899,9 @@
     "msrp_krw": 119000,
     "msrp_usd": 99.95,
     "urls": {
-      "coupang_query": "펄사 X2V2 무선 마우스",
-      "ali_query": "Pulsar X2V2 Symmetrical 53g Wireless Gaming Mouse",
-      "amazon_query": "Pulsar X2V2 Symmetrical 53g Wireless Gaming Mouse"
+      "coupang_query": "펄사 Pulsar X2V2 무선 게이밍 마우스",
+      "ali_query": "Pulsar X2V2 Wireless Gaming Mouse",
+      "amazon_query": "Pulsar X2V2 Wireless Gaming Mouse"
     },
     "specs": {
       "sensor": "PAW3395 (26,000 DPI)",
@@ -1962,9 +1962,9 @@
     "msrp_krw": 109000,
     "msrp_usd": 69.99,
     "urls": {
-      "coupang_query": "레이저 바이퍼 V3 하이퍼스피드 정품",
-      "ali_query": "Razer Viper V3 HyperSpeed Focus Pro 30K Wireless Mouse",
-      "amazon_query": "Razer Viper V3 HyperSpeed Focus Pro 30K Wireless Mouse"
+      "coupang_query": "레이저 바이퍼 V3 하이퍼스피드 무선 마우스",
+      "ali_query": "Razer Viper V3 HyperSpeed Wireless Mouse",
+      "amazon_query": "Razer Viper V3 HyperSpeed Wireless Mouse"
     },
     "specs": {
       "sensor": "Focus Pro 30K 플래그십 센서",
@@ -2025,9 +2025,9 @@
     "msrp_krw": 99000,
     "msrp_usd": 79.99,
     "urls": {
-      "coupang_query": "ATK F1 Pro 8K 무선 마우스",
-      "ali_query": "ATK Blazing Sky F1 Pro PAW3950 45g Wireless Mouse (8K Ready)",
-      "amazon_query": "ATK Blazing Sky F1 Pro PAW3950 45g Wireless Mouse (8K Ready)"
+      "coupang_query": "ATK 블레이징 스카이 F1 Pro 무선 마우스",
+      "ali_query": "ATK Blazing Sky F1 Pro Wireless Mouse",
+      "amazon_query": "ATK Blazing Sky F1 Pro Wireless Mouse"
     },
     "specs": {
       "sensor": "PAW3950 차세대 센서",
@@ -2088,9 +2088,9 @@
     "msrp_krw": 79000,
     "msrp_usd": 64.99,
     "urls": {
-      "coupang_query": "자오핀 Zaopin Z2 핫스왑 마우스",
-      "ali_query": "Zaopin Z2 PAW3395 Hot-Swappable Switch Ergonomic Wireless Mouse",
-      "amazon_query": "Zaopin Z2 PAW3395 Hot-Swappable Switch Ergonomic Wireless Mouse"
+      "coupang_query": "자오핀 Zaopin Z2 무선 마우스",
+      "ali_query": "Zaopin Z2 Wireless Mouse",
+      "amazon_query": "Zaopin Z2 Wireless Mouse"
     },
     "specs": {
       "feature": "납땜 없는 스위치 핫스왑 소켓",
@@ -2151,9 +2151,9 @@
     "msrp_krw": 850000,
     "msrp_usd": 679.0,
     "urls": {
-      "coupang_query": "GMKtec K8 Plus 8845HS 미니PC",
-      "ali_query": "GMKtec NucBox K8 Plus Ryzen 7 8845HS OCuLink Mini PC (32GB / 1TB)",
-      "amazon_query": "GMKtec NucBox K8 Plus Ryzen 7 8845HS OCuLink Mini PC (32GB / 1TB)"
+      "coupang_query": "GMKtec K8 Plus 8845HS 미니PC 32GB 1TB",
+      "ali_query": "GMKtec K8 Plus 8845HS Mini PC 32GB 1TB",
+      "amazon_query": "GMKtec NucBox K8 Plus 8845HS Mini PC 32GB 1TB"
     },
     "specs": {
       "cpu": "AMD Ryzen 7 8845HS + Radeon 780M",
@@ -2214,9 +2214,9 @@
     "msrp_krw": 279000,
     "msrp_usd": 219.0,
     "urls": {
-      "coupang_query": "비링크 MINI S12 Pro N100 미니PC",
-      "ali_query": "Beelink MINI S12 Pro Intel N100 Mini PC (16GB / 500GB)",
-      "amazon_query": "Beelink MINI S12 Pro Intel N100 Mini PC (16GB / 500GB)"
+      "coupang_query": "비링크 Beelink MINI S12 Pro N100 미니PC 16GB 500GB",
+      "ali_query": "Beelink MINI S12 Pro N100 Mini PC 16GB 500GB",
+      "amazon_query": "Beelink MINI S12 Pro N100 Mini PC 16GB 500GB"
     },
     "specs": {
       "cpu": "Intel Alder Lake-N100 (TDP 6W~25W)",
@@ -2277,9 +2277,9 @@
     "msrp_krw": 269000,
     "msrp_usd": 209.0,
     "urls": {
-      "coupang_query": "GMKtec G3 Plus N150 미니PC",
-      "ali_query": "GMKtec NucBox G3 Plus Intel Twin Lake N150 Mini PC (16GB / 512GB)",
-      "amazon_query": "GMKtec NucBox G3 Plus Intel Twin Lake N150 Mini PC (16GB / 512GB)"
+      "coupang_query": "GMKtec G3 Plus N150 미니PC 16GB 512GB",
+      "ali_query": "GMKtec NucBox G3 Plus N150 Mini PC 16GB 512GB",
+      "amazon_query": "GMKtec NucBox G3 Plus N150 Mini PC 16GB 512GB"
     },
     "specs": {
       "cpu": "Intel Twin Lake N150 (최대 3.6GHz)",
@@ -2340,9 +2340,9 @@
     "msrp_krw": 950000,
     "msrp_usd": 759.0,
     "urls": {
-      "coupang_query": "미니스포럼 UM790 Pro 미니PC",
-      "ali_query": "Minisforum Venus UM790 Pro Ryzen 9 7940HS Mini PC (32GB / 1TB)",
-      "amazon_query": "Minisforum Venus UM790 Pro Ryzen 9 7940HS Mini PC (32GB / 1TB)"
+      "coupang_query": "미니스포럼 UM790 Pro 7940HS 미니PC 32GB 1TB",
+      "ali_query": "Minisforum UM790 Pro 7940HS Mini PC 32GB 1TB",
+      "amazon_query": "Minisforum UM790 Pro 7940HS Mini PC 32GB 1TB"
     },
     "specs": {
       "cpu": "AMD Ryzen 9 7940HS + Radeon 780M",
@@ -2403,9 +2403,9 @@
     "msrp_krw": 42000,
     "msrp_usd": 34.99,
     "urls": {
-      "coupang_query": "유그린 Revodok 107 7in1 허브",
-      "ali_query": "UGREEN Revodok 107 7-in-1 USB-C Hub 4K@60Hz 100W PD",
-      "amazon_query": "UGREEN Revodok 107 7-in-1 USB-C Hub 4K@60Hz 100W PD"
+      "coupang_query": "유그린 Revodok 107 7in1 USB-C 허브",
+      "ali_query": "UGREEN Revodok 107 7-in-1 USB-C Hub",
+      "amazon_query": "UGREEN Revodok 107 7-in-1 USB-C Hub"
     },
     "specs": {
       "video": "HDMI 4K@60Hz",
@@ -2466,9 +2466,9 @@
     "msrp_krw": 49000,
     "msrp_usd": 39.99,
     "urls": {
-      "coupang_query": "하기비스 MC100 맥세이프 2230 외장케이스",
-      "ali_query": "Hagibis MC100 MagSafe M.2 2230 NVMe SSD Enclosure (10Gbps + 100W PD)",
-      "amazon_query": "Hagibis MC100 MagSafe M.2 2230 NVMe SSD Enclosure (10Gbps + 100W PD)"
+      "coupang_query": "하기비스 MC100 맥세이프 2230 SSD 외장케이스",
+      "ali_query": "Hagibis MC100 MagSafe 2230 NVMe Enclosure",
+      "amazon_query": "Hagibis MC100 MagSafe 2230 NVMe Enclosure"
     },
     "specs": {
       "ssd_size": "M.2 2230 NVMe 전용",
@@ -2529,9 +2529,9 @@
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
     "urls": {
-      "coupang_query": "오리코 40Gbps USB4 NVMe 인클로저",
-      "ali_query": "ORICO USB4 40Gbps M.2 NVMe Aluminum Cooling SSD Enclosure (M2V01/TCM2)",
-      "amazon_query": "ORICO USB4 40Gbps M.2 NVMe Aluminum Cooling SSD Enclosure (M2V01/TCM2)"
+      "coupang_query": "오리코 USB4 40Gbps NVMe 인클로저 M2V01",
+      "ali_query": "ORICO USB4 40Gbps NVMe Enclosure M2V01",
+      "amazon_query": "ORICO USB4 40Gbps NVMe Enclosure M2V01"
     },
     "specs": {
       "speed": "USB4 / Thunderbolt 4 호환 40Gbps (최대 3,100MB/s)",
@@ -2592,9 +2592,9 @@
     "msrp_krw": 169000,
     "msrp_usd": 119.99,
     "urls": {
-      "coupang_query": "사테치 USB4 NVMe 프로 인클로저",
-      "ali_query": "Satechi USB4 NVMe SSD Pro Enclosure (40Gbps, Tool-Free)",
-      "amazon_query": "Satechi USB4 NVMe SSD Pro Enclosure (40Gbps, Tool-Free)"
+      "coupang_query": "사테치 USB4 NVMe SSD 프로 인클로저",
+      "ali_query": "Satechi USB4 NVMe SSD Pro Enclosure",
+      "amazon_query": "Satechi USB4 NVMe SSD Pro Enclosure"
     },
     "specs": {
       "speed": "USB4 40Gbps (최대 3,840MB/s)",
@@ -2655,9 +2655,9 @@
     "msrp_krw": 249000,
     "msrp_usd": 199.99,
     "urls": {
-      "coupang_query": "앤커 575 13in1 도킹스테이션",
-      "ali_query": "Anker 575 USB-C Docking Station (13-in-1, 85W Laptop PD, A8392)",
-      "amazon_query": "Anker 575 USB-C Docking Station (13-in-1, 85W Laptop PD, A8392)"
+      "coupang_query": "앤커 575 USB-C 도킹스테이션 13in1 A8392",
+      "ali_query": "Anker 575 USB-C Docking Station A8392",
+      "amazon_query": "Anker 575 USB-C Docking Station 13-in-1"
     },
     "specs": {
       "ports": "13-in-1 (2x HDMI + DP + 1Gbps LAN + SD/TF + 6x USB)",
@@ -2718,9 +2718,9 @@
     "msrp_krw": 249000,
     "msrp_usd": 179.99,
     "urls": {
-      "coupang_query": "마이크론 Crucial X9 Pro 2TB 외장SSD",
-      "ali_query": "Crucial X9 Pro 2TB Portable SSD (USB 3.2 Gen 2, CT2000X9PROSSD9)",
-      "amazon_query": "Crucial X9 Pro 2TB Portable SSD (USB 3.2 Gen 2, CT2000X9PROSSD9)"
+      "coupang_query": "마이크론 Crucial X9 Pro 2TB 외장SSD CT2000X9PROSSD9",
+      "ali_query": "Crucial X9 Pro 2TB Portable SSD CT2000X9PROSSD9",
+      "amazon_query": "Crucial X9 Pro 2TB Portable SSD CT2000X9PROSSD9"
     },
     "specs": {
       "speed": "Read 1,050 MB/s / Write 1,050 MB/s",
@@ -2781,9 +2781,9 @@
     "msrp_krw": 359000,
     "msrp_usd": 299.99,
     "urls": {
-      "coupang_query": "삼성 포터블 SSD T9 2TB 정품",
-      "ali_query": "Samsung T9 2TB USB 3.2 Gen 2x2 (20Gbps) Portable SSD",
-      "amazon_query": "Samsung T9 2TB USB 3.2 Gen 2x2 (20Gbps) Portable SSD"
+      "coupang_query": "삼성전자 포터블 SSD T9 2TB",
+      "ali_query": "Samsung T9 2TB Portable SSD",
+      "amazon_query": "Samsung T9 2TB Portable SSD"
     },
     "specs": {
       "speed": "최대 2,000 MB/s (USB 3.2 Gen 2x2 20Gbps)",
@@ -2844,9 +2844,9 @@
     "msrp_krw": 149000,
     "msrp_usd": 109.99,
     "urls": {
-      "coupang_query": "SK하이닉스 비틀 X31 1TB 외장SSD",
-      "ali_query": "SK hynix Beetle X31 1TB DRAM-Equipped Portable SSD",
-      "amazon_query": "SK hynix Beetle X31 1TB DRAM-Equipped Portable SSD"
+      "coupang_query": "SK하이닉스 Beetle X31 1TB 외장SSD",
+      "ali_query": "SK hynix Beetle X31 1TB Portable SSD",
+      "amazon_query": "SK hynix Beetle X31 1TB Portable SSD"
     },
     "specs": {
       "speed": "Read 1,050 MB/s / Write 1,000 MB/s",
@@ -2908,8 +2908,8 @@
     "msrp_usd": 199.99,
     "urls": {
       "coupang_query": "렉사 Lexar SL500 2TB 외장SSD",
-      "ali_query": "Lexar SL500 2TB 20Gbps Ultra-Thin Portable SSD (6mm)",
-      "amazon_query": "Lexar SL500 2TB 20Gbps Ultra-Thin Portable SSD (6mm)"
+      "ali_query": "Lexar SL500 2TB Portable SSD",
+      "amazon_query": "Lexar SL500 2TB Portable SSD"
     },
     "specs": {
       "thickness": "4.8~6mm 초박형 알루미늄",
@@ -2970,9 +2970,9 @@
     "msrp_krw": 38000,
     "msrp_usd": 25.99,
     "urls": {
-      "coupang_query": "수월우 츄2 CHU II DSP C타입 이어폰",
-      "ali_query": "Moondrop CHU II DSP USB-C In-Ear Monitor Earphones",
-      "amazon_query": "Moondrop CHU II DSP USB-C In-Ear Monitor Earphones"
+      "coupang_query": "수월우 Moondrop CHU II DSP USB-C 이어폰",
+      "ali_query": "Moondrop CHU II DSP USB-C Earphones",
+      "amazon_query": "Moondrop CHU II DSP USB-C Earphones"
     },
     "specs": {
       "connector": "USB-C 직결 (내장 DSP DAC + 마이크 탑재)",
@@ -3033,9 +3033,9 @@
     "msrp_krw": 119000,
     "msrp_usd": 89.99,
     "urls": {
-      "coupang_query": "트루이어 헥사 HEXA 이어폰",
-      "ali_query": "TRUTHEAR HEXA 1DD+3BA Hybrid In-Ear Monitor",
-      "amazon_query": "TRUTHEAR HEXA 1DD+3BA Hybrid In-Ear Monitor"
+      "coupang_query": "트루이어 TRUTHEAR HEXA 이어폰",
+      "ali_query": "TRUTHEAR HEXA In-Ear Monitor",
+      "amazon_query": "TRUTHEAR HEXA In-Ear Monitor"
     },
     "specs": {
       "drivers": "1 다이나믹 + 3 밸런스드 아마추어 (하이브리드 4드라이버)",
@@ -3096,9 +3096,9 @@
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
     "urls": {
-      "coupang_query": "이어펀 Air Pro 4 무선 이어폰",
-      "ali_query": "EarFun Air Pro 4 Adaptive ANC Wireless Earbuds (aptX Lossless / LDAC)",
-      "amazon_query": "EarFun Air Pro 4 Adaptive ANC Wireless Earbuds (aptX Lossless / LDAC)"
+      "coupang_query": "이어펀 EarFun Air Pro 4 무선 이어폰",
+      "ali_query": "EarFun Air Pro 4 Wireless Earbuds",
+      "amazon_query": "EarFun Air Pro 4 Wireless Earbuds"
     },
     "specs": {
       "codecs": "LDAC + aptX Lossless 동시 지원",
@@ -3159,9 +3159,9 @@
     "msrp_krw": 129000,
     "msrp_usd": 99.99,
     "urls": {
-      "coupang_query": "앤커 사운드코어 스페이스 원 헤드폰",
-      "ali_query": "Anker Soundcore Space One LDAC Wireless ANC Headphones (A3035)",
-      "amazon_query": "Anker Soundcore Space One LDAC Wireless ANC Headphones (A3035)"
+      "coupang_query": "앤커 사운드코어 Space One 헤드폰 A3035",
+      "ali_query": "Soundcore Space One Headphones A3035",
+      "amazon_query": "Soundcore Space One Headphones A3035"
     },
     "specs": {
       "anc": "음성 대역 강화 적응형 노이즈캔슬링",
@@ -3222,9 +3222,9 @@
     "msrp_krw": 95000,
     "msrp_usd": 74.99,
     "urls": {
-      "coupang_query": "마오노 PD200X 다이나믹 마이크",
-      "ali_query": "Maono PD200X USB/XLR Dynamic Broadcast Microphone",
-      "amazon_query": "Maono PD200X USB/XLR Dynamic Broadcast Microphone"
+      "coupang_query": "마오노 Maono PD200X USB XLR 다이나믹 마이크",
+      "ali_query": "Maono PD200X USB XLR Microphone",
+      "amazon_query": "Maono PD200X USB XLR Microphone"
     },
     "specs": {
       "capsule": "커스텀 다이나믹 캡슐 (카디오이드)",
@@ -3285,9 +3285,9 @@
     "msrp_krw": 99000,
     "msrp_usd": 72.99,
     "urls": {
-      "coupang_query": "파이파인 FIFINE K688 마이크",
-      "ali_query": "FIFINE K688 Studio USB/XLR Dynamic Podcast Microphone",
-      "amazon_query": "FIFINE K688 Studio USB/XLR Dynamic Podcast Microphone"
+      "coupang_query": "파이파인 FIFINE K688 USB XLR 다이나믹 마이크",
+      "ali_query": "FIFINE K688 USB XLR Microphone",
+      "amazon_query": "FIFINE K688 USB XLR Microphone"
     },
     "specs": {
       "capsule": "130dB SPL 다이나믹 캡슐 (슈어 SM7B 스타일 윈드스크린)",
@@ -3348,9 +3348,9 @@
     "msrp_krw": 109000,
     "msrp_usd": 89.99,
     "urls": {
-      "coupang_query": "이라이트 모니터 스크린바 프로",
-      "ali_query": "Yeelight LED Screen Light Bar Pro (Razer Chroma / Matter RGB Backlight)",
-      "amazon_query": "Yeelight LED Screen Light Bar Pro (Razer Chroma / Matter RGB Backlight)"
+      "coupang_query": "이라이트 Yeelight 스크린바 프로 모니터 조명",
+      "ali_query": "Yeelight LED Screen Light Bar Pro",
+      "amazon_query": "Yeelight LED Screen Light Bar Pro"
     },
     "specs": {
       "cri": "전면 Ra95 작업등 + 후면 1600만 컬러 앰비언트 백라이트",
@@ -3411,9 +3411,9 @@
     "msrp_krw": 49000,
     "msrp_usd": 39.99,
     "urls": {
-      "coupang_query": "베이스어스 i-Wok2 모니터 조명",
-      "ali_query": "Baseus i-Wok2 Asymmetric Touch Monitor Light Bar (Ra95)",
-      "amazon_query": "Baseus i-Wok2 Asymmetric Touch Monitor Light Bar (Ra95)"
+      "coupang_query": "베이스어스 i-Wok2 모니터 라이트바",
+      "ali_query": "Baseus i-Wok2 Monitor Light Bar",
+      "amazon_query": "Baseus i-Wok2 Monitor Light Bar"
     },
     "specs": {
       "cri": "Ra95 비대칭 광원 (80루멘스펙트럼)",
@@ -3474,9 +3474,9 @@
     "msrp_krw": 45000,
     "msrp_usd": 29.99,
     "urls": {
-      "coupang_query": "8BitDo 얼티밋 2C 무선 패드",
-      "ali_query": "8BitDo Ultimate 2C Wireless Controller (Hall Effect, 1000Hz, PC/Android)",
-      "amazon_query": "8BitDo Ultimate 2C Wireless Controller (Hall Effect, 1000Hz, PC/Android)"
+      "coupang_query": "8BitDo 얼티밋 2C 무선 컨트롤러",
+      "ali_query": "8BitDo Ultimate 2C Wireless Controller",
+      "amazon_query": "8BitDo Ultimate 2C Wireless Controller"
     },
     "specs": {
       "sticks": "홀 이펙트 자석 스틱 + 홀 트리거 (쏠림 방지)",
@@ -3537,9 +3537,9 @@
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
     "urls": {
-      "coupang_query": "8BitDo 얼티밋 블루투스 충전독 패드",
-      "ali_query": "8BitDo Ultimate Bluetooth & 2.4G Controller with Charging Dock (Switch/PC)",
-      "amazon_query": "8BitDo Ultimate Bluetooth & 2.4G Controller with Charging Dock (Switch/PC)"
+      "coupang_query": "8BitDo 얼티밋 블루투스 컨트롤러 충전독",
+      "ali_query": "8BitDo Ultimate Bluetooth Controller Charging Dock",
+      "amazon_query": "8BitDo Ultimate Bluetooth Controller Charging Dock"
     },
     "specs": {
       "compatibility": "닌텐도 스위치 (자이로·깨우기 지원) + 윈도우 PC",
@@ -3600,9 +3600,9 @@
     "msrp_krw": 79000,
     "msrp_usd": 55.99,
     "urls": {
-      "coupang_query": "GameSir 사이클론2 무선 컨트롤러",
-      "ali_query": "GameSir Cyclone 2 TMR Sticks + Trigger Lock Wireless Controller (Dock Edition)",
-      "amazon_query": "GameSir Cyclone 2 TMR Sticks + Trigger Lock Wireless Controller (Dock Edition)"
+      "coupang_query": "게임서 GameSir 사이클론 2 컨트롤러 충전독",
+      "ali_query": "GameSir Cyclone 2 Controller Charging Dock",
+      "amazon_query": "GameSir Cyclone 2 Wireless Controller Charging Dock"
     },
     "specs": {
       "sticks": "차세대 TMR 마그네틱 스틱 (정밀도·저전력 강화)",
@@ -3663,9 +3663,9 @@
     "msrp_krw": 99000,
     "msrp_usd": 79.99,
     "urls": {
-      "coupang_query": "GameSir G8 갈릴레오 모바일 패드",
-      "ali_query": "GameSir G8 Galileo Type-C Mobile Gaming Controller (Pass-Through Charging)",
-      "amazon_query": "GameSir G8 Galileo Type-C Mobile Gaming Controller (Pass-Through Charging)"
+      "coupang_query": "게임서 GameSir G8 갈릴레오 모바일 컨트롤러",
+      "ali_query": "GameSir G8 Galileo Type-C Controller",
+      "amazon_query": "GameSir G8 Galileo Type-C Mobile Controller"
     },
     "specs": {
       "interface": "가동식 USB-C 직결 단자 (아이폰15/16·갤럭시 호환)",
@@ -3726,9 +3726,9 @@
     "msrp_krw": 139000,
     "msrp_usd": 99.99,
     "urls": {
-      "coupang_query": "엘가토 스트림덱 네오 8키 정품",
-      "ali_query": "Elgato Stream Deck Neo (8 LCD Keys + Infobar + Touch Points)",
-      "amazon_query": "Elgato Stream Deck Neo (8 LCD Keys + Infobar + Touch Points)"
+      "coupang_query": "엘가토 스트림덱 네오 Stream Deck Neo",
+      "ali_query": "Elgato Stream Deck Neo",
+      "amazon_query": "Elgato Stream Deck Neo"
     },
     "specs": {
       "keys": "8x 커스텀 LCD 키 + 하단 시계/페이지 인포바",
@@ -3789,9 +3789,9 @@
     "msrp_krw": 129000,
     "msrp_usd": 95.0,
     "urls": {
-      "coupang_query": "투어박스 라이트 TourBox Lite",
-      "ali_query": "TourBox Lite One-Handed Photo & Video Editing Controller",
-      "amazon_query": "TourBox Lite One-Handed Photo & Video Editing Controller"
+      "coupang_query": "투어박스 TourBox Lite 편집 컨트롤러",
+      "ali_query": "TourBox Lite Editing Controller",
+      "amazon_query": "TourBox Lite Editing Controller"
     },
     "specs": {
       "dials": "노브 + 스크롤 휠 + 6개 물리 버튼 (총 50+ 조합)",
@@ -3853,8 +3853,8 @@
     "msrp_usd": 149.99,
     "urls": {
       "coupang_query": "인스타360 Link 2C 4K 웹캠",
-      "ali_query": "Insta360 Link 2C 1/2-inch Sensor 4K AI Webcam",
-      "amazon_query": "Insta360 Link 2C 1/2-inch Sensor 4K AI Webcam"
+      "ali_query": "Insta360 Link 2C 4K Webcam",
+      "amazon_query": "Insta360 Link 2C 4K Webcam"
     },
     "specs": {
       "sensor": "1/2인치 대형 CMOS 센서 (자연스러운 아웃포커싱)",
@@ -3915,9 +3915,9 @@
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
     "urls": {
-      "coupang_query": "EMEET S600 4K 웹캠",
-      "ali_query": "EMEET SmartCam S600 4K Sony Sensor Dual-Mic Webcam",
-      "amazon_query": "EMEET SmartCam S600 4K Sony Sensor Dual-Mic Webcam"
+      "coupang_query": "EMEET SmartCam S600 4K 웹캠",
+      "ali_query": "EMEET SmartCam S600 4K Webcam",
+      "amazon_query": "EMEET SmartCam S600 4K Webcam"
     },
     "specs": {
       "sensor": "Sony 1/2.8인치 8MP 이미지 센서",
@@ -3978,9 +3978,9 @@
     "msrp_krw": 89000,
     "msrp_usd": 69.99,
     "urls": {
-      "coupang_query": "AJAZZ AKP153 스트림덱 매크로 키패드",
-      "ali_query": "AJAZZ AKP153E 15-Key + Side Status Screen Macro Deck",
-      "amazon_query": "AJAZZ AKP153E 15-Key + Side Status Screen Macro Deck"
+      "coupang_query": "AJAZZ AKP153E 매크로 키패드",
+      "ali_query": "AJAZZ AKP153E Macro Deck",
+      "amazon_query": "AJAZZ AKP153E Macro Deck"
     },
     "specs": {
       "keys": "15x LCD 매크로 키 + 우측 보조 상태창",
@@ -4041,9 +4041,9 @@
     "msrp_krw": 35000,
     "msrp_usd": 27.99,
     "urls": {
-      "coupang_query": "유그린 듀얼 노트북 수직 거치대",
-      "ali_query": "UGREEN Dual-Slot Adjustable Aluminum Vertical Laptop Stand (LP258)",
-      "amazon_query": "UGREEN Dual-Slot Adjustable Aluminum Vertical Laptop Stand (LP258)"
+      "coupang_query": "유그린 듀얼 노트북 수직 거치대 LP258",
+      "ali_query": "UGREEN Dual Vertical Laptop Stand LP258",
+      "amazon_query": "UGREEN Dual Vertical Laptop Stand LP258"
     },
     "specs": {
       "slots": "듀얼 슬롯 (노트북 2대 또는 노트북+아이패드 동시 수직 거치)",
@@ -4104,9 +4104,9 @@
     "msrp_krw": 169000,
     "msrp_usd": 149.99,
     "urls": {
-      "coupang_query": "앤커 737 24000mAh 140W 보조배터리",
-      "ali_query": "Anker 737 Power Bank (PowerCore 24K, 140W PD 3.1, A1289)",
-      "amazon_query": "Anker 737 Power Bank (PowerCore 24K, 140W PD 3.1, A1289)"
+      "coupang_query": "앤커 737 보조배터리 24000mAh 140W A1289",
+      "ali_query": "Anker 737 Power Bank 24000mAh 140W A1289",
+      "amazon_query": "Anker 737 Power Bank PowerCore 24K A1289"
     },
     "specs": {
       "capacity": "24,000mAh (86.4Wh 기내반입)",
@@ -4167,9 +4167,9 @@
     "msrp_krw": 199000,
     "msrp_usd": 159.0,
     "urls": {
-      "coupang_query": "로지텍 지슈라2 G PRO X SUPERLIGHT 2 정품",
-      "ali_query": "Logitech G PRO X SUPERLIGHT 2 (HERO 2, 60g, 8K Polling Update)",
-      "amazon_query": "Logitech G PRO X SUPERLIGHT 2 (HERO 2, 60g, 8K Polling Update)"
+      "coupang_query": "로지텍 G PRO X SUPERLIGHT 2 무선 마우스",
+      "ali_query": "Logitech G PRO X SUPERLIGHT 2 Wireless Mouse",
+      "amazon_query": "Logitech G PRO X SUPERLIGHT 2 Wireless Mouse"
     },
     "specs": {
       "sensor": "HERO 2 (44,000 DPI / 888 IPS)",
@@ -4230,9 +4230,9 @@
     "msrp_krw": 449000,
     "msrp_usd": 399.99,
     "urls": {
-      "coupang_query": "소니 WH-1000XM5 정품",
-      "ali_query": "Sony WH-1000XM5 Wireless Industry-Leading Noise Canceling Headphones",
-      "amazon_query": "Sony WH-1000XM5 Wireless Industry-Leading Noise Canceling Headphones"
+      "coupang_query": "소니 WH-1000XM5 헤드폰",
+      "ali_query": "Sony WH-1000XM5 Headphones",
+      "amazon_query": "Sony WH-1000XM5 Wireless Headphones"
     },
     "specs": {
       "anc": "듀얼 프로세서 + 8마이크 최상급 노이즈캔슬링",
@@ -4293,9 +4293,9 @@
     "msrp_krw": 549000,
     "msrp_usd": 399.95,
     "urls": {
-      "coupang_query": "칼디짓 TS4 썬더볼트4 독 정품",
-      "ali_query": "CalDigit TS4 Thunderbolt 4 Dock (18 Ports, 98W Charging, 2.5GbE)",
-      "amazon_query": "CalDigit TS4 Thunderbolt 4 Dock (18 Ports, 98W Charging, 2.5GbE)"
+      "coupang_query": "칼디짓 CalDigit TS4 썬더볼트4 독",
+      "ali_query": "CalDigit TS4 Thunderbolt 4 Dock",
+      "amazon_query": "CalDigit TS4 Thunderbolt 4 Dock"
     },
     "specs": {
       "ports": "18포트 (3x 썬더볼트4 + DP 1.4 + 2.5GbE + UHS-II 듀얼 리더 + 8x USB)",

@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "updated_at": "2026-11-28",
+  "notice": {
+    "ko": "선착순 소진·일부 품목 제외 가능 — 결제창 최종 적용 확인",
+    "en": "Limited redemptions & exclusions apply — verify at checkout"
+  },
+  "reference_tiers": {
+    "label": {
+      "ko": "초이스데이·월간 프로모 참고 구간",
+      "en": "Choice Day / monthly promo reference tiers"
+    },
+    "note": {
+      "ko": "행사마다 실제 구간·코드가 달라집니다. 아래는 계산용 참고 구간이며, 실제 코드는 알리익스프레스 행사 페이지에서 확인해 계산기의 '직접 입력'에 넣으세요.",
+      "en": "Actual tiers and codes change with every event. These are reference tiers for estimating; enter the real code value under 'Custom amount' in the calculator."
+    },
+    "tiers": [
+      {"min_spend_usd": 19, "off_usd": 2, "code": null},
+      {"min_spend_usd": 39, "off_usd": 5, "code": null},
+      {"min_spend_usd": 79, "off_usd": 10, "code": null},
+      {"min_spend_usd": 159, "off_usd": 20, "code": null},
+      {"min_spend_usd": 299, "off_usd": 40, "code": null}
+    ]
+  },
+  "events": [
+    {
+      "id": "us-bfcm-2026",
+      "langs": ["en"],
+      "label": {
+        "en": "US Black Friday & Cyber Monday site-wide codes"
+      },
+      "starts": "2026-11-20",
+      "ends": "2026-12-03",
+      "status": "reported",
+      "source": {
+        "en": "Reported on aliexpress.com, checked 2026-11-28 (US storefront, one use each)"
+      },
+      "source_url": "https://www.aliexpress.com/s/spot/article/aliexpress_us_2026_black_friday",
+      "checked_at": "2026-11-28",
+      "tiers": [
+        {"min_spend_usd": 15, "off_usd": 3, "code": "BFUS03"},
+        {"min_spend_usd": 39, "off_usd": 7, "code": "BFUS07"},
+        {"min_spend_usd": 79, "off_usd": 15, "code": "BFUS15"},
+        {"min_spend_usd": 109, "off_usd": 19, "code": "BFUS19"},
+        {"min_spend_usd": 209, "off_usd": 37, "code": "BFUS37"},
+        {"min_spend_usd": 315, "off_usd": 56, "code": "BFUS56"},
+        {"min_spend_usd": 425, "off_usd": 76, "code": "BFUS76"}
+      ]
+    }
+  ]
+}

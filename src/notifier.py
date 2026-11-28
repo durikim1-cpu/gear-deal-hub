@@ -100,7 +100,8 @@ def _send_telegram_message(bot_token: str, chat_id: str, text: str) -> bool:
             "chat_id": norm_chat,
             "text": text,
             "parse_mode": "HTML",
-            "disable_web_page_preview": True,
+            # Rich previews on: Telegram renders the Hub page's og:image + title card under the message.
+            "disable_web_page_preview": False,
         }
     ).encode("utf-8")
     req = urllib.request.Request(

@@ -3,12 +3,16 @@
 Pages render with the standard library alone. Pillow, when installed (the build already needs it for pins),
 trims each product photo into a figure-plate derivative; without it the original 360x360 files are used as-is.
 
-Implements the unanimous 3-AI consensus (Gemini · Claude · Codex):
-- Zero unverified static retailer prices, % spread badges, or price-tier claims in HTML, JSON-LD, meta, or feeds.
-- Manufacturer Reference MSRP isolated strictly inside the specification table with source & check date.
+Editorial and compliance rules every page follows:
+- Zero unverified static retailer prices or % spread badges in HTML, JSON-LD, meta, or feeds. The only price-like
+  numbers are (a) the Manufacturer Reference MSRP, always labelled as a launch reference, and (b) entries from
+  data/live_offers_cache.json, which carry an observation date, an expiry (`data-expires-at`, hidden client-side
+  once passed) and an honest source label: community-spotted benchmark vs official AliExpress API offer.
 - Destination country separated from UI language (Ship to KR: US $200 list-clearance vs $150 other / Ship to US: domestic vs import charges).
 - Fail-closed live API offer client hook (with open-tab periodic expiry re-check) + PII-free channel tracking mapper.
-- Integrated MacBook Dual-Monitor Dock Compatibility Checker (/ko/tools/..., /en/tools/...) & 12 Buying Guides (/en/guides/...).
+- Hubs open with the Live Deal & Compatibility Situation Board (sale-window traffic light, promo-code tiers,
+  trap-cut filter chips). Tools: MacBook Dock Checker + AliExpress Promo & Customs Calculator (KO/EN).
+  Content: 12 buying guides per language and 15 head-to-head VS battles per language, all hreflang-paired.
 """
 
 from __future__ import annotations
@@ -20,8 +24,11 @@ import re
 import shutil
 import unicodedata
 from collections import Counter
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
+from urllib.parse import quote
 
 from src.affiliate import (
     BUTTON_DISCLOSURE_EN,
@@ -29,12 +36,25 @@ from src.affiliate import (
     DISCLOSURE_EN,
     DISCLOSURE_KO,
 )
+from src.deal_sniper import pick_live_offer
 from src.tools_and_guides import (
+    GUIDES_BY_LANG,
     GUIDES_EN,
+    SALE_COPY,
+    SALE_TZ_HOURS,
+    _tool_strip,
+    active_promo,
+    kr_customs_anchor,
+    load_promo_tiers,
+    promo_events_for_lang,
     render_dock_checker_page,
-    render_en_guide_detail,
-    render_en_guides_index,
+    render_guide_detail,
+    render_guides_index,
+    render_promo_calculator_page,
+    sale_reference_date,
+    sale_signal,
 )
+from src.vs_battles import active_pairs, render_vs_detail, render_vs_index, rivals_by_product, vs_name
 
 CATEGORY_LABELS_KO = {
     "all": "전체",
@@ -105,6 +125,8 @@ _ICON_PATHS = {
     "caution": '<path d="M12 4 21 19.5H3L12 4Z"/><path d="M12 10v4.5M12 17.2v.3"/>',
     "check": '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
     "dual": '<rect x="2.5" y="6" width="9" height="7" rx="1"/><rect x="12.5" y="6" width="9" height="7" rx="1"/><path d="M7 13v3.5M17 13v3.5M4.5 17.5h15"/>',
+    "calc": '<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/>',
+    "scale": '<path d="M12 4v16M7 20h10M5 8h14"/><path d="m5 8-2.5 6a2.5 2.5 0 0 0 5 0L5 8ZM19 8l-2.5 6a2.5 2.5 0 0 0 5 0L19 8Z"/>',
 }
 
 
@@ -159,6 +181,9 @@ SHARED_CSS = """
   --warn-text: #5A3E12;
   --warn-bg: #FFF4DD;
   --warn-line: #E8BE66;
+  --info: #1F4E96;
+  --info-tint: #E8EFF9;
+  --info-line: #B4C8E6;
   --coupang: #2D5BE3;
   --amazon: #F59A0B;
   --ali: #D8421D;
@@ -608,10 +633,166 @@ html.js .hub:not([data-ready]) .rows > li:nth-child(n+__PAGE_NEXT__) { display: 
 .foot-links a { color: var(--on-shell); font-weight: 600; text-decoration: none; }
 .foot-links a:hover { text-decoration: underline; }
 
+
+/* Situation board: sale-window signal, promo-code tiers, calculator entry (one ruled sheet, three cells) */
+.board { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.7fr) auto; gap: 1px; margin-bottom: 12px; background: var(--line); border: 1px solid var(--line); border-top: 2px solid var(--ink); border-radius: 0 0 var(--r-2) var(--r-2); overflow: hidden; }
+.board > * { background: var(--sheet); padding: 12px 14px; }
+.board-sig { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 12px; align-content: center; transition: background-color 0.2s; }
+.board-sig.is-go { background: #F1F8F6; }
+.board-sig.is-hold { background: var(--warn-bg); }
+.board-sig.is-std { background: var(--info-tint); }
+.lamps { display: inline-flex; gap: 5px; align-self: start; margin-top: 4px; padding: 5px 7px; border-radius: 999px; background: var(--shell-deep); }
+.lamps i { width: 9px; height: 9px; border-radius: 50%; background: #2C4A46; }
+.is-go .lamps i:nth-child(1) { background: #4FD6A8; box-shadow: 0 0 0 2px rgba(79, 214, 168, 0.22); }
+.is-hold .lamps i:nth-child(2) { background: #F2B544; box-shadow: 0 0 0 2px rgba(242, 181, 68, 0.24); }
+.is-std .lamps i:nth-child(3) { background: #8CB8F7; box-shadow: 0 0 0 2px rgba(140, 184, 247, 0.24); }
+.board-state { font-size: 0.9688rem; line-height: 1.4; font-weight: 760; letter-spacing: -0.012em; text-wrap: balance; overflow-wrap: anywhere; }
+.is-go .board-state { color: var(--action-hi); }
+.is-hold .board-state { color: var(--warn-ink); }
+.is-std .board-state { color: var(--info); }
+.board-sub { margin-top: 3px; font-size: 0.75rem; line-height: 1.5; color: var(--ink-2); }
+.board-date { display: block; margin-top: 2px; color: var(--muted); }
+.board-codes { display: grid; gap: 7px; align-content: center; }
+.board-h { font-size: 0.75rem; font-weight: 700; line-height: 1.45; color: var(--ink-2); }
+.board-h span { font-weight: 550; color: var(--muted); }
+.tiers { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; }
+.tier { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-height: 30px; padding: 3px 9px; border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--sheet); font-size: 0.7813rem; font-weight: 650; line-height: 1.3; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tier b { color: var(--ink); font-weight: 760; }
+.tier code { font: inherit; font-weight: 760; letter-spacing: 0.02em; color: var(--action-hi); }
+button.tier { border-color: var(--action-line); background: var(--action-tint); transition: background-color 0.15s, border-color 0.15s; }
+button.tier:hover { border-color: var(--action); background: #D3EAE5; }
+button.tier:active { transform: translateY(1px); }
+.copy-swap { display: inline-grid; justify-items: center; }
+.copy-swap > * { grid-area: 1 / 1; }
+.copy-done { visibility: hidden; font-weight: 760; color: var(--action-hi); }
+[data-copied] .copy-done { visibility: visible; }
+[data-copied] .copy-idle { visibility: hidden; }
+.board-note { display: flex; align-items: flex-start; gap: 6px; font-size: 0.75rem; line-height: 1.5; color: var(--muted); }
+.board-note .i { margin-top: 2px; color: var(--warn-ink); }
+.board-act { display: grid; align-content: center; gap: 8px; }
+.board-act .text-link { font-size: 0.8125rem; }
+
+/* Trap-cut filter chips */
+.traps { display: flex; align-items: center; gap: 6px 10px; margin: 0 0 8px; }
+.traps-h { flex: none; font-size: 0.75rem; font-weight: 700; color: var(--ink-2); }
+.traps-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.trap { display: inline-flex; align-items: center; gap: 6px; flex: none; max-width: 100%; min-height: 32px; padding: 3px 11px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--sheet); font-size: 0.7813rem; font-weight: 650; color: var(--ink-2); white-space: nowrap; transition: background-color 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s; }
+.trap:hover { border-color: var(--ink-2); color: var(--ink); }
+.trap[aria-pressed="true"] { background: var(--shell); border-color: var(--shell); color: var(--on-shell); }
+.trap .num { display: inline-block; min-width: 2ch; text-align: center; font-size: 0.75rem; color: var(--muted); }
+.trap[aria-pressed="true"] .num { color: var(--on-shell-2); }
+.trap > span > .num { min-width: 2ch; font-size: inherit; color: inherit; }
+.trap.is-zero { opacity: 0.45; }
+
+/* Reference anchor strip + expiring live-offer line (always directly above store buttons) */
+.anchor { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 0.75rem; line-height: 1.5; color: var(--muted); font-variant-numeric: tabular-nums; }
+.anchor b { color: var(--ink-2); font-weight: 700; }
+.anchor-rule { max-width: 100%; padding: 0 6px; border: 1px solid var(--line-2); border-radius: 4px; background: var(--sunk); font-weight: 650; line-height: 1.65; color: var(--ink-2); }
+.anchor-rule.is-in { border-color: var(--action-line); background: var(--action-tint); color: var(--action-hi); }
+.anchor-rule.is-over { border-color: var(--warn-line); background: var(--warn-bg); color: var(--warn-ink); }
+.anchor a { font-weight: 700; color: var(--action-hi); text-decoration: underline; text-decoration-color: var(--action-line); text-underline-offset: 3px; }
+.anchor a:hover { text-decoration-color: currentColor; }
+.live-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; padding: 7px 10px; border: 1px solid var(--action-line); border-radius: var(--r-1); background: #F1F8F6; font-size: 0.75rem; line-height: 1.45; color: var(--ink-2); overflow-wrap: anywhere; }
+.live-line b { font-size: 0.9375rem; font-weight: 760; color: var(--ink); }
+.live-line.is-api { border-color: var(--action); }
+.r-act > .anchor, .r-act > .live-line { margin-bottom: 8px; }
+.decide .anchor { margin-top: 12px; }
+.decide .live-line { margin-top: 12px; }
+.decide .anchor + .battle { margin-top: 10px; }
+.rival { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); display: grid; gap: 6px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.link-list { display: grid; gap: 8px; list-style: none; }
+.table-note { margin-top: 8px; font-size: 0.75rem; line-height: 1.5; color: var(--muted); }
+.kr-check tbody th { width: 24%; color: var(--ink-2); }
+
+/* Promo & customs calculator */
+.calc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 18px 24px; align-items: start; margin-top: 18px; }
+.calc .tool-form { margin-top: 0; }
+.calc-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; list-style: none; }
+.calc-fields .is-wide { grid-column: 1 / -1; }
+.calc-fields label { font-weight: 700; }
+.inp { position: relative; display: block; }
+.inp input { display: block; width: 100%; height: 48px; border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--sheet); padding: 0 14px 0 32px; font-size: 1rem; font-weight: 650; font-variant-numeric: tabular-nums; box-shadow: 0 1px 0 rgba(15, 27, 31, 0.05), inset 0 -2px 0 var(--sunk); transition: border-color 0.15s; }
+.inp input:hover { border-color: var(--ink-2); }
+.inp input:focus-visible { border-color: var(--action); }
+.inp .unit { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 0.875rem; font-weight: 700; color: var(--muted); pointer-events: none; }
+.inp.is-suffix input { padding: 0 40px 0 14px; }
+.inp.is-suffix .unit { left: auto; right: 13px; }
+.field-hint { font-size: 0.75rem; line-height: 1.5; color: var(--muted); }
+.calc-source { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 0.75rem; line-height: 1.5; color: var(--ink-2); }
+.calc-source:has(span:empty) { display: none; }
+.calc-source + .board-note { margin-top: 6px; }
+.calc-out { position: sticky; top: calc(var(--head-h) + 16px); display: grid; gap: 12px; }
+.calc-sum, .calc-go { padding: 18px; }
+.calc-sum h2, .calc-go h2 { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--line); font-size: 0.9375rem; font-weight: 760; }
+.calc-net { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.calc-net .usd { font-size: 2rem; line-height: 1.15; font-weight: 780; letter-spacing: -0.03em; }
+.calc-net .krw { font-size: 1.0625rem; font-weight: 700; color: var(--ink-2); }
+.calc-lines { display: grid; margin-top: 12px; font-size: 0.8438rem; }
+.calc-lines div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid var(--line); }
+.calc-lines dt { color: var(--ink-2); overflow-wrap: anywhere; }
+.calc-lines dd { flex: none; font-weight: 700; white-space: nowrap; }
+.calc-lines .is-off dd { color: var(--action-hi); }
+.calc-code { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 0.8125rem; line-height: 1.5; color: var(--ink-2); }
+.calc-sum > .field-hint { display: block; margin-top: 8px; }
+.calc-msrp { margin-top: 10px; padding: 8px 10px; border-radius: var(--r-1); background: var(--sunk); font-size: 0.8125rem; line-height: 1.5; font-weight: 650; color: var(--ink); }
+.calc-msrp span { display: block; font-size: 0.75rem; font-weight: 500; color: var(--muted); }
+.customs-light { padding: 16px 18px; }
+.customs-light h2 { font-size: 1.0625rem; }
+.customs-light > p { font-size: 0.8438rem; line-height: 1.6; }
+.calc-go-name { margin-bottom: 10px; font-size: 0.875rem; font-weight: 700; overflow-wrap: anywhere; }
+.calc-cta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.calc-go-more { margin-top: 10px; }
+
+/* VS battles */
+.vs-stage { position: relative; container-type: inline-size; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin-top: 16px; background: var(--line); overflow: hidden; }
+.vs-side { display: flex; flex-direction: column; background: var(--sheet); }
+.vs-side .plate { aspect-ratio: 5 / 2; border-radius: 0; }
+.vs-side .plate img { inset: 7% 16%; width: 68%; height: 86%; }
+.vs-name { padding: 12px 16px 14px; }
+.vs-name strong { display: block; font-size: 1.0625rem; line-height: 1.35; font-weight: 760; letter-spacing: -0.015em; overflow-wrap: anywhere; }
+.vs-mark { position: absolute; z-index: 1; left: 50%; top: 10cqw; transform: translate(-50%, -50%); display: grid; place-items: center; width: 46px; height: 46px; border: 3px solid var(--sheet); border-radius: 50%; background: var(--shell); color: var(--mint); font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.04em; }
+.vs-verdicts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+.vs-pick { display: flex; flex-direction: column; gap: 10px; padding: 18px; border-top: 2px solid var(--ink); border-radius: 0 0 var(--r-2) var(--r-2); }
+.vs-pick h2 { font-size: 1.1875rem; line-height: 1.35; letter-spacing: -0.018em; font-weight: 770; text-wrap: balance; overflow-wrap: anywhere; }
+.vs-pick h2 em { font-style: normal; color: var(--action-hi); }
+.vs-cond { padding: 10px 12px; border: 1px solid var(--action-line); border-radius: var(--r-1); background: var(--action-tint); font-size: 0.9375rem; font-weight: 680; line-height: 1.55; color: var(--ink); }
+.vs-edge { font-size: 0.875rem; line-height: 1.65; color: var(--ink-2); }
+.vs-edge strong { display: block; margin-bottom: 2px; font-size: 0.75rem; font-weight: 700; color: var(--muted); }
+.vs-buy { display: grid; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); }
+.vs-buy .actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.vs-page > .btn-disc { margin-top: 12px; }
+.vs-table { min-width: 560px; }
+.vs-table thead th { font-size: 0.8125rem; font-weight: 740; color: var(--ink); background: var(--sunk); border-bottom: 1px solid var(--line-2); }
+.vs-table tbody th { width: 24%; }
+.vs-table td { width: 38%; color: var(--ink-2); }
+.vs-page .pc .cons h3 { overflow-wrap: anywhere; }
+.vs-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.vs-card { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; align-items: start; padding: 16px; border-radius: var(--r-3); transition: border-color 0.15s; }
+.vs-card:hover { border-color: var(--line-2); }
+.vs-card .gc-plates .plate { width: 56px; }
+.vs-card-txt { display: grid; gap: 6px; }
+.vs-card h3 { font-size: 1.0313rem; line-height: 1.4; font-weight: 740; letter-spacing: -0.012em; text-wrap: balance; overflow-wrap: anywhere; }
+.vs-card h3 a { text-decoration: none; }
+.vs-card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.vs-card:hover h3 a { text-decoration: underline; }
+.vs-card p { font-size: 0.8438rem; line-height: 1.6; color: var(--ink-2); }
+.wrap > .feat-strip { margin-top: 32px; }
+
 @media (max-width: 1099.98px) {
   .tool-grid[data-count="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 1023.98px) {
+  :root { --head-h: 0px; }
+  .site-head { position: static; }
+  .site-head .wrap { flex-wrap: wrap; min-height: 0; padding-top: 10px; padding-bottom: 10px; }
+  .head-nav { flex: 1 0 100%; margin-left: -4px; }
+  .board { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); }
+  .board-act { grid-column: 1 / -1; grid-auto-flow: column; justify-content: start; align-items: center; gap: 8px 16px; }
+  .traps { display: block; }
+  .traps-h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .traps-row { flex-wrap: nowrap; overflow-x: auto; margin: 0 calc(-1 * var(--gut)); padding: 0 var(--gut) 6px; scrollbar-width: none; }
+  .traps-row::-webkit-scrollbar { display: none; }
   .detail { grid-template-columns: minmax(0, 1fr); grid-template-areas: "hero" "aside" "body"; }
   .d-aside { position: static; max-height: none; overflow: visible; margin-top: 16px; }
   .work { display: block; margin-top: 14px; }
@@ -637,19 +818,24 @@ html.js .hub:not([data-ready]) .rows > li:nth-child(n+__PAGE_NEXT__) { display: 
   .scrim[data-open] { opacity: 1; visibility: visible; }
 }
 @media (max-width: 899.98px) {
+  .calc { grid-template-columns: minmax(0, 1fr); }
+  .calc-out { position: static; }
   .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .feat-strip { grid-template-columns: auto minmax(0, 1fr); }
   .feat-actions { grid-column: 1 / -1; }
 }
 @media (max-width: 860px) {
-  :root { --head-h: 0px; }
-  .site-head { position: static; }
-  .site-head .wrap { flex-wrap: wrap; min-height: 0; padding-top: 10px; padding-bottom: 10px; }
-  .head-nav { flex: 1 0 100%; margin-left: -4px; }
   .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
-  .dest-bar, .regions, .pc, .guide-grid, .tool-fields { grid-template-columns: minmax(0, 1fr); }
+  .dest-bar, .regions, .pc, .guide-grid, .tool-fields, .vs-verdicts, .vs-list, .board { grid-template-columns: minmax(0, 1fr); }
+  .board-act { grid-column: auto; }
+  .board .tiers { flex-wrap: nowrap; overflow-x: auto; margin: 0 -14px; padding: 0 14px 2px; scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); }
+  .board .tiers::-webkit-scrollbar { display: none; }
+  .board .tiers > li { flex: none; }
+  .vs-side .plate { aspect-ratio: 4 / 3; }
+  .vs-side .plate img { inset: 9% 12%; width: 76%; height: 82%; }
+  .vs-mark { top: 18.75cqw; }
   .site-foot .wrap { grid-template-columns: minmax(0, 1fr); }
   .prose { padding: 22px 18px 26px; }
 }
@@ -665,6 +851,9 @@ html.js .hub:not([data-ready]) .rows > li:nth-child(n+__PAGE_NEXT__) { display: 
   .rel .pcard-plate img { inset: 10%; width: 80%; height: 80%; }
 }
 @media (max-width: 640px) {
+  .head-nav { flex-wrap: nowrap; overflow-x: auto; margin: 0 calc(-1 * var(--gut)); padding: 2px var(--gut); scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
+  .head-nav::-webkit-scrollbar { display: none; }
+  .head-nav a.tg { margin-right: 24px; }
   .hub { display: flex; flex-direction: column; }
   .hub > .summary { order: 4; margin-top: 28px; }
   .hub > .feat-strip { order: 5; margin-top: 12px; }
@@ -690,6 +879,13 @@ html.js .hub:not([data-ready]) .rows > li:nth-child(n+__PAGE_NEXT__) { display: 
 }
 @media (max-width: 480px) {
   :root { --gut: 14px; }
+  .calc-fields, .calc-cta, .vs-buy .actions { grid-template-columns: minmax(0, 1fr); }
+  .vs-mark { width: 36px; height: 36px; border-width: 2px; font-size: 0.6875rem; }
+  .vs-name { padding: 10px 12px 12px; }
+  .vs-name strong { font-size: 0.9375rem; }
+  .vs-pick { padding: 16px 14px; }
+  .vs-card { grid-template-columns: minmax(0, 1fr); }
+  .board-act { grid-auto-flow: row; }
   .sm { padding: 9px 11px 10px; }
   .sm-s { display: none; }
   .legal-strip .wrap { flex-direction: column; gap: 3px; }
@@ -773,7 +969,8 @@ APP_JS = r"""
           const baseSub = map[trafficSource] || map.unknown || 'gch_ko_web';
           u.searchParams.set('subid', `${baseSub}_${destToken}`.slice(0, 30));
           a.href = u.toString();
-        } else if (store === 'aliexpress' && u.hostname.endsWith('aliexpress.com')) {
+        } else if (store === 'aliexpress' && u.hostname.endsWith('aliexpress.com') && !/^(s\.click|a)\./.test(u.hostname)) {
+          // Official promotion links (s.click / a.aliexpress.com) already carry tracking; never rewrite them.
           const map = AFF_CFG.aliexpress_tracking_by_source || {};
           const key = trafficSource === 'web' ? `web_${pageLang}` : (trafficSource === 'telegram' ? `telegram_${pageLang}` : trafficSource);
           const track = map[key] || map[trafficSource] || map.unknown || 'default';
@@ -834,6 +1031,97 @@ APP_JS = r"""
     document.addEventListener('visibilitychange', () => { if (!document.hidden) renderLiveOffers(); });
   }
 
+  // 3b. One-click promo-code copy chips with in-place feedback (the label swaps without resizing the chip)
+  document.addEventListener('click', e => {
+    const chip = e.target.closest('[data-copy]');
+    if (!chip) return;
+    const text = chip.dataset.copy;
+    const done = () => {
+      chip.setAttribute('data-copied', '');
+      clearTimeout(chip._copyTimer);
+      chip._copyTimer = setTimeout(() => chip.removeAttribute('data-copied'), 1600);
+      logFunnel('code_copy');
+    };
+    const legacy = () => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { if (document.execCommand('copy')) done(); } catch (err) {}
+      ta.remove();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, legacy);
+    else legacy();
+  });
+
+  // 3c. Static live-offer lines and community-spotted codes hide themselves the moment they expire
+  function sweepExpired() {
+    const now = Date.now();
+    document.querySelectorAll('[data-expires-at]').forEach(el => {
+      const at = Date.parse(el.dataset.expiresAt);
+      if (Number.isNaN(at) || now >= at) el.hidden = true;
+    });
+  }
+  sweepExpired();
+  setInterval(sweepExpired, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) sweepExpired(); });
+
+  // 3d. Situation board: recompute the sale traffic light and active promo ladder on the visitor's visit date
+  const board = document.querySelector('[data-board]');
+  if (board) {
+    const B = JSON.parse(board.querySelector('[data-board-json]').textContent);
+    const ref = new Date(Date.now() + B.tz * 3600000);
+    const month = ref.getUTCMonth() + 1;
+    const day = ref.getUTCDate();
+    const iso = ref.toISOString().slice(0, 10);
+    const win = ((month === 11 && ((day >= 11 && day <= 18) || day >= 20)) || (month === 12 && day <= 3)) ? 'mega'
+      : day <= 7 ? 'choice' : day >= 26 ? 'hold' : 'standard';
+    const copy = B.copy[win];
+    board.querySelector('[data-board-sig]').className = 'board-sig is-' + copy[0];
+    board.querySelector('[data-board-label]').textContent = copy[1];
+    board.querySelector('[data-board-sub]').textContent = copy[2];
+    board.querySelector('[data-board-date]').textContent = B.date_tpl.replace('{d}', iso);
+    board.dataset.window = win;
+    const promo = B.events.find(ev => ev.starts <= iso && iso <= ev.ends) || B.ref;
+    if (board.dataset.promoId !== promo.id) {
+      const amt = v => '$' + (Number.isInteger(v) ? v : v.toFixed(2));
+      const list = board.querySelector('[data-board-tiers]');
+      list.replaceChildren(...promo.tiers.map(t => {
+        const li = document.createElement('li');
+        const spend = B.spend_tpl.replace('{m}', amt(t.min_spend_usd));
+        if (t.code) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'tier';
+          btn.dataset.copy = t.code;
+          btn.setAttribute('aria-label', B.copy_aria.replace('{c}', t.code));
+          btn.innerHTML = '<span></span><b></b><span class="copy-swap"><code class="copy-idle"></code><span class="copy-done"></span></span>';
+          btn.children[0].textContent = spend;
+          btn.children[1].textContent = '\u2212' + amt(t.off_usd);
+          btn.querySelector('code').textContent = t.code;
+          btn.querySelector('.copy-done').textContent = B.copy_done;
+          li.appendChild(btn);
+        } else {
+          li.className = 'tier';
+          li.innerHTML = '<span></span><b></b>';
+          li.children[0].textContent = spend;
+          li.children[1].textContent = '\u2212' + amt(t.off_usd);
+        }
+        return li;
+      }));
+      const label = board.querySelector('[data-board-tiers-label]');
+      label.textContent = promo.label;
+      if (promo.source) {
+        const src = document.createElement('span');
+        src.textContent = ' · ' + promo.source;
+        label.appendChild(src);
+      }
+      board.dataset.promoId = promo.id;
+    }
+  }
+
   // 4. Hub Faceted Search & Filter Controller
   const hub = document.querySelector('[data-hub]');
   if (!hub) return;
@@ -848,7 +1136,7 @@ APP_JS = r"""
   const list = $('[data-rows]');
   const items = Array.from(list.children).map(el => {
     const d = el.dataset;
-    return { el, c: d.c, b: d.b, r: d.r, prio: +d.prio, q: d.q };
+    return { el, c: d.c, b: d.b, r: d.r, prio: +d.prio, q: d.q, t: (d.traps || '').split(' ').filter(Boolean) };
   });
   const SORTS = {
     prio: (a, b) => b.prio - a.prio || a.q.localeCompare(b.q),
@@ -862,6 +1150,7 @@ APP_JS = r"""
   const catLinks = scoped ? [] : $$('[data-cat]');
   const routeIn = $$('input[name="route"]');
   const brandIn = $$('input[data-f="brand"]');
+  const trapBtns = $$('[data-trap]');
   const brandBox = $('[data-brands]');
   const brandMore = $('[data-brand-more]');
   const counters = $$('[data-n]');
@@ -884,6 +1173,7 @@ APP_JS = r"""
     cat: catLinks.some(a => a.dataset.cat === params.get('cat')) ? params.get('cat') : 'all',
     q: params.get('q') || '',
     route: ['ali', 'dom'].includes(params.get('route')) ? params.get('route') : 'all',
+    trap: trapBtns.some(b => b.dataset.trap === params.get('trap')) ? params.get('trap') : 'all',
     brand: new Set(params.getAll('brand').filter(v => validBrands.has(v))),
     sort: SORTS[params.get('sort')] ? params.get('sort') : 'prio',
     view: (params.get('view') || savedView) === 'cards' ? 'cards' : 'list',
@@ -934,6 +1224,7 @@ APP_JS = r"""
       ['q', it => terms.every(t => it.q.includes(t))],
       ['route', it => state.route === 'all' || it.r === state.route],
       ['brand', it => !state.brand.size || state.brand.has(it.b)],
+      ['trap', it => state.trap === 'all' || it.t.includes(state.trap)],
     ];
     const tally = new Map();
     const bump = k => tally.set(k, (tally.get(k) || 0) + 1);
@@ -949,16 +1240,18 @@ APP_JS = r"""
       if (open('cat')) { bump('cat:all'); bump('cat:' + it.c); }
       if (open('route')) { bump('route:all'); bump('route:' + it.r); }
       if (open('brand')) bump('brand:' + it.b);
+      if (open('trap')) { bump('trap:all'); it.t.forEach(k => bump('trap:' + k)); }
     });
     const shown = Math.min(total, state.limit);
 
     counters.forEach(el => {
       const n = tally.get(el.dataset.n) || 0;
       el.textContent = n;
-      const host = el.closest('.opt, [data-cat]');
+      const host = el.closest('.opt, [data-cat], [data-trap]');
       if (!host) return;
       const input = host.querySelector('input');
-      const active = input ? input.checked : host.hasAttribute('aria-current');
+      const active = input ? input.checked
+        : host.hasAttribute('data-trap') ? host.dataset.trap === state.trap : host.hasAttribute('aria-current');
       host.classList.toggle('is-zero', n === 0 && !active);
     });
     catLinks.forEach(a => {
@@ -967,6 +1260,7 @@ APP_JS = r"""
     });
     routeIn.forEach(i => { i.checked = i.value === state.route; });
     brandIn.forEach(i => { i.checked = state.brand.has(i.value); });
+    trapBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.trap === state.trap)));
     sortSel.value = state.sort;
     viewBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewBtn === state.view)));
     hub.dataset.view = state.view;
@@ -988,7 +1282,7 @@ APP_JS = r"""
 
   function changed() { state.limit = PAGE; apply(); }
   function reset() {
-    state.q = ''; state.cat = 'all'; state.route = 'all'; state.brand.clear();
+    state.q = ''; state.cat = 'all'; state.route = 'all'; state.trap = 'all'; state.brand.clear();
     search.value = '';
     changed();
   }
@@ -1018,6 +1312,10 @@ APP_JS = r"""
   routeIn.forEach(i => i.addEventListener('change', () => { state.route = i.value; changed(); }));
   brandIn.forEach(i => i.addEventListener('change', () => {
     if (i.checked) state.brand.add(i.value); else state.brand.delete(i.value);
+    changed();
+  }));
+  trapBtns.forEach(b => b.addEventListener('click', () => {
+    state.trap = state.trap === b.dataset.trap ? 'all' : b.dataset.trap;
     changed();
   }));
   document.addEventListener('keydown', e => {
@@ -1293,6 +1591,10 @@ T = {
         "policy": "정책·고지",
         "home": "홈",
         "tool_nav": "맥북 독 판별기",
+        "calc_nav": "알리 코드 계산기",
+        "guides_nav": "가이드",
+        "vs_nav": "1:1 대결",
+        "nav_aria": "주요 메뉴",
     },
     "en": {
         "region": "GLOBAL",
@@ -1314,8 +1616,88 @@ T = {
         "policy": "Policy",
         "home": "Home",
         "tool_nav": "MacBook Dock Tool",
+        "calc_nav": "Promo Calculator",
+        "guides_nav": "Buying Guides",
+        "vs_nav": "VS Battles",
+        "nav_aria": "Primary",
     },
 }
+
+
+@dataclass
+class _BuildContext:
+    """Per-build state shared by the render helpers (set once at the top of build_site)."""
+
+    live_offers: dict | None = None
+    promo: dict = field(default_factory=dict)
+    pairs: list = field(default_factory=list)
+    rivals: dict = field(default_factory=dict)
+    now: datetime | None = None
+    og_slugs: set = field(default_factory=set)
+    site_og: str | None = None
+
+
+_CTX = _BuildContext()
+
+
+def _og_card(slug: str) -> bytes | None:
+    """1200x630 JPEG share card. Telegram and most social previews need JPEG/PNG; WebP is not reliably rendered."""
+    try:
+        from PIL import Image
+    except Exception:
+        return None
+    src = _IMG_SRC_DIR / f"{slug}.webp"
+    if not src.exists():
+        return None
+    try:
+        im = Image.open(src).convert("RGB")
+    except Exception:
+        return None
+    side = 560
+    canvas = Image.new("RGB", (1200, 630), "#FFFFFF")
+    canvas.paste(im.resize((side, side), Image.Resampling.LANCZOS), ((1200 - side) // 2, (630 - side) // 2))
+    buf = io.BytesIO()
+    canvas.save(buf, "JPEG", quality=86, optimize=True)
+    return buf.getvalue()
+
+
+def _site_og_card(slugs: list[str]) -> bytes | None:
+    """Site-wide 1200x630 share card: four vetted products on the brand shell colour (no text, no prices)."""
+    try:
+        from PIL import Image
+    except Exception:
+        return None
+    tiles = []
+    for slug in slugs:
+        src = _IMG_SRC_DIR / f"{slug}.webp"
+        if not src.exists():
+            continue
+        try:
+            tiles.append(Image.open(src).convert("RGB").resize((240, 240), Image.Resampling.LANCZOS))
+        except Exception:
+            continue
+        if len(tiles) == 4:
+            break
+    if len(tiles) < 4:
+        return None
+    canvas = Image.new("RGB", (1200, 630), "#0F302E")
+    x = 78
+    for tile in tiles:
+        plate = Image.new("RGB", (252, 252), "#FFFFFF")
+        plate.paste(tile, (6, 6))
+        canvas.paste(plate, (x, 189))
+        x += 264
+    buf = io.BytesIO()
+    canvas.save(buf, "JPEG", quality=86, optimize=True)
+    return buf.getvalue()
+
+
+def _og_image(it: dict) -> str | None:
+    """Site-relative og:image path for a product: the JPEG share card when rendered, else the source WebP."""
+    slug = product_slug(it["id"])
+    if slug in _CTX.og_slugs:
+        return f"/assets/og/{slug}.jpg"
+    return f"/assets/products/{slug}.webp" if _media(slug) is not None else None
 
 
 def _aff_config_script(cfg: dict) -> str:
@@ -1347,7 +1729,13 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
     b_meta = f'\n  <meta name="msvalidate.01" content="{_esc(b_verify)}">' if b_verify else ""
     rss_href = f"{base}/ko/feed.xml" if lang == "ko" else f"{base}/en/pinterest-feed.xml"
     rss_link = f'\n  <link rel="alternate" type="application/rss+xml" title="{_esc(cfg["site"]["brand_name"])} RSS" href="{_esc(rss_href)}">'
+    og_image = og_image or _CTX.site_og
     og_img_tag = f'\n  <meta property="og:image" content="{_esc(base + og_image)}">' if og_image else ""
+    if og_image and og_image.endswith(".jpg"):
+        og_img_tag += (
+            '\n  <meta property="og:image:width" content="1200">\n  <meta property="og:image:height" content="630">'
+            '\n  <meta name="twitter:card" content="summary_large_image">'
+        )
     # Zero static prices in meta tags, OpenGraph, or structured data (Debate 3 Consensus #1)
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
@@ -1381,13 +1769,14 @@ def _site_header(lang: str, up: str, cfg: dict, switch_href: str) -> str:
     t = T[lang]
     brand = _esc(cfg["site"]["brand_name"])
     tg = _esc(cfg["site"]["telegram_channel_ko" if lang == "ko" else "telegram_channel_en"])
-    guides_link = f'<a href="{up}en/guides/">Buying Guides</a>' if lang == "en" else ""
     return f"""<header class="site-head">
     <div class="wrap">
       <a class="brand" href="{up}{lang}/" aria-label="{brand} {t['region']}">{BRAND_MARK}<span class="brand-name">{brand}</span><span class="brand-region">{t['region']}</span></a>
-      <nav class="head-nav" aria-label="{'주요 메뉴' if lang == 'ko' else 'Primary'}">
+      <nav class="head-nav" aria-label="{t['nav_aria']}">
         <a class="nav-hi" href="{up}{lang}/tools/macbook-dock-checker/">{t['tool_nav']}</a>
-        {guides_link}
+        <a href="{up}{lang}/tools/ali-promo-calculator/">{t['calc_nav']}</a>
+        <a href="{up}{lang}/guides/">{t['guides_nav']}</a>
+        <a href="{up}{lang}/vs/">{t['vs_nav']}</a>
         <a href="{switch_href}" hreflang="{'en' if lang == 'ko' else 'ko'}">{t['switch']}</a>
         <a href="{up}policy/">{t['policy']}</a>
         <a class="tg" href="{tg}" target="_blank" rel="noopener" aria-label="{t['tg_long']}">{_icon('send', 15)}<span class="lbl-tg">{t['tg']}</span></a>
@@ -1401,10 +1790,20 @@ def _site_footer(lang: str, up: str, cfg: dict) -> str:
     year = datetime.now(timezone.utc).year
     if lang == "ko":
         note = "본 허브는 비공인 정적 쇼핑몰 가격을 저장·표시하지 않습니다. 최종 판매가·할인 자격·재고·통관 세액은 각 판매처 결제창에서 직접 확인하세요."
-        links = f'<a href="{up}ko/">한국어 허브</a><a href="{up}ko/tools/macbook-dock-checker/">맥북 독 판별기</a><a href="{up}en/">Global Hub</a><a href="{up}policy/">개인정보처리방침·대가성 고지</a>'
+        links = (
+            f'<a href="{up}ko/">한국어 허브</a><a href="{up}ko/guides/">구매 가이드</a><a href="{up}ko/vs/">1:1 대결</a>'
+            f'<a href="{up}ko/tools/macbook-dock-checker/">맥북 독 판별기</a>'
+            f'<a href="{up}ko/tools/ali-promo-calculator/">알리 코드 계산기</a>'
+            f'<a href="{up}en/" hreflang="en">Global Hub</a><a href="{up}policy/">개인정보처리방침·대가성 고지</a>'
+        )
     else:
         note = "As an Amazon Associate I earn from qualifying purchases. Static store prices are intentionally omitted; always confirm live pricing, seller terms, and import charges on the store page."
-        links = f'<a href="{up}en/">Global Hub</a><a href="{up}en/guides/">Buying Guides</a><a href="{up}en/tools/macbook-dock-checker/">MacBook Dock Tool</a><a href="{up}ko/">한국어 허브</a><a href="{up}policy/">Privacy &amp; Disclosure</a>'
+        links = (
+            f'<a href="{up}en/">Global Hub</a><a href="{up}en/guides/">Buying Guides</a><a href="{up}en/vs/">VS Battles</a>'
+            f'<a href="{up}en/tools/macbook-dock-checker/">MacBook Dock Tool</a>'
+            f'<a href="{up}en/tools/ali-promo-calculator/">Promo Calculator</a>'
+            f'<a href="{up}ko/" hreflang="ko">한국어 허브</a><a href="{up}policy/">Privacy &amp; Disclosure</a>'
+        )
     return f"""<footer class="site-foot">
     <div class="wrap">
       <p>© {year} {brand}. {_esc(note)}</p>
@@ -1486,10 +1885,216 @@ def _battle(it: dict, d: dict, lang: str, dom_btn_lbl: str, ali_btn_lbl: str) ->
 
 def _search_blob(it: dict, lang: str) -> str:
     parts = [
-        it["brand"], it["model"], it["ko"]["title"], it["en"]["title"],
-        _cat_label(it["category"], lang), *map(str, it.get("specs", {}).values()),
+        it["brand"], it["model"], it[lang]["title"],
+        _cat_label(it["category"], lang), *map(str, _specs_for_lang(it, lang).values()),
     ]
+    if lang == "ko":
+        parts.append(it["en"]["title"])  # Korean shoppers also search by the English model name
     return _esc(unicodedata.normalize("NFKC", " ".join(parts)).lower())
+
+
+# --------------------------------------------------------------------------------------
+# Trap-cut filters: deterministic membership computed from category, specs, cons and the
+# buying profile. No hand-tagging, so a new catalog entry is classified the moment it lands.
+# --------------------------------------------------------------------------------------
+TRAPS = (
+    ("mac-dual", "M1~M4 맥북 듀얼모니터 호환", "Mac Dual-Monitor Ready"),
+    ("airline-100wh", "100Wh 이하 기내반입", "Airline-Safe <=100Wh"),
+    ("low-reset", "단일 고출력·저소음 검증", "Sustained Output / Quiet"),
+    ("direct-edge", "알리 직구 메리트 우위", "Direct-Import Value"),
+    ("domestic-fast", "쿠팡 로켓·프라임 권장", "Domestic Fast-Ship Pick"),
+)
+_MAC_DUAL_RE = re.compile(r"(displaylink|thunderbolt\s?4|썬더볼트\s?4)", re.IGNORECASE)
+_RESET_RE = re.compile(r"(리셋|재분배|재협상|renegotiat|\breset\b)", re.IGNORECASE)
+_QUIET_RE = re.compile(r"(무소음|팬리스|fanless|silent|0\s?dba)", re.IGNORECASE)
+_WH_RE = re.compile(r"(\d+(?:\.\d+)?)\s*Wh", re.IGNORECASE)
+_MAH_RE = re.compile(r"(\d{1,3}(?:,\d{3})+|\d{4,6})\s*mAh", re.IGNORECASE)
+_WATT_RE = re.compile(r"(\d{2,3})\s*W\b")
+
+
+def battery_wh(it: dict) -> float | None:
+    """Rated watt-hours: the printed Wh figure when present, else mAh x 3.6 V nominal cell voltage."""
+    text = " ".join(str(v) for v in it.get("specs", {}).values()) + " " + it.get("model", "")
+    m = _WH_RE.search(text)
+    if m:
+        return float(m.group(1))
+    m = _MAH_RE.search(text)
+    return round(int(m.group(1).replace(",", "")) * 3.6 / 1000, 1) if m else None
+
+
+def single_port_watts(it: dict) -> int | None:
+    """Single-port output in watts from the max_output spec; None when only a shared total is stated."""
+    raw = str(it.get("specs", {}).get("max_output", ""))
+    if not raw:
+        return None
+    m = re.search(r"(\d{2,3})\s*W\s*Single", raw, re.IGNORECASE)
+    if m:
+        return int(m.group(1))
+    paren = re.search(r"\(([^)]*)\)", raw)
+    if paren:
+        vals = [int(x) for x in _WATT_RE.findall(paren.group(1))]
+        if vals:
+            return max(vals)
+    if re.search(r"total", raw, re.IGNORECASE):
+        return None
+    m = _WATT_RE.search(raw)
+    return int(m.group(1)) if m else None
+
+
+def trap_keys(it: dict, lang: str) -> list[str]:
+    """Trap-cut filter keys a model belongs to (language decides the route-based keys)."""
+    keys: list[str] = []
+    specs = it.get("specs", {})
+    if it["category"] == "hubs" and specs.get("video") and _MAC_DUAL_RE.search(f'{it["model"]} {specs["video"]}'):
+        keys.append("mac-dual")
+    if it["category"] == "powerbanks":
+        wh = battery_wh(it)
+        if wh is not None and wh <= 100:
+            keys.append("airline-100wh")
+    spec_text = " ".join(str(v) for v in list(specs.values()) + list(it.get("specs_en", {}).values()))
+    cons_text = " ".join(it.get("ko", {}).get("cons", []) + it.get("en", {}).get("cons", []))
+    watts = single_port_watts(it) if it["category"] in ("chargers", "powerbanks") else None
+    if (watts is not None and watts >= 100 and not _RESET_RE.search(cons_text)) or _QUIET_RE.search(spec_text):
+        keys.append("low-reset")
+    if _profile(it, lang)["direct_pick"]:
+        # For Korea-bound orders a direct-import edge only holds under the USD 150 duty-free line.
+        if lang == "en" or float(it.get("msrp_usd") or 0) <= 150:
+            keys.append("direct-edge")
+    else:
+        keys.append("domestic-fast")
+    return keys
+
+
+# --------------------------------------------------------------------------------------
+# Reference anchor strip + live offer line: the numeric anchor shown above every store CTA.
+# --------------------------------------------------------------------------------------
+def _anchor_strip(it: dict, lang: str, calc_base: str) -> str:
+    """Manufacturer reference MSRP, customs-line verdict and a deep link into the promo calculator."""
+    href = f"{calc_base}?p={quote(it['id'])}"
+    if lang == "ko":
+        if not it.get("msrp_krw"):
+            return ""
+        cls, rule = kr_customs_anchor(float(it.get("msrp_usd") or 0))
+        return (
+            f'<p class="anchor"><span>출시 참고가 MSRP <b class="num">{int(it["msrp_krw"]):,}원</b></span>'
+            f'<span class="anchor-rule {cls}">{rule}</span><a href="{href}">코드 체감가 계산</a></p>'
+        )
+    if not it.get("msrp_usd"):
+        return ""
+    return (
+        f'<p class="anchor"><span>Ref MSRP <b class="num">${float(it["msrp_usd"]):,.2f}</b></span>'
+        f'<span class="anchor-rule">Direct import: duties at checkout</span><a href="{href}">Promo Calc</a></p>'
+    )
+
+
+def _live_line(it: dict, lang: str) -> str:
+    """Unexpired live_offers_cache entry for a model, labelled strictly by where the number came from."""
+    entry = pick_live_offer(_CTX.live_offers, it["id"], lang, now=_CTX.now)
+    if not entry:
+        return ""
+    day = _esc(str(entry.get("observed_at", ""))[:10])
+    price = _esc(entry.get("price_text") or "")
+    if not price:
+        return ""
+    if entry["source_kind"] == "ali_official_api":
+        label = "실시간 알리 API 특가" if lang == "ko" else "Live AliExpress API Offer"
+        meta = f" (조회일 {day})" if lang == "ko" else f" (Fetched {day})"
+        cls = "is-api"
+    else:
+        label = (
+            f"최근 커뮤니티 포착 핫딜 기준가 (관측일 {day} · 종료 가능)"
+            if lang == "ko"
+            else f"Recent Community-Spotted Deal Benchmark (Observed {day} · May Expire)"
+        )
+        meta, cls = "", "is-community"
+    return (
+        f'<p class="live-line {cls}" data-live-kind="{_esc(entry["source_kind"])}" '
+        f'data-expires-at="{_esc(entry.get("expires_at", ""))}"><span class="live-lbl">{label}{meta}</span>'
+        f'<b class="num">{price}</b></p>'
+    )
+
+
+def _money(value: float) -> str:
+    return f"${int(value)}" if float(value).is_integer() else f"${value:,.2f}"
+
+
+def _tier_chip(tier: dict, lang: str) -> str:
+    """Promo tier chip: a one-click copy button when a code exists, otherwise a plain tier guide."""
+    h = HUB[lang]
+    spend = h["spend"].format(m=_money(tier["min_spend_usd"]))
+    off = f"−{_money(tier['off_usd'])}"
+    if tier.get("code"):
+        code = _esc(tier["code"])
+        return (
+            f'<li><button type="button" class="tier" data-copy="{code}" aria-label="{_esc(h["copy_aria"].format(c=tier["code"]))}">'
+            f'<span>{spend}</span><b>{off}</b><span class="copy-swap"><code class="copy-idle">{code}</code>'
+            f'<span class="copy-done">{h["copy_done"]}</span></span></button></li>'
+        )
+    return f'<li class="tier"><span>{spend}</span><b>{off}</b></li>'
+
+
+def _community_codes(lang: str) -> str:
+    """Copy chips for promo codes spotted in community posts (Ppomppu -> KO board, Reddit -> EN board)."""
+    h = HUB[lang]
+    chips = []
+    for c in (_CTX.live_offers or {}).get("promo_codes", []):
+        if ("ppomppu" in str(c.get("signal_source", ""))) != (lang == "ko"):
+            continue
+        code = _esc(c["code"])
+        chips.append(
+            f'<li data-expires-at="{_esc(c.get("expires_at", ""))}"><button type="button" class="tier" data-copy="{code}" '
+            f'aria-label="{_esc(h["copy_aria"].format(c=c["code"]))}"><span class="copy-swap"><code class="copy-idle">{code}</code>'
+            f'<span class="copy-done">{h["copy_done"]}</span></span></button></li>'
+        )
+    if not chips:
+        return ""
+    day = _esc(str((_CTX.live_offers or {}).get("updated_at", ""))[:10])
+    return f'<p class="board-h">{_esc(h["community_codes"].format(d=day))}</p><ul class="tiers">{"".join(chips[:6])}</ul>'
+
+
+def _situation_board(lang: str, lang_pfx: str) -> str:
+    """Above-the-fold Live Deal & Compatibility Situation Board for the main hubs."""
+    h = HUB[lang]
+    day = sale_reference_date(lang, _CTX.now)
+    sig = sale_signal(lang, day)
+    promo = active_promo(_CTX.promo, lang, day)
+    ref = active_promo({**_CTX.promo, "events": []}, lang, day)
+    notice = (_CTX.promo.get("notice") or {}).get(lang, "")
+    src = f'<span> · {_esc(promo["source"])}</span>' if promo["kind"] == "event" and promo.get("source") else ""
+    payload = json.dumps(
+        {
+            "tz": SALE_TZ_HOURS[lang],
+            "copy": {k: list(v) for k, v in SALE_COPY[lang].items()},
+            "date_tpl": h["board_date"],
+            "spend_tpl": h["spend"],
+            "copy_done": h["copy_done"],
+            "copy_aria": h["copy_aria"],
+            "ref": {"id": ref["id"], "label": ref["label"], "source": "", "tiers": ref["tiers"]},
+            "events": promo_events_for_lang(_CTX.promo, lang),
+        },
+        ensure_ascii=False,
+    ).replace("</", "<\\/")
+    arrow = _icon("arrow", 14)
+    return f"""<section class="board" aria-label="{h['board_aria']}" data-board data-window="{sig['window']}" data-promo-id="{_esc(promo['id'])}">
+      <div class="board-sig is-{sig['tone']}" data-board-sig>
+        <span class="lamps" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div>
+          <h2 class="board-state" data-board-label>{_esc(sig['label'])}</h2>
+          <p class="board-sub"><span data-board-sub>{_esc(sig['sub'])}</span><span class="board-date num" data-board-date>{_esc(h['board_date'].format(d=day.isoformat()))}</span></p>
+        </div>
+      </div>
+      <div class="board-codes">
+        <p class="board-h" data-board-tiers-label>{_esc(promo['label'])}{src}</p>
+        <ul class="tiers" data-board-tiers>{''.join(_tier_chip(t, lang) for t in promo['tiers'])}</ul>
+        {_community_codes(lang)}
+        <p class="board-note">{_icon('caution', 14)}<span>{_esc(notice)}</span></p>
+      </div>
+      <div class="board-act">
+        <a class="btn btn-primary btn-s" href="{lang_pfx}tools/ali-promo-calculator/">{_icon('calc', 15)}{h['board_calc']} {arrow}</a>
+        <a class="text-link" href="{lang_pfx}vs/">{_esc(h['board_vs'].format(n=len(_CTX.pairs)))} {arrow}</a>
+      </div>
+      <script type="application/json" data-board-json>{payload}</script>
+    </section>"""
 
 
 HUB = {
@@ -1540,6 +2145,16 @@ HUB = {
         "why_ali": "공식 스토어 할인코드 시즌 유리",
         "why_dom": "반품 편의·정식 보증·규격 확인 중요",
         "row_disc": "제휴 링크 (수수료 제공 가능)",
+        "traps_h": "오구매 컷 필터",
+        "trap_all": "전체",
+        "board_aria": "실시간 구매 타이밍·프로모 코드 현황판",
+        "board_calc": "코드 체감가 계산기",
+        "board_vs": "1:1 라이벌 대결 {n}선",
+        "board_date": "기준일 {d} (KST)",
+        "spend": "{m} 이상",
+        "copy_done": "복사됨 ✓",
+        "copy_aria": "프로모 코드 {c} 복사",
+        "community_codes": "커뮤니티 포착 코드 (관측일 {d} · 종료 가능)",
         "empty_t": "조건에 맞는 모델이 없습니다",
         "empty_d": "검색어를 줄이거나 필터를 해제하세요.",
         "reset": "필터 초기화",
@@ -1601,6 +2216,16 @@ HUB = {
         "why_ali": "Compare checkout import fees vs promo savings",
         "why_dom": "Domestic US ship & easy compatibility return",
         "row_disc": "Paid affiliate links (Amazon Associate & AliExpress)",
+        "traps_h": "Trap-cut filters",
+        "trap_all": "All Vetted",
+        "board_aria": "Live deal timing and promo code board",
+        "board_calc": "Promo Calculator",
+        "board_vs": "{n} VS Battles",
+        "board_date": "As of {d} (PT)",
+        "spend": "{m}+",
+        "copy_done": "Copied ✓",
+        "copy_aria": "Copy promo code {c}",
+        "community_codes": "Community-spotted codes (Observed {d} · May Expire)",
         "empty_t": "No models match these filters",
         "empty_d": "Shorten the query or clear active filters.",
         "reset": "Reset filters",
@@ -1631,8 +2256,9 @@ def _render_row(it: dict, lang: str, pfx: str, up: str, idx: int = 99) -> str:
     attrs = (
         f'data-c="{_esc(it["category"])}" data-b="{_esc(it["brand"])}" '
         f'data-r="{"ali" if d["direct_pick"] else "dom"}" data-prio="{d["prio"]}" '
-        f'data-q="{_search_blob(it, lang)}"'
+        f'data-traps="{" ".join(trap_keys(it, lang))}" data-q="{_search_blob(it, lang)}"'
     )
+    calc_base = f"{pfx[:-2]}tools/ali-promo-calculator/"
 
     def buy(store_cls: str, store_id: str, url: str, label: str, pick: bool) -> str:
         return (
@@ -1657,6 +2283,7 @@ def _render_row(it: dict, lang: str, pfx: str, up: str, idx: int = 99) -> str:
             <button type="button" class="r-more" data-more aria-expanded="false" aria-controls="d-{slug}">{h['more_btn']} {_use('down')}</button>
           </div>
           <div class="r-act">
+            {_live_line(it, lang)}{_anchor_strip(it, lang, calc_base)}
             <div class="buys">
               {buy(d['dom_key'], d['dom_store_id'], d['dom_url'], t['dom_short'], not d['direct_pick'])}
               {buy('ali', 'aliexpress', d['ali_url'], t['ali_short'], d['direct_pick'])}
@@ -1708,21 +2335,24 @@ def _render_facets(profiles: list[tuple[dict, dict]], lang: str) -> str:
 def _featured_strip(lang: str, up_to_lang: str) -> str:
     ic = f'<span class="feat-ic">{_icon("dual", 22)}</span>'
     arrow = _icon("arrow", 14)
+    n_guides = len(GUIDES_BY_LANG[lang])
     if lang == "ko":
         return (
-            f'<section class="feat-strip" aria-label="핵심 호환 판별기">{ic}'
-            f'<div><strong>맥북 모델·칩별 듀얼모니터 독 호환 판별기 (M1·M2·M3·M4)</strong>'
+            f'<section class="feat-strip" aria-label="핵심 호환 판별기와 구매 가이드">{ic}'
+            f'<div><strong>맥북 듀얼모니터 독 호환 판별기 (M1·M2·M3·M4) · 구매 가이드 {n_guides}편</strong>'
             f'<p>화면 복제(미러링) 실패 없이 내 맥북 칩셋·클램쉘·OTT 조건에 맞는 도킹스테이션 구성을 10초 만에 확인하세요.</p></div>'
-            f'<div class="feat-actions"><a class="btn btn-primary btn-s" href="{up_to_lang}tools/macbook-dock-checker/">판별기 열기 {arrow}</a></div>'
-            f'</section>'
+            f'<div class="feat-actions">'
+            f'<a class="btn btn-primary btn-s" href="{up_to_lang}tools/macbook-dock-checker/">판별기 열기 {arrow}</a>'
+            f'<a class="btn btn-s" href="{up_to_lang}guides/">구매 가이드 {n_guides}편 {arrow}</a>'
+            f'</div></section>'
         )
     return (
         f'<section class="feat-strip" aria-label="Compatibility Tools and Buying Guides">{ic}'
-        f'<div><strong>MacBook Dual-Monitor Dock Checker &amp; 12 Engineering Buying Guides</strong>'
+        f'<div><strong>MacBook Dual-Monitor Dock Checker &amp; {n_guides} Engineering Buying Guides</strong>'
         f'<p>Verify M1–M4 external monitor limits, USB4 NVMe thermals, TSA 100Wh power banks, and Hall-effect/TMR controllers before buying.</p></div>'
         f'<div class="feat-actions">'
         f'<a class="btn btn-primary btn-s" href="{up_to_lang}tools/macbook-dock-checker/">MacBook Dock Checker {arrow}</a>'
-        f'<a class="btn btn-s" href="{up_to_lang}guides/">12 Buying Guides {arrow}</a>'
+        f'<a class="btn btn-s" href="{up_to_lang}guides/">{n_guides} Buying Guides {arrow}</a>'
         f'</div></section>'
     )
 
@@ -1797,7 +2427,28 @@ def _render_hub(items: list[dict], cfg: dict, lang: str, cat: str | None = None,
         for k, v, tip in h["views"]
     )
     strings = dict(h["js"])
-    strings.update({"cats": {c: _cat_label(c, lang) for c in cats}, "route": {"ali": h["r_ali"], "dom": h["r_dom"]}})
+    trap_labels = {key: (ko if lang == "ko" else en) for key, ko, en in TRAPS}
+    strings.update({
+        "cats": {c: _cat_label(c, lang) for c in cats},
+        "route": {"ali": h["r_ali"], "dom": h["r_dom"]},
+        "traps": trap_labels,
+    })
+    board_html, traps_html = "", ""
+    if cat is None:
+        board_html = _situation_board(lang, up_lang)
+        trap_counts = Counter(k for it, _ in profiles for k in trap_keys(it, lang))
+        trap_btns = [
+            f'<button type="button" class="trap" data-trap="all" aria-pressed="true"><span>{_esc(h["trap_all"])} '
+            f'(<span class="num" data-n="trap:all">{n}</span>)</span></button>'
+        ] + [
+            f'<button type="button" class="trap" data-trap="{key}" aria-pressed="false">{_esc(trap_labels[key])} '
+            f'<span class="num" data-n="trap:{key}">{trap_counts[key]}</span></button>'
+            for key, _ko, _en in TRAPS
+        ]
+        traps_html = (
+            f'<div class="traps" role="group" aria-label="{h["traps_h"]}"><span class="traps-h">{h["traps_h"]}</span>'
+            f'<div class="traps-row">{"".join(trap_btns)}</div></div>'
+        )
     i18n = json.dumps(strings, ensure_ascii=False).replace("</", "<\\/")
 
     body = f"""
@@ -1811,6 +2462,7 @@ def _render_hub(items: list[dict], cfg: dict, lang: str, cat: str | None = None,
       <h1>{_esc(h1)}</h1>
       <p class="stamp">{h['stamp'].format(date=_esc(latest))}</p>
     </header>
+    {board_html}
     <dl class="summary" aria-label="{h['summary_lbl']}">{summary_html}</dl>
     {_dest_banner(lang)}
     {_featured_strip(lang, up_lang)}
@@ -1834,6 +2486,7 @@ def _render_hub(items: list[dict], cfg: dict, lang: str, cat: str | None = None,
           <label class="sort sel"><span class="sr-only">{h['sort_lbl']}</span><select data-sort>{sort_html}</select>{_icon('down', 15)}</label>
           <button type="button" class="fbtn" data-sheet-open aria-controls="facets">{_icon('filter', 16)}<span>{h['filters']}</span><b class="num" data-fcount hidden>0</b></button>
         </div>
+        {traps_html}
         <div class="status">
           <p class="status-text num" data-status aria-live="polite"></p>
           <div class="on-chips" data-chips></div>
@@ -1889,6 +2542,7 @@ def _product_card(it: dict, lang: str, pfx: str = "../../p/", up: str = "../../.
         f'<p class="note-c">{_icon("caution", 15)}<span><strong>{con_lbl}</strong> {_esc(loc["cons"][0])}</span></p>'
         f'</div>'
         f'<div class="pcard-foot">'
+        f'{_live_line(it, lang)}{_anchor_strip(it, lang, pfx[:-2] + "tools/ali-promo-calculator/")}'
         f'<div class="actions">'
         f'<a class="btn btn-{d["dom_key"]}{" is-first" if dom_first else ""}" data-aff="dom" data-store="{d["dom_store_id"]}" href="{_esc(d["dom_url"])}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>{dom_lbl}</a>'
         f'<a class="btn btn-ali{"" if dom_first else " is-first"}" data-aff="ali" data-store="aliexpress" href="{_esc(d["ali_url"])}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>{ali_lbl}</a>'
@@ -1959,6 +2613,24 @@ def _render_detail_page(it: dict, lang: str, cfg: dict, items: list[dict] | None
             f'<span>{dock_txt}</span></a></p>'
         )
 
+    rival_html = ""
+    for i, pair in enumerate(_CTX.rivals.get(it["id"], [])[:3]):
+        rid = pair["b"] if pair["a"] == it["id"] else pair["a"]
+        rival = next((x for x in (items or []) if x["id"] == rid), None)
+        if rival is None:
+            continue
+        rname = vs_name(rid, rival)
+        if lang == "ko":
+            label = f"이 모델과 가장 많이 비교하는 라이벌: {rname}" if i == 0 else f"다른 1:1 대결: vs {rname}"
+        else:
+            label = f"Most-compared rival for this model: {rname}" if i == 0 else f"Also compared: vs {rname}"
+        rival_html += (
+            f'<a class="text-link" href="../../vs/{_esc(pair["slug"])}/">{_icon("scale", 16)}'
+            f'<span>{_esc(label)}</span>{_icon("arrow", 14)}</a>'
+        )
+    if rival_html:
+        rival_html = f'<p class="rival">{rival_html}</p>'
+
     rel_items = _related(it, items or [], 3)
     related_html = ""
     if rel_items:
@@ -2009,10 +2681,13 @@ def _render_detail_page(it: dict, lang: str, cfg: dict, items: list[dict] | None
           <h2 class="decide-title">{decide_h}</h2>
           {_pick_badge(d, lang)}
           <p class="decide-verdict">{_esc(loc['verdict'])}</p>
+          {_live_line(it, lang)}
+          {_anchor_strip(it, lang, "../../tools/ali-promo-calculator/")}
           {_battle(it, d, lang, dom_btn_lbl, ali_btn_lbl)}
           <p class="btn-disc">{_esc(t['btn_disc'])}</p>
           <p class="decide-stamp">{stamp}</p>
           <a class="decide-switch" href="{up}{other}/p/{slug}/" hreflang="{other}">{switch}</a>
+          {rival_html}
         </div>
       </aside>
 
@@ -2048,7 +2723,7 @@ def _render_detail_page(it: dict, lang: str, cfg: dict, items: list[dict] | None
 </body>
 </html>
 """
-    og_img = f"/assets/products/{slug}.webp" if has_img else None
+    og_img = _og_image(it) if has_img else None
     head = _head(lang=lang, title=title, description=loc["summary"], up=up, cfg=cfg, path=f"/{lang}/p/{slug}/",
                  alternates={"ko": f"/ko/p/{slug}/", "en": f"/en/p/{slug}/"}, og_image=og_img)
     return head + body
@@ -2083,7 +2758,9 @@ def _render_root_gateway(cfg: dict, items: list[dict] | None = None) -> str:
       <a class="brand" href="./">{BRAND_MARK}<span>{brand}</span></a>
       <nav class="head-nav" aria-label="Primary">
         <a class="nav-hi" href="en/tools/macbook-dock-checker/">MacBook Dock Checker</a>
-        <a href="en/guides/">12 Buying Guides</a>
+        <a href="en/tools/ali-promo-calculator/">Promo Calculator</a>
+        <a href="en/guides/">Buying Guides</a>
+        <a href="en/vs/">VS Battles</a>
         <a href="policy/">Policy · 정책</a>
       </nav>
     </div>
@@ -2103,7 +2780,7 @@ def _render_root_gateway(cfg: dict, items: list[dict] | None = None) -> str:
           <dl class="region-stats">
             <div><dt>검수 모델</dt><dd>{n_models}종</dd></div>
             <div><dt>분류</dt><dd>{n_cats}개 카테고리</dd></div>
-            <div><dt>핵심 도구</dt><dd>맥북 독 판별기</dd></div>
+            <div><dt>가이드·대결</dt><dd>가이드 {len(GUIDES_BY_LANG['ko'])}편 · 1:1 대결 {len(_CTX.pairs)}선</dd></div>
           </dl>
           <span class="region-go">한국어 비교 허브 열기 {_icon('arrow', 16)}</span>
         </div>
@@ -2112,7 +2789,7 @@ def _render_root_gateway(cfg: dict, items: list[dict] | None = None) -> str:
         {_gate_plates(items, 4)}
         <div class="region-body">
           <div class="region-head"><h2><a href="en/" hreflang="en">Global Hub <span class="code-tag">EN</span></a></h2><span class="suggest" hidden>Suggested for you</span></div>
-          <p class="region-sub">Amazon US vs Direct Import · 12 Engineering Buying Guides</p>
+          <p class="region-sub">Amazon US vs Direct Import · {len(GUIDES_EN)} Buying Guides · {len(_CTX.pairs)} VS Battles</p>
           <dl class="region-stats">
             <div><dt>Vetted gear</dt><dd>{n_models} models</dd></div>
             <div><dt>Guides</dt><dd>12 deep dives</dd></div>
@@ -2123,7 +2800,7 @@ def _render_root_gateway(cfg: dict, items: list[dict] | None = None) -> str:
       </section>
     </div>
   </main>
-  <footer class="site-foot"><div class="wrap"><p>{_esc(DISCLOSURE_EN)}</p><nav class="foot-links" aria-label="Footer"><a href="ko/">한국어 허브</a><a href="en/">Global Hub</a><a href="en/guides/">Guides</a><a href="policy/">Policy</a></nav></div></footer>
+  <footer class="site-foot"><div class="wrap"><p>{_esc(DISCLOSURE_EN)}</p><nav class="foot-links" aria-label="Footer"><a href="ko/">한국어 허브</a><a href="ko/guides/">구매 가이드</a><a href="ko/vs/">1:1 대결</a><a href="en/">Global Hub</a><a href="en/guides/">Guides</a><a href="en/vs/">VS Battles</a><a href="policy/">Policy</a></nav></div></footer>
   <script>
     (function () {{
       var ko = (navigator.language || '').toLowerCase().indexOf('ko') === 0;
@@ -2177,28 +2854,32 @@ def _render_policy_page(cfg: dict) -> str:
 """
 
 
+def site_url_paths(items: list[dict]) -> list[str]:
+    """Every canonical page path the build writes, in sitemap order (also the IndexNow submission list)."""
+    paths = ["/", "/ko/", "/en/", "/policy/"]
+    for lang in ("ko", "en"):
+        paths += [f"/{lang}/tools/macbook-dock-checker/", f"/{lang}/tools/ali-promo-calculator/"]
+    for lang in ("ko", "en"):
+        paths.append(f"/{lang}/guides/")
+        paths += [f"/{lang}/guides/{g['slug']}/" for g in GUIDES_BY_LANG[lang]]
+    pairs = active_pairs({it["id"]: it for it in items})
+    for lang in ("ko", "en"):
+        paths.append(f"/{lang}/vs/")
+        paths += [f"/{lang}/vs/{p['slug']}/" for p in pairs]
+    for cat in sorted({it["category"] for it in items}):
+        paths += [f"/ko/c/{_cat_slug(cat)}/", f"/en/c/{_cat_slug(cat)}/"]
+    for it in items:
+        slug = product_slug(it["id"])
+        paths += [f"/ko/p/{slug}/", f"/en/p/{slug}/"]
+    return paths
+
+
 def _render_sitemap(items: list[dict], cfg: dict) -> str:
     base = cfg["site"]["base_url"].rstrip("/")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    urls = [
-        f"{base}/",
-        f"{base}/ko/",
-        f"{base}/en/",
-        f"{base}/policy/",
-        f"{base}/ko/tools/macbook-dock-checker/",
-        f"{base}/en/tools/macbook-dock-checker/",
-        f"{base}/en/guides/",
-    ]
-    for g in GUIDES_EN:
-        urls.append(f"{base}/en/guides/{g['slug']}/")
-    for cat in sorted({it["category"] for it in items}):
-        urls.append(f"{base}/ko/c/{_cat_slug(cat)}/")
-        urls.append(f"{base}/en/c/{_cat_slug(cat)}/")
-    for it in items:
-        slug = product_slug(it["id"])
-        urls.append(f"{base}/ko/p/{slug}/")
-        urls.append(f"{base}/en/p/{slug}/")
-    entries = "\n".join(f"  <url><loc>{_esc(u)}</loc><lastmod>{today}</lastmod></url>" for u in urls)
+    entries = "\n".join(
+        f"  <url><loc>{_esc(base + path)}</loc><lastmod>{today}</lastmod></url>" for path in site_url_paths(items)
+    )
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{entries}\n</urlset>\n'
 
 
@@ -2220,76 +2901,102 @@ def _clean_dist(dist_dir: Path) -> None:
             child.unlink()
 
 
-def build_site(approved_items: list[dict], cfg: dict, dist_dir: Path) -> dict:
-    """Generate clean-URL static pages for root, hubs, category pages, details, Dock Checker, 12 Guides, policy, and sitemap."""
+def build_site(approved_items: list[dict], cfg: dict, dist_dir: Path, live_offers: dict | None = None,
+               now: datetime | None = None) -> dict:
+    """Generate every static page: gateway, hubs (with the situation board), category and product pages,
+    both tools, KO + EN buying guides, KO + EN VS battles, policy, and the sitemap."""
     _clean_dist(dist_dir)
     items_by_id = {it["id"]: it for it in approved_items}
+    pairs = active_pairs(items_by_id)
+
+    global _CTX
+    _CTX = _BuildContext(
+        live_offers=live_offers,
+        promo=load_promo_tiers(),
+        pairs=pairs,
+        rivals=rivals_by_product(pairs),
+        now=now or datetime.now(timezone.utc),
+    )
 
     css = SHARED_CSS.strip().replace("__PAGE_NEXT__", str(PAGE_SIZE + 1))
     _write(dist_dir / "assets" / "style.css", css + "\n")
     _write(dist_dir / "assets" / "app.js", APP_JS.strip() + "\n")
 
-    # Copy vetted 360x360 WebP product images into dist/assets/products/ (og:image + feeds),
-    # and write the trimmed figure-plate derivatives the pages actually display.
+    # Copy vetted 360x360 WebP product images into dist/assets/products/ (feeds), write the trimmed
+    # figure-plate derivatives the pages display, and render 1200x630 JPEG share cards for link previews.
     dst_img_dir = dist_dir / "assets" / "products"
+    og_dir = dist_dir / "assets" / "og"
     if _IMG_SRC_DIR.exists():
         (dst_img_dir / "plate").mkdir(parents=True, exist_ok=True)
-        for img_file in _IMG_SRC_DIR.glob("*.webp"):
+        og_dir.mkdir(parents=True, exist_ok=True)
+        for img_file in sorted(_IMG_SRC_DIR.glob("*.webp")):
             shutil.copy2(img_file, dst_img_dir / img_file.name)
             plate = _media(img_file.stem)
             if plate and plate.get("bytes"):
                 (dst_img_dir / "plate" / img_file.name).write_bytes(plate["bytes"])
+            card = _og_card(img_file.stem)
+            if card:
+                (og_dir / f"{img_file.stem}.jpg").write_bytes(card)
+                _CTX.og_slugs.add(img_file.stem)
+        seen_cats: set[str] = set()
+        site_slugs = []
+        for it in sorted(approved_items, key=lambda x: x["id"]):
+            slug = product_slug(it["id"])
+            if it["category"] not in seen_cats and slug in _CTX.og_slugs:
+                seen_cats.add(it["category"])
+                site_slugs.append(slug)
+        site_card = _site_og_card(site_slugs)
+        if site_card:
+            (og_dir / "site.jpg").write_bytes(site_card)
+            _CTX.site_og = "/assets/og/site.jpg"
+
     _write(dist_dir / "index.html", _render_root_gateway(cfg, approved_items))
     _write(dist_dir / "policy" / "index.html", _render_policy_page(cfg))
     _write(dist_dir / "ko" / "index.html", _render_hub(approved_items, cfg, "ko"))
     _write(dist_dir / "en" / "index.html", _render_hub(approved_items, cfg, "en"))
 
-    # Topic 1 Unanimous Consensus: MacBook Dual-Monitor Dock Compatibility Checker (KO & EN)
+    shell = dict(head_fn=_head, legal_fn=_legal_strip, header_fn=_site_header, footer_fn=_site_footer)
+
     for lang in ("ko", "en"):
+        # MacBook Dual-Monitor Dock Compatibility Checker
         _write(
             dist_dir / lang / "tools" / "macbook-dock-checker" / "index.html",
-            render_dock_checker_page(
-                lang=lang,
-                items_by_id=items_by_id,
-                cfg=cfg,
-                head_fn=_head,
-                legal_fn=_legal_strip,
-                header_fn=_site_header,
-                footer_fn=_site_footer,
-                card_fn=_product_card,
-                icon_fn=_icon,
-            ),
+            render_dock_checker_page(lang=lang, items_by_id=items_by_id, cfg=cfg, card_fn=_product_card,
+                                     icon_fn=_icon, **shell),
         )
-
-    # Topic 2 Unanimous Consensus: 12 Non-Template Hardware Decision Guides (/en/guides/ + /en/guides/<slug>/)
-    _write(
-        dist_dir / "en" / "guides" / "index.html",
-        render_en_guides_index(
-            cfg=cfg,
-            head_fn=_head,
-            legal_fn=_legal_strip,
-            header_fn=_site_header,
-            footer_fn=_site_footer,
-            items_by_id=items_by_id,
-            plate_fn=_plate,
-            icon_fn=_icon,
-        ),
-    )
-    for g in GUIDES_EN:
+        # 2-tier AliExpress Promo & Customs Calculator
         _write(
-            dist_dir / "en" / "guides" / g["slug"] / "index.html",
-            render_en_guide_detail(
-                guide=g,
-                items_by_id=items_by_id,
-                cfg=cfg,
-                head_fn=_head,
-                legal_fn=_legal_strip,
-                header_fn=_site_header,
-                footer_fn=_site_footer,
-                card_fn=_product_card,
-                icon_fn=_icon,
+            dist_dir / lang / "tools" / "ali-promo-calculator" / "index.html",
+            render_promo_calculator_page(
+                lang=lang, items=approved_items, cfg=cfg, promo_data=_CTX.promo, icon_fn=_icon,
+                cat_label_fn=_cat_label, name_fn=_full_name, slug_fn=product_slug, now=_CTX.now, **shell,
             ),
         )
+        # 12 buying guides per language (/ko/guides/ localized for Korean buyers, /en/guides/)
+        _write(
+            dist_dir / lang / "guides" / "index.html",
+            render_guides_index(lang=lang, cfg=cfg, items_by_id=items_by_id, plate_fn=_plate, icon_fn=_icon, **shell),
+        )
+        for g in GUIDES_BY_LANG[lang]:
+            _write(
+                dist_dir / lang / "guides" / g["slug"] / "index.html",
+                render_guide_detail(lang=lang, guide=g, items_by_id=items_by_id, cfg=cfg, card_fn=_product_card,
+                                    icon_fn=_icon, **shell),
+            )
+
+    # Head-to-head VS battles (index + one page per rival pair, per language)
+    ui = SimpleNamespace(
+        head=_head, legal=_legal_strip, header=_site_header, footer=_site_footer, icon=_icon, plate=_plate,
+        anchor=_anchor_strip, live=_live_line, profile=_profile, specs=_specs_for_lang, spec_label=_spec_label,
+        cat_label=_cat_label, slug=product_slug, og_image=_og_image,
+        tool_strip=lambda kind, lang, href: _tool_strip(kind, lang, href, _icon),
+    )
+    for lang in ("ko", "en"):
+        _write(dist_dir / lang / "vs" / "index.html",
+               render_vs_index(lang=lang, pairs=pairs, items_by_id=items_by_id, cfg=cfg, ui=ui))
+        for pair in pairs:
+            _write(dist_dir / lang / "vs" / pair["slug"] / "index.html",
+                   render_vs_detail(lang=lang, pair=pair, pairs=pairs, items_by_id=items_by_id, cfg=cfg, ui=ui))
 
     categories = sorted({it["category"] for it in approved_items})
     for cat in categories:
@@ -2309,11 +3016,15 @@ def build_site(approved_items: list[dict], cfg: dict, dist_dir: Path) -> dict:
         _write(dist_dir / f"{indexnow_key}.txt", indexnow_key)
     _write(dist_dir / ".nojekyll", "")
 
-    total_pages = 4 + 2 + (1 + len(GUIDES_EN)) + (len(categories) * 2) + (len(approved_items) * 2)
+    n_guide_pages = sum(1 + len(GUIDES_BY_LANG[lang]) for lang in ("ko", "en"))
+    n_vs_pages = 2 * (1 + len(pairs))
     return {
         "approved_products_rendered": len(approved_items),
-        "guides_rendered": len(GUIDES_EN),
-        "tools_rendered": 2,
-        "total_html_pages": total_pages,
+        "guides_rendered": n_guide_pages,
+        "tools_rendered": 4,
+        "vs_rendered": n_vs_pages,
+        "live_offer_models": len((live_offers or {}).get("offers", {})),
+        "total_html_pages": sum(1 for _ in dist_dir.rglob("index.html")),
+        "sitemap_urls": len(site_url_paths(approved_items)),
         "output_dir": str(dist_dir),
     }

@@ -104,8 +104,25 @@ ACCESSORY_NOISE_RE = re.compile(
 )
 
 MODEL_TOKEN_RE = re.compile(r"\b([A-Z]{1,5}[- ]?\d{1,4}[A-Z0-9+.-]{0,6}|M\d+\s?(?:Pro|Max|Ultra)?)\b")
-USD_PRICE_RE = re.compile(r"\$\s?(\d{2,4}(?:\.\d{1,2})?)")
-KRW_PRICE_RE = re.compile(r"(\d{1,3}(?:,\d{3})+)\s*원")
+# Deal-price parsers shared by lead discovery and the community-benchmark harvester (src/deal_sniper.py).
+# USD accepts 1-5 digits so "$2.99" option-trap prices are parsed and then rejected by the MSRP floor,
+# instead of silently slipping past the regex.
+USD_PRICE_RE = re.compile(r"(?<![A-Za-z0-9])(?:US\s?)?\$\s?(\d{1,3}(?:,\d{3})+|\d{1,5})(\.\d{1,2})?(?![\d,]*\s?(?:off|coupon|discount|쿠폰|할인))", re.IGNORECASE)
+KRW_PRICE_RE = re.compile(r"(\d{1,3}(?:,\d{3})+)\s*원(?!\s*(?:할인|쿠폰|적립))")
+
+
+def parse_usd_price(text: str) -> float | None:
+    """First USD deal price in a signal title, or None ("$20 off" style discount amounts are ignored)."""
+    m = USD_PRICE_RE.search(text or "")
+    if not m:
+        return None
+    return float(m.group(1).replace(",", "") + (m.group(2) or ""))
+
+
+def parse_krw_price(text: str) -> int | None:
+    """First KRW deal price ("59,000원") in a signal title, or None."""
+    m = KRW_PRICE_RE.search(text or "")
+    return int(m.group(1).replace(",", "")) if m else None
 
 
 def _norm_key(text: str) -> str:
@@ -211,16 +228,14 @@ def extract_new_model_leads(
         if already_indexed or lead_key in rejected_keys or lead_key in leads_by_sig:
             continue
 
-        usd_m = USD_PRICE_RE.search(title)
-        krw_m = KRW_PRICE_RE.search(title)
         leads_by_sig[lead_key] = {
             "lead_key": lead_key,
             "brand": matched_brand,
             "suggested_category": default_cat,
             "model_hint": model_hint,
             "raw_title": title,
-            "observed_usd": float(usd_m.group(1)) if usd_m else None,
-            "observed_krw": int(krw_m.group(1).replace(",", "")) if krw_m else None,
+            "observed_usd": parse_usd_price(title),
+            "observed_krw": parse_krw_price(title),
             "source": sig["source"],
             "source_url": sig["url"],
             "score": sig.get("score", 0),
@@ -265,6 +280,9 @@ def collect_candidates(project_root: Path, live_network: bool = False) -> dict:
         "candidates": list(by_id.values()),
         "trend_signals_count": len(signals),
         "new_model_leads_found": len(new_leads),
+        # Full pass-through: every fetched Reddit + Ppomppu signal reaches the sniper and the benchmark harvester.
+        "trend_signals": signals,
+        # Compact human-readable sample only; never use this slice as pipeline input.
         "trend_signals_preview": signals[:8],
     }
     (data_dir / "candidates_staged.json").write_text(

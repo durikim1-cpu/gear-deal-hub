@@ -102,19 +102,37 @@ def build_affiliate_links(product: dict, affiliate_cfg: dict, source: str = "web
     # Never invent unissued Amazon Associate tags; only use explicitly configured issued tags.
     amz_tag = _clean_track_id(amz_map.get(source, amz_default), amz_default)
 
+    # Deep-link precedence: an explicit direct link always wins over the exact-token search landing.
+    #   coupang_direct : Coupang Partners deep link (link.coupang.com/...)
+    #   ali_direct     : official s.click.aliexpress.com promotion link or item URL (API links pass through untouched)
+    #   amazon_direct  : https://www.amazon.com/dp/<ASIN> (the issued Associate tag is appended when missing)
     coupang_url = urls.get("coupang_direct") or (
         f"https://link.coupang.com/re/AFFSRP?lptag={quote_plus(cp_id)}"
         f"&subid={quote_plus(cp_sub)}"
         f"&pageKey={quote_plus(urls.get('coupang_query', product['model']))}"
     )
-    ali_url = urls.get("ali_direct") or (
-        f"https://www.aliexpress.com/w/wholesale-{quote_plus(urls.get('ali_query', product['model'])).replace('+', '-')}.html"
-        f"?aff_fcid={quote_plus(ali_track)}"
-    )
-    amazon_url = urls.get("amazon_direct") or (
-        f"https://www.amazon.com/s?k={quote_plus(urls.get('amazon_query', product['model']))}"
-        f"&tag={quote_plus(amz_tag)}"
-    )
+
+    ali_direct = (urls.get("ali_direct") or "").strip()
+    if ali_direct:
+        ali_url = ali_direct
+        if "s.click.aliexpress.com" not in ali_direct and "aff_fcid=" not in ali_direct:
+            ali_url = f"{ali_direct}{'&' if '?' in ali_direct else '?'}aff_fcid={quote_plus(ali_track)}"
+    else:
+        ali_url = (
+            f"https://www.aliexpress.com/w/wholesale-{quote_plus(urls.get('ali_query', product['model'])).replace('+', '-')}.html"
+            f"?aff_fcid={quote_plus(ali_track)}"
+        )
+
+    amazon_direct = (urls.get("amazon_direct") or "").strip()
+    if amazon_direct:
+        amazon_url = amazon_direct
+        if "tag=" not in amazon_direct:
+            amazon_url = f"{amazon_direct}{'&' if '?' in amazon_direct else '?'}tag={quote_plus(amz_tag)}"
+    else:
+        amazon_url = (
+            f"https://www.amazon.com/s?k={quote_plus(urls.get('amazon_query', product['model']))}"
+            f"&tag={quote_plus(amz_tag)}"
+        )
 
     return {
         "coupang": coupang_url,

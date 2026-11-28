@@ -24,6 +24,8 @@
       "unknown": "gch_ko_unk"
     },
     "aliexpress_tracking_id": "default",
+    "aliexpress_app_key": "",
+    "aliexpress_app_secret": "",
     "aliexpress_tracking_by_source": {
       "web_ko": "default",
       "web_en": "default",
