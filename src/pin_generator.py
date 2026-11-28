@@ -11,7 +11,7 @@ from __future__ import annotations
 import html
 import re
 import textwrap
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import format_datetime
 from pathlib import Path
 
@@ -352,19 +352,26 @@ def build_pinterest_and_rss_feeds(approved_items: list[dict], cfg: dict, dist_di
 """
     (dist_dir / "en" / "pinterest-feed.xml").write_text(pinterest_xml, encoding="utf-8")
 
-    # Korean RSS feed (/ko/feed.xml) — zero static store prices
+    # Korean RSS feed (/ko/feed.xml) — strict Naver Search Advisor RSS 2.0 format:
+    # <channel><link> matches registered host root, canonical item URLs without query params, staggered KST pubDates.
+    kst = timezone(timedelta(hours=9))
+    now_kst = datetime.now(kst)
+    origin_match = re.match(r"^(https?://[^/]+)", base_url)
+    root_origin = (origin_match.group(1) if origin_match else base_url) + "/"
+
     ko_rss_items: list[str] = [
         f"""    <item>
       <title>{_esc("맥북 모델·칩별 듀얼모니터 독 호환 판별기 (M1·M2·M3·M4)")}</title>
-      <link>{_esc(f"{base_url}/ko/tools/macbook-dock-checker/?utm_source=rss")}</link>
-      <guid isPermaLink="true">{_esc(f"{base_url}/ko/tools/macbook-dock-checker/?utm_source=rss")}</guid>
-      <pubDate>{now_rfc822}</pubDate>
+      <link>{_esc(f"{base_url}/ko/tools/macbook-dock-checker/")}</link>
+      <guid isPermaLink="true">{_esc(f"{base_url}/ko/tools/macbook-dock-checker/")}</guid>
+      <pubDate>{format_datetime(now_kst)}</pubDate>
       <description>{_esc(f"맥북 에어·프로 모델별 DisplayLink 필수 여부 및 클램쉘 네이티브 듀얼 호환 판별 도구 | {DISCLOSURE_KO}")}</description>
     </item>"""
     ]
-    for item in approved_items[:20]:
+    for idx_ko, item in enumerate(approved_items[:20], start=1):
         slug = product_slug(item["id"])
-        page_url = f"{base_url}/ko/p/{slug}/?utm_source=rss"
+        page_url = f"{base_url}/ko/p/{slug}/"
+        item_pub = format_datetime(now_kst - timedelta(minutes=idx_ko * 12))
         ko_title = f"{item['ko']['title']} — 실사용 단점·통관 기준 체크"
         ko_desc = f"{item['ko']['summary']} 단점 체크: {item['ko']['cons'][0]} | {DISCLOSURE_KO}"
         ko_rss_items.append(
@@ -372,20 +379,19 @@ def build_pinterest_and_rss_feeds(approved_items: list[dict], cfg: dict, dist_di
       <title>{_esc(ko_title)}</title>
       <link>{_esc(page_url)}</link>
       <guid isPermaLink="true">{_esc(page_url)}</guid>
-      <pubDate>{now_rfc822}</pubDate>
+      <pubDate>{item_pub}</pubDate>
       <description>{_esc(ko_desc)}</description>
     </item>"""
         )
 
     ko_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0">
   <channel>
     <title>{_esc(cfg['site']['brand_name'])} KR — 데스크·USB-C 기어 호환성·단점 검수 피드</title>
-    <link>{_esc(base_url)}/ko/</link>
+    <link>{_esc(root_origin)}</link>
     <description>동일 모델 국내 배송 vs 해외직구 단점 체크 및 통관 기준 안내 피드</description>
     <language>ko</language>
-    <lastBuildDate>{now_rfc822}</lastBuildDate>
-    <atom:link href="{_esc(base_url)}/ko/feed.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>{format_datetime(now_kst)}</lastBuildDate>
 {chr(10).join(ko_rss_items)}
   </channel>
 </rss>
