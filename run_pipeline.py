@@ -53,6 +53,39 @@ def main() -> int:
     cfg = load_config(project_root)
 
     if args.dispatch_deployed:
+        # Ping IndexNow (Bing, Naver IndexNow partner network, Yandex) with keyLocation on every deploy
+        idx_key = (cfg.get("site", {}).get("indexnow_key") or "").strip()
+        base_url = cfg["site"]["base_url"].rstrip("/")
+        if idx_key:
+            import urllib.error
+            import urllib.parse
+            import urllib.request
+            host = urllib.parse.urlparse(base_url).hostname or ""
+            idx_payload = {
+                "host": host,
+                "key": idx_key,
+                "keyLocation": f"{base_url}/{idx_key}.txt",
+                "urlList": [
+                    f"{base_url}/",
+                    f"{base_url}/ko/",
+                    f"{base_url}/en/",
+                    f"{base_url}/ko/tools/macbook-dock-checker/",
+                    f"{base_url}/en/tools/macbook-dock-checker/",
+                    f"{base_url}/en/guides/",
+                ],
+            }
+            try:
+                req = urllib.request.Request(
+                    "https://api.indexnow.org/indexnow",
+                    data=json.dumps(idx_payload).encode("utf-8"),
+                    headers={"Content-Type": "application/json; charset=utf-8"},
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=8) as r:
+                    print(f"IndexNow ping status           : HTTP {r.status}")
+            except (urllib.error.URLError, TimeoutError, OSError) as exc:
+                print(f"[IndexNow note] {exc}")
+
         if not pending_path.exists():
             print("No pending_broadcast.json found; skipping post-deploy dispatch.")
             return 0

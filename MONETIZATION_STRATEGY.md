@@ -57,9 +57,9 @@
 | **텔레그램 국내/해외** | ✅ 운영 중 | `@gearcompare_kr` / `@gearcompare_en` | 익명 설정 완료 · 직링 없이 허브 단일 경유 |
 | **쿠팡 파트너스** | ✅ 승인됨 | **`AF8784203`** (`AUTO_APPROVED`) | 출처·배송국별 `subid` 자동 분리 적용 |
 | **아마존 어소시에이트** | ✅ 발급됨 | **`gearcomparehu-20`** (미국 US) | 180일 내 적격 판매 3건 & 수동 심사 대비 완료 |
-| **알리익스프레스 포털** | ⏳ 심사 중 | `portals.aliexpress.com` (`2026-11-25` 제출) | 승인 메일 도착 시 `ALIEXPRESS_TRACKING_ID` 및 API 연동 |
+| **알리익스프레스 포털** | ✅ 승인됨 | **`default`** (`portals.aliexpress.com`) | 정식 승인 확인 및 `Tracking ID = default` 전 페이지 반영 완료 |
 | **핀터레스트 비즈니스** | ✅ 무인 가동 중 | `https://www.pinterest.com/gearcomparehub` | 소유권 인증 및 RSS 자동 발행 연결 완료 |
-| **구글 서치콘솔** | ✅ 제출 완료 | `https://durikim1-cpu.github.io/gear-deal-hub/` | `sitemap.xml` (179개 URL) 자동 갱신 |
+| **구글 서치콘솔 & IndexNow** | ✅ 가동 중 | `https://durikim1-cpu.github.io/gear-deal-hub/` | `sitemap.xml` (179개 URL) + 배포 시 IndexNow 자동 핑 |
 
 ---
 

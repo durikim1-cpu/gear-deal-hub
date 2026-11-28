@@ -40,6 +40,8 @@ jobs:
           AMAZON_ASSOCIATE_TAG: ${{ secrets.AMAZON_ASSOCIATE_TAG }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PINTEREST_VERIFY_CODE: ${{ secrets.PINTEREST_VERIFY_CODE }}
+          NAVER_VERIFY_CODE: ${{ secrets.NAVER_VERIFY_CODE }}
+          BING_VERIFY_CODE: ${{ secrets.BING_VERIFY_CODE }}
           LIVE_OFFERS_ENDPOINT: ${{ secrets.LIVE_OFFERS_ENDPOINT }}
         run: |
           python run_pipeline.py --live-network --auto-grow 3

@@ -64,7 +64,15 @@ def load_config(project_root: Path) -> dict:
     if os.getenv("COUPANG_PARTNERS_ID"):
         cfg["affiliate"]["coupang_partners_id"] = os.environ["COUPANG_PARTNERS_ID"]
     if os.getenv("ALIEXPRESS_TRACKING_ID"):
-        cfg["affiliate"]["aliexpress_tracking_id"] = os.environ["ALIEXPRESS_TRACKING_ID"]
+        ali_t = os.environ["ALIEXPRESS_TRACKING_ID"].strip()
+        cfg["affiliate"]["aliexpress_tracking_id"] = ali_t
+        for k in list(cfg["affiliate"].get("aliexpress_tracking_by_source", {})):
+            if cfg["affiliate"]["aliexpress_tracking_by_source"][k] in ("default", "gearhub_global"):
+                cfg["affiliate"]["aliexpress_tracking_by_source"][k] = ali_t
+    if os.getenv("NAVER_VERIFY_CODE"):
+        cfg["site"]["naver_verify_code"] = os.environ["NAVER_VERIFY_CODE"].strip()
+    if os.getenv("BING_VERIFY_CODE"):
+        cfg["site"]["bing_verify_code"] = os.environ["BING_VERIFY_CODE"].strip()
     if os.getenv("SITE_BASE_URL"):
         cfg["site"]["base_url"] = os.environ["SITE_BASE_URL"].rstrip("/")
     if os.getenv("PINTEREST_VERIFY_CODE"):
@@ -85,7 +93,7 @@ def build_affiliate_links(product: dict, affiliate_cfg: dict, source: str = "web
         "gch_ko_web",
     )
 
-    ali_default = _clean_track_id(affiliate_cfg.get("aliexpress_tracking_id", "gearhub_global"), "gearhub_global")
+    ali_default = _clean_track_id(affiliate_cfg.get("aliexpress_tracking_id", "default"), "default")
     ali_map = affiliate_cfg.get("aliexpress_tracking_by_source", {})
     ali_track = _clean_track_id(ali_map.get(source, ali_default), ali_default)
 

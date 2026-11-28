@@ -776,8 +776,8 @@ APP_JS = r"""
         } else if (store === 'aliexpress' && u.hostname.endsWith('aliexpress.com')) {
           const map = AFF_CFG.aliexpress_tracking_by_source || {};
           const key = trafficSource === 'web' ? `web_${pageLang}` : (trafficSource === 'telegram' ? `telegram_${pageLang}` : trafficSource);
-          const track = map[key] || map[trafficSource] || map.unknown || 'gearhub_global';
-          u.searchParams.set('aff_fcid', `${track}_${destToken}`.slice(0, 30));
+          const track = map[key] || map[trafficSource] || map.unknown || 'default';
+          u.searchParams.set('aff_fcid', track);
           a.href = u.toString();
         } else if (store === 'amazon' && u.hostname.endsWith('amazon.com')) {
           // Strictly use only issued Associate tags from config; never fabricate unissued tags.
@@ -1341,6 +1341,10 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
     p_meta = f'\n  <meta name="p:domain_verify" content="{_esc(p_verify)}">' if p_verify else ""
     g_verify = (cfg.get("site", {}).get("google_verify_code") or "").strip()
     g_meta = f'\n  <meta name="google-site-verification" content="{_esc(g_verify)}">' if g_verify else ""
+    n_verify = (cfg.get("site", {}).get("naver_verify_code") or "").strip()
+    n_meta = f'\n  <meta name="naver-site-verification" content="{_esc(n_verify)}">' if n_verify else ""
+    b_verify = (cfg.get("site", {}).get("bing_verify_code") or "").strip()
+    b_meta = f'\n  <meta name="msvalidate.01" content="{_esc(b_verify)}">' if b_verify else ""
     rss_href = f"{base}/ko/feed.xml" if lang == "ko" else f"{base}/en/pinterest-feed.xml"
     rss_link = f'\n  <link rel="alternate" type="application/rss+xml" title="{_esc(cfg["site"]["brand_name"])} RSS" href="{_esc(rss_href)}">'
     og_img_tag = f'\n  <meta property="og:image" content="{_esc(base + og_image)}">' if og_image else ""
@@ -1352,7 +1356,7 @@ def _head(*, lang: str, title: str, description: str, up: str, cfg: dict, path: 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{_esc(title)}</title>
   <meta name="description" content="{_esc(description)}">
-  <meta name="theme-color" content="#0A2422">{p_meta}{g_meta}{rss_link}
+  <meta name="theme-color" content="#0A2422">{p_meta}{g_meta}{n_meta}{b_meta}{rss_link}
   <script>document.documentElement.classList.add('js')</script>
   <link rel="canonical" href="{_esc(base + path)}">{alt}
   <meta property="og:title" content="{_esc(title)}">
@@ -2300,6 +2304,9 @@ def build_site(approved_items: list[dict], cfg: dict, dist_dir: Path) -> dict:
         _write(dist_dir / "en" / "p" / slug / "index.html", _render_detail_page(item, "en", cfg, approved_items))
 
     _write(dist_dir / "sitemap.xml", _render_sitemap(approved_items, cfg))
+    indexnow_key = (cfg.get("site", {}).get("indexnow_key") or "").strip()
+    if indexnow_key:
+        _write(dist_dir / f"{indexnow_key}.txt", indexnow_key)
     _write(dist_dir / ".nojekyll", "")
 
     total_pages = 4 + 2 + (1 + len(GUIDES_EN)) + (len(categories) * 2) + (len(approved_items) * 2)
