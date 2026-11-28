@@ -964,7 +964,7 @@ APP_JS = r"""
       try {
         const u = new URL(a.href);
         const store = a.dataset.store || '';
-        if (store === 'coupang' && u.hostname.endsWith('coupang.com')) {
+        if (store === 'coupang' && u.hostname === 'link.coupang.com' && u.pathname === '/re/AFFSRP') {
           const map = AFF_CFG.coupang_sub_ids_by_source || {};
           const baseSub = map[trafficSource] || map.unknown || 'gch_ko_web';
           u.searchParams.set('subid', `${baseSub}_${destToken}`.slice(0, 30));
@@ -995,10 +995,20 @@ APP_JS = r"""
     }
   }
   logFunnel('page_view');
-  document.addEventListener('click', e => {
+  function logStoreClick(e) {
     const aff = e.target.closest('a[data-aff]');
-    if (aff) logFunnel('outbound_click', { store: aff.dataset.store || '' });
-  });
+    if (!aff) return;
+    const store = aff.dataset.store;
+    let hostname, pathname;
+    try { ({ hostname, pathname } = new URL(aff.href)); } catch (err) { return; }
+    const search = pathname === '/re/AFFSRP' || pathname === '/s' || pathname.startsWith('/w/wholesale-');
+    const product = /\/(dp|gp\/product|item)\//.test(pathname);
+    const partner = hostname === 'link.coupang.com' || /^(s\.click|a)\.aliexpress\.com$/.test(hostname);
+    const linkKind = search ? 'search' : product ? 'product' : partner ? 'partner_deeplink' : 'storefront';
+    logFunnel('outbound_click', { store, product_id: aff.dataset.pid, link_kind: linkKind });
+  }
+  document.addEventListener('click', logStoreClick);
+  document.addEventListener('auxclick', e => { if (e.button === 1) logStoreClick(e); });
   window.addEventListener('gch:funnel', e => logFunnel((e.detail && e.detail.event) || 'tool_event', e.detail));
 
   // 3. Fail-Closed Live API Offer Hydrator (periodic re-check on open tabs; hides immediately on expiry/failure)
@@ -1874,7 +1884,7 @@ def _battle(it: dict, d: dict, lang: str, dom_btn_lbl: str, ali_btn_lbl: str) ->
             <span class="side-meta">{_esc(meta)}</span>
             <span class="live-slot" data-live-offer data-pid="{pid}" data-store="{store_id}" hidden></span>
           </div>
-          <a class="btn btn-{store_cls}{' is-first' if win else ''}" data-aff="{store_cls}" data-store="{store_id}" href="{_esc(url)}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>{btn_lbl} {_icon('out', 15)}</a>
+          <a class="btn btn-{store_cls}{' is-first' if win else ''}" data-aff="{store_cls}" data-store="{store_id}" data-pid="{pid}" href="{_esc(url)}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>{btn_lbl} {_icon('out', 15)}</a>
         </div>"""
 
     return f"""<div class="battle">
@@ -2262,7 +2272,7 @@ def _render_row(it: dict, lang: str, pfx: str, up: str, idx: int = 99) -> str:
 
     def buy(store_cls: str, store_id: str, url: str, label: str, pick: bool) -> str:
         return (
-            f'<a class="buy {store_cls}{" is-pick" if pick else ""}" data-aff="{store_cls}" data-store="{store_id}" '
+            f'<a class="buy {store_cls}{" is-pick" if pick else ""}" data-aff="{store_cls}" data-store="{store_id}" data-pid="{_esc(it["id"])}" '
             f'href="{_esc(url)}" target="_blank" rel="nofollow sponsored noopener" aria-label="{label} · {name}">'
             f'<span class="sdot"></span>{label} {_use("out", 13)}</a>'
         )
@@ -2544,8 +2554,8 @@ def _product_card(it: dict, lang: str, pfx: str = "../../p/", up: str = "../../.
         f'<div class="pcard-foot">'
         f'{_live_line(it, lang)}{_anchor_strip(it, lang, pfx[:-2] + "tools/ali-promo-calculator/")}'
         f'<div class="actions">'
-        f'<a class="btn btn-{d["dom_key"]}{" is-first" if dom_first else ""}" data-aff="dom" data-store="{d["dom_store_id"]}" href="{_esc(d["dom_url"])}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>{dom_lbl}</a>'
-        f'<a class="btn btn-ali{"" if dom_first else " is-first"}" data-aff="ali" data-store="aliexpress" href="{_esc(d["ali_url"])}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>{ali_lbl}</a>'
+        f'<a class="btn btn-{d["dom_key"]}{" is-first" if dom_first else ""}" data-aff="dom" data-store="{d["dom_store_id"]}" data-pid="{_esc(it["id"])}" href="{_esc(d["dom_url"])}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>{dom_lbl}</a>'
+        f'<a class="btn btn-ali{"" if dom_first else " is-first"}" data-aff="ali" data-store="aliexpress" data-pid="{_esc(it["id"])}" href="{_esc(d["ali_url"])}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>{ali_lbl}</a>'
         f'</div>'
         f'<a class="text-link" href="{href}">{_esc(detail_lbl)} {_icon("arrow", 14)}</a>'
         f'</div>'

@@ -146,6 +146,9 @@ def test_telegram_previews_enabled_and_bodies_stay_disclosure_free(monkeypatch, 
         def __exit__(self, *a):
             return False
 
+        def read(self):
+            return b'{"ok": true}'
+
     def fake_urlopen(req, timeout=10):
         sent.update(json.loads(req.data.decode("utf-8")))
         return _Resp()
@@ -154,8 +157,10 @@ def test_telegram_previews_enabled_and_bodies_stay_disclosure_free(monkeypatch, 
     item = dict(approved[0], sniper={"promo_code": "KRBF07", "observed_at": "2026-11-28 03:00 UTC", "live_matched": True})
     ko = notifier.format_ko_alert(item, "https://example.test/site")
     en = notifier.format_en_alert(item, "https://example.test/site")
-    assert notifier._send_telegram_message("token", "@channel", ko)
-    assert sent["disable_web_page_preview"] is False and sent["parse_mode"] == "HTML"
+    preview = f"https://example.test/site/ko/p/{notifier.product_slug(item['id'])}/"
+    assert notifier._send_telegram_message("token", "@channel", ko, preview)
+    assert sent["link_preview_options"] == {"url": preview, "prefer_large_media": True}
+    assert sent["parse_mode"] == "HTML"
     for body in (ko, en):
         assert "[대가성 광고 안내]" not in body and "대가성" not in body
         assert "utm_source=telegram" in body
@@ -206,7 +211,7 @@ def test_indexnow_falls_back_to_the_deployed_sitemap_then_core_urls(tmp_path, bu
         fetched.append(url)
         return live_xml
 
-    # The post-deploy CI job has no dist/ checkout, so the live sitemap is used.
+    # A manual dispatch without a local build uses the live sitemap.
     urls = run_pipeline.collect_indexnow_urls(base, tmp_path / "missing-dist", fetch=fetch)
     assert fetched == [f"{base}/sitemap.xml"] and len(urls) >= 225
 
@@ -217,4 +222,33 @@ def test_indexnow_falls_back_to_the_deployed_sitemap_then_core_urls(tmp_path, bu
     assert f"{base}/ko/tools/ali-promo-calculator/" in core and f"{base}/ko/vs/" in core
     foreign = "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'><url><loc>https://other.example/x/</loc></url></urlset>"
     assert run_pipeline.collect_indexnow_urls(base, tmp_path / "missing-dist", fetch=lambda u: foreign) == []
+    sibling = foreign.replace("https://other.example/x/", base + "-other/")
+    assert run_pipeline.collect_indexnow_urls(base, tmp_path / "missing-dist", fetch=lambda u: sibling) == []
     assert run_pipeline.parse_sitemap_urls("<not xml") == []
+
+
+def test_telegram_skips_expired_events_and_records_success_before_the_next_send(tmp_path, monkeypatch, approved, cfg):
+    from src import notifier
+
+    cfg = dict(cfg, telegram={"bot_token": "fake", "chat_id_ko": "@ko", "chat_id_en": "@en"})
+    pending = dict(approved[0], sniper={"event_id": "live", "live_matched": True})
+    expired = dict(approved[1], sniper={"event_id": "expired", "live_matched": True, "expires_at": "2000-01-01T00:00:00Z"})
+    monkeypatch.setattr(notifier, "verify_public_hub_url", lambda *args: True)
+    sent = []
+    monkeypatch.setattr(notifier, "_send_telegram_message", lambda *args: sent.append(args) or True)
+
+    first = notifier.dispatch_verified_alerts([expired, pending], [], cfg, tmp_path, live_send=True)
+    retry = notifier.dispatch_verified_alerts([pending], [], cfg, tmp_path, live_send=True)
+    assert first["sent_ko"] == 1 and retry["sent_ko"] == 0
+    assert len(sent) == 1 and sent[0][-1].endswith(f"/ko/p/{notifier.product_slug(pending['id'])}/")
+
+
+def test_pinterest_strips_price_claims_from_new_catalog_copy(approved, cfg):
+    from src.pin_generator import _ascii_clean
+
+    original = approved[1]
+    en = dict(original["en"], summary="A 75% layout. Now USD 69.99. Save 20% with a coupon.", cons=["Needs a USB cable."])
+    item = dict(original, en=en)
+    entry = next(e for e in pin_plan([item], cfg) if e["kind"] == "product")
+    assert entry["desc"] == "A 75% layout. Caveat before buying: Needs a USB cable."
+    assert _ascii_clean("$39.99 today. Requires 100W USB-C PD.") == "Requires 100W USB-C PD."

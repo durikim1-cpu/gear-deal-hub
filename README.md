@@ -41,6 +41,10 @@ python run_pipeline.py --live-network     # Reddit·뽐뿌 라이브 신호 포�
 python run_pipeline.py --dispatch-deployed  # 배포 후: IndexNow 전체 URL 제출 + (플래그 지정 시) 알림 발송
 ```
 
+쿠팡 상품 직링크는 `urls.coupang_product_url`을 쿠팡 파트너스 API로 변환해 사용합니다. GitHub Actions Secrets에 `COUPANG_ACCESS_KEY`, `COUPANG_SECRET_KEY`를 설정하면 빌드 시 `gch_ko_direct`로 링크를 발급합니다. 별도로 발급해 둔 링크는 `urls.coupang_direct`에 등록할 수 있습니다. 아마존 상품 직링크는 `urls.amazon_asin`과 설정된 어소시에이트 태그를 사용합니다.
+
+퍼널 수집기는 GitHub Actions 변수 `ANALYTICS_BEACON_URL` 또는 로컬 `site.analytics_beacon_url`로 연결합니다. `check_complete`는 판별기에서 조건을 처음 바꿨을 때 한 번 기록됩니다. `outbound_click`은 상품 ID, 판매처, 링크 종류를 기록합니다. 적격 주문과 확정 수수료는 파트너스 리포트에서 확인합니다.
+
 ## 검증
 
 ```powershell

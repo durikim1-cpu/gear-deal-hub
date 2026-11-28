@@ -6,7 +6,7 @@ import json
 import os
 import re
 from pathlib import Path
-from urllib.parse import quote_plus
+from urllib.parse import parse_qsl, quote_plus, urlencode, urlsplit
 
 DISCLOSURE_KO = (
     "이 페이지는 쿠팡 파트너스 및 알리익스프레스 제휴 활동의 일환으로, "
@@ -28,12 +28,34 @@ BUTTON_DISCLOSURE_EN = (
 )
 
 _SAFE_TRACK_RE = re.compile(r"^[A-Za-z0-9_-]{2,32}$")
+_ASIN_RE = re.compile(r"[A-Z0-9]{10}")
 
 
 def _clean_track_id(raw: str, fallback: str) -> str:
     """Enforce alphanumeric/underscore/hyphen PII-free tracking tokens."""
     val = (raw or "").strip()
     return val if _SAFE_TRACK_RE.match(val) else fallback
+
+
+def _store_url(value: object, hosts: set[str]) -> str:
+    if not isinstance(value, str):
+        return ""
+    url = value.strip()
+    try:
+        parts = urlsplit(url)
+    except ValueError:
+        return ""
+    return url if parts.scheme == "https" and parts.netloc.lower() in hosts else ""
+
+
+def _with_query_param(url: str, key: str, value: str) -> str:
+    parts = urlsplit(url)
+    query = [(k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True) if k.lower() != key]
+    return parts._replace(query=urlencode([*query, (key, value)])).geturl()
+
+
+def coupang_partner_link(value: object) -> str:
+    return _store_url(value, {"link.coupang.com"})
 
 
 def load_config(project_root: Path) -> dict:
@@ -79,6 +101,8 @@ def load_config(project_root: Path) -> dict:
         cfg["site"]["pinterest_verify_code"] = os.environ["PINTEREST_VERIFY_CODE"].strip()
     if os.getenv("LIVE_OFFERS_ENDPOINT"):
         cfg["site"]["live_offers_endpoint"] = os.environ["LIVE_OFFERS_ENDPOINT"].strip()
+    if os.getenv("ANALYTICS_BEACON_URL"):
+        cfg["site"]["analytics_beacon_url"] = os.environ["ANALYTICS_BEACON_URL"].strip()
     return cfg
 
 
@@ -105,34 +129,30 @@ def build_affiliate_links(product: dict, affiliate_cfg: dict, source: str = "web
     # Deep-link precedence: an explicit direct link always wins over the exact-token search landing.
     #   coupang_direct : Coupang Partners deep link (link.coupang.com/...)
     #   ali_direct     : official s.click.aliexpress.com promotion link or item URL (API links pass through untouched)
-    #   amazon_direct  : https://www.amazon.com/dp/<ASIN> (the issued Associate tag is appended when missing)
-    coupang_url = urls.get("coupang_direct") or (
+    #   amazon_direct  : a curated product or storefront URL with the configured Associate tag
+    coupang_url = coupang_partner_link(urls.get("coupang_direct")) or (
         f"https://link.coupang.com/re/AFFSRP?lptag={quote_plus(cp_id)}"
         f"&subid={quote_plus(cp_sub)}"
         f"&pageKey={quote_plus(urls.get('coupang_query', product['model']))}"
     )
 
-    ali_direct = (urls.get("ali_direct") or "").strip()
+    ali_direct = _store_url(urls.get("ali_direct"), {"aliexpress.com", "www.aliexpress.com", "ko.aliexpress.com", "s.click.aliexpress.com", "a.aliexpress.com"})
     if ali_direct:
-        ali_url = ali_direct
-        if "s.click.aliexpress.com" not in ali_direct and "aff_fcid=" not in ali_direct:
-            ali_url = f"{ali_direct}{'&' if '?' in ali_direct else '?'}aff_fcid={quote_plus(ali_track)}"
+        promotion_host = urlsplit(ali_direct).hostname in {"s.click.aliexpress.com", "a.aliexpress.com"}
+        ali_url = ali_direct if promotion_host else _with_query_param(ali_direct, "aff_fcid", ali_track)
     else:
         ali_url = (
             f"https://www.aliexpress.com/w/wholesale-{quote_plus(urls.get('ali_query', product['model'])).replace('+', '-')}.html"
             f"?aff_fcid={quote_plus(ali_track)}"
         )
 
-    amazon_direct = (urls.get("amazon_direct") or "").strip()
-    if amazon_direct:
-        amazon_url = amazon_direct
-        if "tag=" not in amazon_direct:
-            amazon_url = f"{amazon_direct}{'&' if '?' in amazon_direct else '?'}tag={quote_plus(amz_tag)}"
-    else:
-        amazon_url = (
-            f"https://www.amazon.com/s?k={quote_plus(urls.get('amazon_query', product['model']))}"
-            f"&tag={quote_plus(amz_tag)}"
-        )
+    asin = (urls.get("amazon_asin") or "").strip().upper()
+    amazon_url = _store_url(urls.get("amazon_direct"), {"amazon.com", "www.amazon.com"})
+    if not amazon_url and _ASIN_RE.fullmatch(asin):
+        amazon_url = f"https://www.amazon.com/dp/{asin}"
+    if not amazon_url:
+        amazon_url = f"https://www.amazon.com/s?k={quote_plus(urls.get('amazon_query', product['model']))}"
+    amazon_url = _with_query_param(amazon_url, "tag", amz_tag)
 
     return {
         "coupang": coupang_url,

@@ -49,8 +49,21 @@ def _load_font(candidates: list[str], size: int) -> ImageFont.FreeTypeFont | Ima
     return ImageFont.load_default()
 
 
+_PRICE_CLAIM_RE = re.compile(
+    r"[$€£₩¥]\s*\d|\b(?:USD|KRW|EUR|GBP|JPY|CNY)\s*\d|"
+    r"\d[\d,.]*\s*(?:원|dollars?\b|USD\b|KRW\b|EUR\b|GBP\b|JPY\b|CNY\b)|"
+    r"\d+(?:\.\d+)?\s*%\s*(?:off\b|discount\b|할인)|"
+    r"\b(?:save|discount(?: of)?|up to)\s+\d+(?:\.\d+)?\s*%",
+    re.IGNORECASE,
+)
+
+
+def _evergreen_copy(text: str) -> str:
+    return " ".join(part for part in re.split(r"(?<=[.!?])\s+", text.strip()) if not _PRICE_CLAIM_RE.search(part))
+
+
 def _ascii_clean(text: str) -> str:
-    cleaned = re.sub(r"[가-힣]+", "", str(text))
+    cleaned = re.sub(r"[가-힣]+", "", _evergreen_copy(str(text)))
     cleaned = re.sub(r"\(\s*\)", "", cleaned)
     cleaned = re.sub(r"\s{2,}", " ", cleaned).strip(" ·-/,")
     return cleaned
@@ -111,7 +124,7 @@ def _render_card_canvas(
     sub_w = 37 if has_thumb else 54
 
     y = 172
-    for line in textwrap.wrap(_ascii_clean(headline), width=head_w)[:3]:
+    for line in textwrap.wrap(_ascii_clean(headline) or "Hardware Compatibility Guide", width=head_w)[:3]:
         draw.text((88, y), line, fill="#111827", font=f_h1)
         y += 52 if has_thumb else 56
 
@@ -138,7 +151,7 @@ def _render_card_canvas(
     # Left option box (Amazon US / Native)
     draw.rounded_rectangle((88, box_top, 484, box_bot), radius=22, fill="#F3FAF8", outline="#0F766E", width=3)
     draw.rectangle((116, box_top + 30, 132, box_top + 46), fill="#FFA41C")
-    draw.text((146, box_top + 24), left_box_title[:22], fill="#111827", font=f_store)
+    draw.text((146, box_top + 24), _ascii_clean(left_box_title)[:22], fill="#111827", font=f_store)
     ly = box_top + 74
     for b_line in left_box_lines[:4]:
         for wrapped in textwrap.wrap(_ascii_clean(b_line), width=26)[:2]:
@@ -149,7 +162,7 @@ def _render_card_canvas(
     # Right option box (Direct Import / Alternative)
     draw.rounded_rectangle((516, box_top, W - 88, box_bot), radius=22, fill="#F9FAFB", outline="#E2E6EC", width=3)
     draw.rectangle((544, box_top + 30, 560, box_top + 46), fill="#C93A16")
-    draw.text((574, box_top + 24), right_box_title[:22], fill="#111827", font=f_store)
+    draw.text((574, box_top + 24), _ascii_clean(right_box_title)[:22], fill="#111827", font=f_store)
     ry = box_top + 74
     for b_line in right_box_lines[:4]:
         for wrapped in textwrap.wrap(_ascii_clean(b_line), width=26)[:2]:
@@ -307,6 +320,8 @@ def pin_plan(approved_items: list[dict], cfg: dict, max_pins: int = 52) -> list[
                      "desc": f"{item['en']['summary']} Caveat before buying: {item['en']['cons'][0]}"})
     for entry in plan:
         entry["url"] = f"{base_url}{entry['path']}?utm_source=pinterest"
+        entry["title"] = _evergreen_copy(entry["title"]) or "Hardware Compatibility Guide"
+        entry["desc"] = _evergreen_copy(entry["desc"]) or "Check compatibility and buying caveats on GearCompare Hub."
     return plan
 
 

@@ -11,7 +11,8 @@
     "urls": {
       "coupang_query": "유그린 넥소드 100W 4포트 GaN 충전기 CD226",
       "ali_query": "UGREEN Nexode 100W 4-Port GaN CD226",
-      "amazon_query": "UGREEN Nexode 100W 4-Port GaN Charger"
+      "amazon_query": "UGREEN Nexode 100W 4-Port GaN Charger CD226",
+      "amazon_asin": "B091Z6JNX4"
     },
     "specs": {
       "max_output": "100W PD 3.0",
@@ -137,7 +138,8 @@
     "urls": {
       "coupang_query": "앤커 프라임 20000mAh 200W 보조배터리 A1336",
       "ali_query": "Anker Prime 20000mAh 200W Power Bank A1336",
-      "amazon_query": "Anker Prime 20000mAh 200W Power Bank A1336"
+      "amazon_query": "Anker Prime 20000mAh 200W Power Bank A1336",
+      "amazon_asin": "B0BYNZXFM2"
     },
     "specs": {
       "capacity": "20,000mAh (72Wh, 기내 반입 가능)",
@@ -326,7 +328,8 @@
     "urls": {
       "coupang_query": "로지텍 MX Master 3S 무선 마우스",
       "ali_query": "Logitech MX Master 3S Wireless Mouse",
-      "amazon_query": "Logitech MX Master 3S Wireless Mouse"
+      "amazon_query": "Logitech MX Master 3S Wireless Mouse",
+      "amazon_asin": "B09HM94VDS"
     },
     "specs": {
       "sensor": "8000 DPI Darkfield (유리 표면 인식)",
@@ -515,7 +518,8 @@
     "urls": {
       "coupang_query": "삼성전자 포터블 SSD T7 Shield 2TB MU-PE2T0S",
       "ali_query": "Samsung T7 Shield 2TB Portable SSD MU-PE2T0S",
-      "amazon_query": "Samsung T7 Shield 2TB Portable SSD MU-PE2T0S"
+      "amazon_query": "Samsung T7 Shield 2TB Portable SSD MU-PE2T0S",
+      "amazon_asin": "B09VLHR4JC"
     },
     "specs": {
       "speed": "Read 1,050 MB/s / Write 1,000 MB/s",
@@ -578,7 +582,7 @@
     "urls": {
       "coupang_query": "샤오미 모니터 라이트바 1S MJGJD02YL",
       "ali_query": "Xiaomi Monitor Light Bar 1S MJGJD02YL",
-      "amazon_query": "Xiaomi Mi Computer Monitor Light Bar 1S"
+      "amazon_query": "Xiaomi Mi Computer Monitor Light Bar 1S MJGJD02YL"
     },
     "specs": {
       "cri": "Ra95 고연색성 LED",
@@ -641,7 +645,8 @@
     "urls": {
       "coupang_query": "엘가토 스트림덱 MK.2 15키",
       "ali_query": "Elgato Stream Deck MK.2",
-      "amazon_query": "Elgato Stream Deck MK.2"
+      "amazon_query": "Elgato Stream Deck MK.2",
+      "amazon_asin": "B09738CV2G"
     },
     "specs": {
       "keys": "15x Customizable LCD Keys",
@@ -702,9 +707,11 @@
     "msrp_krw": 159000,
     "msrp_usd": 119.99,
     "urls": {
-      "coupang_query": "유그린 Revodok Pro 209 DisplayLink 도킹스테이션",
-      "ali_query": "UGREEN Revodok Pro 209 DisplayLink Docking Station",
-      "amazon_query": "UGREEN Revodok Pro 209 DisplayLink Docking Station"
+      "coupang_query": "유그린 Revodok Pro 209 DisplayLink 도킹스테이션 90912",
+      "coupang_product_url": "https://www.coupang.com/vp/products/7940394436",
+      "ali_query": "UGREEN Revodok Pro 209 DisplayLink Docking Station 90912",
+      "amazon_query": "UGREEN Revodok Pro 209 DisplayLink Docking Station 90912",
+      "amazon_asin": "B0BLNCNCMZ"
     },
     "specs": {
       "video": "2x HDMI + 2x DP (DisplayLink 지원, M1/M2/M3 듀얼 모니터 확장)",
@@ -830,7 +837,7 @@
     "urls": {
       "coupang_query": "유그린 넥소드 프로 160W 4포트 충전기 X763",
       "ali_query": "UGREEN Nexode Pro 160W X763",
-      "amazon_query": "UGREEN Nexode Pro 160W 4-Port Charger"
+      "amazon_query": "UGREEN Nexode Pro 160W 4-Port Charger X763"
     },
     "specs": {
       "max_output": "140W Single / 160W Total",
@@ -956,7 +963,7 @@
     "urls": {
       "coupang_query": "CUKTECH 15 GaN 140W 충전기 AD1404U",
       "ali_query": "CUKTECH 15 GaN 140W AD1404U",
-      "amazon_query": "CUKTECH 15 GaN Charger 140W"
+      "amazon_query": "CUKTECH 15 GaN Charger 140W AD1404U"
     },
     "specs": {
       "max_output": "140W PD 3.1",
@@ -2403,9 +2410,10 @@
     "msrp_krw": 42000,
     "msrp_usd": 34.99,
     "urls": {
-      "coupang_query": "유그린 Revodok 107 7in1 USB-C 허브",
-      "ali_query": "UGREEN Revodok 107 7-in-1 USB-C Hub",
-      "amazon_query": "UGREEN Revodok 107 7-in-1 USB-C Hub"
+      "coupang_query": "유그린 Revodok 107 7in1 USB-C 허브 60515",
+      "ali_query": "UGREEN Revodok 107 7-in-1 USB-C Hub 60515",
+      "amazon_query": "UGREEN Revodok 107 7-in-1 USB-C Hub 60515",
+      "amazon_asin": "B093FKT9BF"
     },
     "specs": {
       "video": "HDMI 4K@60Hz",
@@ -2656,8 +2664,10 @@
     "msrp_usd": 199.99,
     "urls": {
       "coupang_query": "앤커 575 USB-C 도킹스테이션 13in1 A8392",
+      "coupang_product_url": "https://www.coupang.com/vp/products/9451211088",
       "ali_query": "Anker 575 USB-C Docking Station A8392",
-      "amazon_query": "Anker 575 USB-C Docking Station 13-in-1"
+      "amazon_query": "Anker 575 USB-C Docking Station 13-in-1 A8392",
+      "amazon_asin": "B088F7SY6S"
     },
     "specs": {
       "ports": "13-in-1 (2x HDMI + DP + 1Gbps LAN + SD/TF + 6x USB)",
@@ -4106,7 +4116,8 @@
     "urls": {
       "coupang_query": "앤커 737 보조배터리 24000mAh 140W A1289",
       "ali_query": "Anker 737 Power Bank 24000mAh 140W A1289",
-      "amazon_query": "Anker 737 Power Bank PowerCore 24K A1289"
+      "amazon_query": "Anker 737 Power Bank PowerCore 24K A1289",
+      "amazon_asin": "B09VPHVT2Z"
     },
     "specs": {
       "capacity": "24,000mAh (86.4Wh 기내반입)",
@@ -4232,7 +4243,8 @@
     "urls": {
       "coupang_query": "소니 WH-1000XM5 헤드폰",
       "ali_query": "Sony WH-1000XM5 Headphones",
-      "amazon_query": "Sony WH-1000XM5 Wireless Headphones"
+      "amazon_query": "Sony WH-1000XM5 Wireless Headphones",
+      "amazon_asin": "B09XS7JWHH"
     },
     "specs": {
       "anc": "듀얼 프로세서 + 8마이크 최상급 노이즈캔슬링",
@@ -4294,8 +4306,10 @@
     "msrp_usd": 399.95,
     "urls": {
       "coupang_query": "칼디짓 CalDigit TS4 썬더볼트4 독",
+      "coupang_product_url": "https://www.coupang.com/vp/products/7129701057?itemId=17871072745&vendorItemId=86980048193",
       "ali_query": "CalDigit TS4 Thunderbolt 4 Dock",
-      "amazon_query": "CalDigit TS4 Thunderbolt 4 Dock"
+      "amazon_query": "CalDigit TS4 Thunderbolt 4 Dock",
+      "amazon_asin": "B09GK8LBWS"
     },
     "specs": {
       "ports": "18포트 (3x 썬더볼트4 + DP 1.4 + 2.5GbE + UHS-II 듀얼 리더 + 8x USB)",

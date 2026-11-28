@@ -17,19 +17,16 @@ from pathlib import Path
 
 from src.collector import GLOBAL_BRANDS, parse_krw_price, parse_usd_price
 
-PROMO_CODE_RE = re.compile(
-    r"(?:할인\s*코드|프로모션\s*코드|쿠폰\s*코드|코드|code|coupon|promo)\s*[:：=]?\s*([A-Z0-9]{4,16})\b",
-    re.IGNORECASE,
-)
-HOT_KEYWORDS_RE = re.compile(
-    r"(할인코드|프로모션|쿠폰|코인딜|promo code|coupon|choice day)",
-    re.IGNORECASE,
-)
-AMAZON_SIGNAL_RE = re.compile(r"\b(amazon|amzn\.to)\b", re.IGNORECASE)
+AMAZON_SIGNAL_RE = re.compile(r"\b(?:amazon|amzn\.(?:to|com)|a\.co)\b|아마존", re.IGNORECASE)
+DEAL_SOURCES = {"reddit/buildapcsales", "ppomppu_kr", "ppomppu_global"}
 
 
 def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9가-힣]+", "", s.lower())
+
+
+def _is_amazon_signal(signal: dict) -> bool:
+    return any(AMAZON_SIGNAL_RE.search(signal.get(field) or "") for field in ("title", "url", "destination_url"))
 
 
 def load_sent_history(data_dir: Path, cooldown_days: int = 30) -> dict[str, dict]:
@@ -41,12 +38,19 @@ def load_sent_history(data_dir: Path, cooldown_days: int = 30) -> dict[str, dict
     except json.JSONDecodeError:
         return {}
     cutoff = (datetime.now(timezone.utc) - timedelta(days=cooldown_days)).strftime("%Y-%m-%d")
-    return {k: v for k, v in raw.items() if isinstance(v, dict) and v.get("sent_date", "9999") >= cutoff}
+    if not isinstance(raw, dict):
+        return {}
+    return {
+        key: row for key, row in raw.items()
+        if isinstance(row, dict) and isinstance(row.get("sent_date"), str) and row["sent_date"] >= cutoff
+    }
 
 
 def save_sent_history(data_dir: Path, history: dict[str, dict]) -> None:
     path = data_dir / "sent_deals_history.json"
-    path.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temp = path.with_suffix(".tmp")
+    temp.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temp.replace(path)
 
 
 def _make_event_id(lang: str, product_id: str, promo_code: str | None, date_str: str) -> str:
@@ -61,40 +65,47 @@ def snipe_hot_deals(
     cfg: dict | None = None,
     max_picks: int = 2,
 ) -> dict:
-    """Match verified non-Amazon promo/coupon signals to vetted products with idempotency keys."""
+    """Match community deal prices and promo codes to vetted products with idempotency keys."""
     cfg = cfg or {}
     allow_amazon_tracking = bool(cfg.get("affiliate", {}).get("allow_amazon_price_tracking", False))
+    min_ratio = float(cfg.get("gatekeeper", {}).get("min_price_ratio_vs_msrp", 0.35))
     history = load_sent_history(data_dir, cooldown_days=14)
     now_utc = datetime.now(timezone.utc)
-    today = now_utc.strftime("%Y-%m-%d")
     observed_at = now_utc.strftime("%Y-%m-%d %H:%M UTC")
 
     signal_matches: dict[str, dict] = {}
     for sig in live_signals:
-        title = sig.get("title", "")
+        title = sig.get("title") or ""
         # Amazon Operating Policies §5: never run unauthorized Amazon price-drop/tracking alerts.
-        if not allow_amazon_tracking and (AMAZON_SIGNAL_RE.search(title) or "amazon" in sig.get("url", "").lower()):
+        if not allow_amazon_tracking and _is_amazon_signal(sig):
             continue
 
-        norm_title = _norm(title)
-        code_m = PROMO_CODE_RE.search(title)
-        promo_code = code_m.group(1).upper() if code_m else None
-        is_actionable = bool(promo_code or HOT_KEYWORDS_RE.search(title))
-        if not is_actionable:
+        source = sig.get("source", "")
+        published = _signal_time(sig, now_utc)
+        if now_utc >= published + timedelta(hours=COMMUNITY_TTL_HOURS):
+            continue
+        code_m = _BOARD_CODE_RE.search(title)
+        promo_code = code_m.group(1) if code_m else None
+        prices = {"usd": parse_usd_price(title), "krw": parse_krw_price(title)} if source in DEAL_SOURCES else {}
+        if not promo_code and not any(prices.values()):
             continue
 
-        for item in approved_items:
-            brand_norm = _norm(item["brand"])
-            model_tokens = [t for t in re.split(r"[\s()/,-]+", item["model"]) if len(t) >= 3]
-            if brand_norm and brand_norm in norm_title:
-                if any(_norm(tok) in norm_title for tok in model_tokens[:3]):
-                    signal_matches[item["id"]] = {
-                        "promo_code": promo_code,
-                        "signal_title": title,
-                        "signal_source": sig.get("source", ""),
-                        "observed_at": observed_at,
-                    }
-                    break
+        item = match_signal_to_product(title, approved_items)
+        if item is None:
+            continue
+        if any(prices.values()) and not any(
+            price_passes_msrp_floor(price, float(item.get(f"msrp_{currency}") or 0), min_ratio)
+            for currency, price in prices.items() if price is not None
+        ):
+            continue
+        previous = signal_matches.get(item["id"])
+        if previous is None or (bool(promo_code), published) > (bool(previous["promo_code"]), previous["published"]):
+            signal_matches[item["id"]] = {
+                "promo_code": promo_code,
+                "signal_title": title,
+                "signal_source": source,
+                "published": published,
+            }
 
     def build_live_picks(lang: str) -> list[dict]:
         picks: list[dict] = []
@@ -103,7 +114,8 @@ def snipe_hot_deals(
             if pid not in signal_matches:
                 continue
             sig_info = signal_matches[pid]
-            event_id = _make_event_id(lang, pid, sig_info.get("promo_code"), today)
+            published = sig_info["published"]
+            event_id = _make_event_id(lang, pid, sig_info.get("promo_code"), published.strftime("%Y-%m-%d"))
             if f"event:{event_id}" in history:
                 continue
             prev = history.get(f"{lang}:{pid}")
@@ -115,7 +127,8 @@ def snipe_hot_deals(
                 "promo_code": sig_info.get("promo_code"),
                 "signal_title": sig_info.get("signal_title"),
                 "signal_source": sig_info.get("signal_source"),
-                "observed_at": observed_at,
+                "observed_at": published.strftime("%Y-%m-%d %H:%M UTC"),
+                "expires_at": (published + timedelta(hours=COMMUNITY_TTL_HOURS)).isoformat(),
                 "live_matched": True,
             }
             picks.append(entry)
@@ -343,6 +356,20 @@ def _parse_iso(value: object) -> datetime | None:
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
 
+def _signal_time(signal: dict, now: datetime) -> datetime:
+    published = _parse_iso(signal.get("published_at"))
+    return min(now, published).astimezone(timezone.utc) if published else now
+
+
+def is_active_deal(sniper: dict) -> bool:
+    if not sniper.get("live_matched"):
+        return False
+    if "expires_at" not in sniper:
+        return True  # Queues staged before expiration was recorded.
+    expires = _parse_iso(sniper["expires_at"])
+    return expires is not None and expires > datetime.now(timezone.utc)
+
+
 def load_live_offers(data_dir: Path, now: datetime | None = None) -> dict:
     """Read the cache and drop every expired or malformed entry (fail-closed)."""
     now = now or datetime.now(timezone.utc)
@@ -407,8 +434,9 @@ def upsert_offer(cache: dict, product_id: str, entry: dict) -> None:
     slots = cache.setdefault("offers", {}).setdefault(product_id, [])
     for i, old in enumerate(slots):
         if old.get("source_kind") == entry["source_kind"] and old.get("currency") == entry["currency"]:
-            if entry["source_kind"] == "community_benchmark" and old.get("signal_url") == entry.get("signal_url"):
-                return
+            if entry["source_kind"] == "community_benchmark":
+                if old.get("signal_url") == entry.get("signal_url") or old.get("observed_at", "") > entry["observed_at"]:
+                    return
             slots[i] = entry
             return
     slots.append(entry)
@@ -427,8 +455,6 @@ def harvest_community_benchmarks(
     min_ratio = float(cfg.get("gatekeeper", {}).get("min_price_ratio_vs_msrp", 0.35))
     allow_amazon = bool(cfg.get("affiliate", {}).get("allow_amazon_price_tracking", False))
     cache = load_live_offers(data_dir, now=now)
-    observed = now.isoformat(timespec="seconds")
-    expires = (now + timedelta(hours=COMMUNITY_TTL_HOURS)).isoformat(timespec="seconds")
     stats = {"signals_scanned": len(live_signals), "matched": 0, "written": 0, "blocked_floor": 0, "codes_spotted": 0}
     known_codes = {c["code"] for c in cache["promo_codes"]}
 
@@ -438,8 +464,15 @@ def harvest_community_benchmarks(
         if not title:
             continue
         # Amazon Operating Policies: never surface Amazon prices outside the official API.
-        if not allow_amazon and (AMAZON_SIGNAL_RE.search(title) or "amazon." in url.lower() or "amzn." in url.lower()):
+        if not allow_amazon and _is_amazon_signal(sig):
             continue
+
+        published = _signal_time(sig, now)
+        expires_at = published + timedelta(hours=COMMUNITY_TTL_HOURS)
+        if now >= expires_at:
+            continue
+        observed = published.isoformat(timespec="seconds")
+        expires = expires_at.isoformat(timespec="seconds")
 
         code_m = _BOARD_CODE_RE.search(title)
         if code_m and _ALI_CONTEXT_RE.search(title) and code_m.group(1) not in known_codes:
@@ -454,6 +487,10 @@ def harvest_community_benchmarks(
             })
             stats["codes_spotted"] += 1
 
+        # Price benchmarks only come from dedicated deal boards: a "$499 worth it?"
+        # discussion post on a hobby subreddit is not an observed deal price.
+        if sig.get("source", "") not in DEAL_SOURCES:
+            continue
         usd, krw = parse_usd_price(title), parse_krw_price(title)
         if usd is None and krw is None:
             continue

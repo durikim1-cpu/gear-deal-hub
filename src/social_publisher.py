@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from src.affiliate import DISCLOSURE_EN, DISCLOSURE_KO
-from src.deal_sniper import load_sent_history, save_sent_history
+from src.deal_sniper import is_active_deal, load_sent_history, save_sent_history
 from src.notifier import verify_public_hub_url
 from src.site_builder import product_slug
 
@@ -154,10 +154,10 @@ def publish_verified_social(ko_picks: list[dict], cfg: dict, data_dir: Path, liv
         return {"threads_published_ko": 0}
 
     base_url = cfg["site"]["base_url"].rstrip("/")
-    top_item = ko_picks[0]
-    sniper = top_item.get("sniper", {})
-    if not sniper.get("live_matched"):
+    top_item = next((item for item in ko_picks if is_active_deal(item.get("sniper", {}))), None)
+    if top_item is None:
         return {"threads_published_ko": 0}
+    sniper = top_item["sniper"]
 
     ev_id = sniper.get("event_id", "")
     if ev_id and f"threads_event:{ev_id}" in history:
@@ -171,11 +171,11 @@ def publish_verified_social(ko_picks: list[dict], cfg: dict, data_dir: Path, liv
     root_id = _threads_api_post(threads_uid, threads_tok, post["main_text"])
     published = 0
     if root_id:
-        _threads_api_post(threads_uid, threads_tok, post["reply_text"], reply_to_id=root_id)
         published = 1
         history["threads_daily_cap"] = {"sent_date": today}
         if ev_id:
             history[f"threads_event:{ev_id}"] = {"sent_date": today}
         save_sent_history(data_dir, history)
+        _threads_api_post(threads_uid, threads_tok, post["reply_text"], reply_to_id=root_id)
 
     return {"threads_published_ko": published}

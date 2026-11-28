@@ -16,7 +16,7 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.deal_sniper import load_sent_history, save_sent_history
+from src.deal_sniper import is_active_deal, load_sent_history, save_sent_history
 from src.site_builder import product_slug
 
 
@@ -90,7 +90,7 @@ def _normalize_chat_id(raw: str) -> str:
     return val
 
 
-def _send_telegram_message(bot_token: str, chat_id: str, text: str) -> bool:
+def _send_telegram_message(bot_token: str, chat_id: str, text: str, preview_url: str) -> bool:
     norm_chat = _normalize_chat_id(chat_id)
     if not norm_chat:
         return False
@@ -100,8 +100,7 @@ def _send_telegram_message(bot_token: str, chat_id: str, text: str) -> bool:
             "chat_id": norm_chat,
             "text": text,
             "parse_mode": "HTML",
-            # Rich previews on: Telegram renders the Hub page's og:image + title card under the message.
-            "disable_web_page_preview": False,
+            "link_preview_options": {"url": preview_url, "prefer_large_media": True},
         }
     ).encode("utf-8")
     req = urllib.request.Request(
@@ -109,9 +108,12 @@ def _send_telegram_message(bot_token: str, chat_id: str, text: str) -> bool:
     )
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
-            return resp.status == 200
-    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError) as exc:
-        print(f"[Telegram warn] Failed to send to {norm_chat}: {exc}")
+            if resp.status != 200:
+                return False
+            result = json.load(resp)
+            return isinstance(result, dict) and result.get("ok") is True
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
+        print(f"[Telegram warn] Failed to send to {norm_chat} ({getattr(exc, 'code', type(exc).__name__)})")
         return False
 
 
@@ -159,7 +161,7 @@ def dispatch_verified_alerts(
     if chat_ko:
         for it in ko_picks:
             sniper = it.get("sniper", {})
-            if not sniper.get("live_matched"):
+            if not is_active_deal(sniper):
                 continue
             ev_id = sniper.get("event_id", "")
             if ev_id and f"event:{ev_id}" in history:
@@ -168,16 +170,17 @@ def dispatch_verified_alerts(
             pub_url = f"{base_url}/ko/p/{slug}/"
             if not verify_public_hub_url(pub_url, it["brand"]):
                 continue
-            if _send_telegram_message(token, chat_ko, format_ko_alert(it, base_url)):
+            if _send_telegram_message(token, chat_ko, format_ko_alert(it, base_url), pub_url):
                 sent_ko += 1
                 history[f"ko:{it['id']}"] = {"sent_date": today, "promo_code": sniper.get("promo_code")}
                 if ev_id:
                     history[f"event:{ev_id}"] = {"sent_date": today, "channel": "telegram_ko"}
+                save_sent_history(data_dir, history)
 
     if chat_en:
         for it in en_picks:
             sniper = it.get("sniper", {})
-            if not sniper.get("live_matched"):
+            if not is_active_deal(sniper):
                 continue
             ev_id = sniper.get("event_id", "")
             if ev_id and f"event:{ev_id}" in history:
@@ -186,14 +189,12 @@ def dispatch_verified_alerts(
             pub_url = f"{base_url}/en/p/{slug}/"
             if not verify_public_hub_url(pub_url, "As an Amazon Associate I earn from qualifying purchases."):
                 continue
-            if _send_telegram_message(token, chat_en, format_en_alert(it, base_url)):
+            if _send_telegram_message(token, chat_en, format_en_alert(it, base_url), pub_url):
                 sent_en += 1
                 history[f"en:{it['id']}"] = {"sent_date": today, "promo_code": sniper.get("promo_code")}
                 if ev_id:
                     history[f"event:{ev_id}"] = {"sent_date": today, "channel": "telegram_en"}
-
-    if sent_ko or sent_en:
-        save_sent_history(data_dir, history)
+                save_sent_history(data_dir, history)
 
     return {
         "queued_ko": len(ko_picks),

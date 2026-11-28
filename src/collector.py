@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import json
 import re
-import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 REDDIT_FEEDS = [
@@ -107,8 +107,8 @@ MODEL_TOKEN_RE = re.compile(r"\b([A-Z]{1,5}[- ]?\d{1,4}[A-Z0-9+.-]{0,6}|M\d+\s?(
 # Deal-price parsers shared by lead discovery and the community-benchmark harvester (src/deal_sniper.py).
 # USD accepts 1-5 digits so "$2.99" option-trap prices are parsed and then rejected by the MSRP floor,
 # instead of silently slipping past the regex.
-USD_PRICE_RE = re.compile(r"(?<![A-Za-z0-9])(?:US\s?)?\$\s?(\d{1,3}(?:,\d{3})+|\d{1,5})(\.\d{1,2})?(?![\d,]*\s?(?:off|coupon|discount|쿠폰|할인))", re.IGNORECASE)
-KRW_PRICE_RE = re.compile(r"(\d{1,3}(?:,\d{3})+)\s*원(?!\s*(?:할인|쿠폰|적립))")
+USD_PRICE_RE = re.compile(r"(?<![A-Za-z0-9])(?:US\s?)?\$\s?(\d{1,3}(?:,\d{3})+|\d{1,5})(\.\d{1,2})?(?![,.]?\d|\s*(?:off|coupon|discount|쿠폰|할인))", re.IGNORECASE)
+KRW_PRICE_RE = re.compile(r"(?<![\d,])(\d{1,3}(?:,\d{3})+|\d{3,})\s*원(?!\s*(?:할인|쿠폰|적립))")
 
 
 def parse_usd_price(text: str) -> float | None:
@@ -145,16 +145,22 @@ def fetch_reddit_signals(timeout_sec: int = 6) -> list[dict]:
                 title = (post.get("title") or "").strip()
                 if not title:
                     continue
+                created = post.get("created_utc")
+                posted_at = None
+                if isinstance(created, (int, float)) and 0 < created < 253402300799:
+                    posted_at = datetime.fromtimestamp(created, timezone.utc).isoformat()
                 signals.append(
                     {
                         "source": f"reddit/{sub_name}",
                         "title": title,
                         "score": int(post.get("score", 0)),
                         "url": f"https://www.reddit.com{post.get('permalink', '')}",
+                        "destination_url": post.get("url_overridden_by_dest") or post.get("url") or "",
+                        "published_at": posted_at,
                     }
                 )
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError):
-            continue
+        except (OSError, ValueError) as exc:
+            print(f"[Collect note] reddit/{sub_name}: {getattr(exc, 'code', type(exc).__name__)}")
     return signals
 
 
@@ -179,13 +185,19 @@ def fetch_kr_rss_signals(timeout_sec: int = 6) -> list[dict]:
             # Strip XML encoding attribute so ElementTree parses decoded unicode string cleanly
             text = re.sub(r'<\?xml[^>]*\?>', "", text, count=1).strip()
             root = ET.fromstring(text)
-            for item in root.findall(".//item")[:30]:
+            for item in root.findall(".//item"):
                 title = (item.findtext("title") or "").strip()
                 link = (item.findtext("link") or "").strip()
-                if title:
-                    signals.append({"source": source_name, "title": title, "score": 10, "url": link})
-        except (urllib.error.URLError, TimeoutError, ET.ParseError, OSError):
-            continue
+                if not title:
+                    continue
+                try:
+                    date = parsedate_to_datetime(item.findtext("pubDate") or "")
+                    posted_at = date.isoformat() if date.tzinfo else None
+                except ValueError:
+                    posted_at = None
+                signals.append({"source": source_name, "title": title, "score": 10, "url": link, "published_at": posted_at})
+        except (OSError, ET.ParseError) as exc:
+            print(f"[Collect note] {source_name}: {getattr(exc, 'code', type(exc).__name__)}")
     return signals
 
 
@@ -246,7 +258,7 @@ def extract_new_model_leads(
     return ranked[:40]
 
 
-def collect_candidates(project_root: Path, live_network: bool = False) -> dict:
+def collect_candidates(project_root: Path, live_network: bool = False, *, prior_stage: dict | None = None) -> dict:
     """Merge catalog + inbox and update discovery_queue.json with newly spotted models."""
     data_dir = project_root / "data"
     catalog = json.loads((data_dir / "products.json").read_text(encoding="utf-8"))
@@ -256,11 +268,13 @@ def collect_candidates(project_root: Path, live_network: bool = False) -> dict:
     rejected_path = data_dir / "rejected_leads.json"
     rejected_keys = set(json.loads(rejected_path.read_text(encoding="utf-8"))) if rejected_path.exists() else set()
 
-    signals: list[dict] = []
-    new_leads: list[dict] = []
+    prior_stage = prior_stage or {}
+    signals = prior_stage.get("trend_signals", [])
+    leads_found = prior_stage.get("new_model_leads_found", 0)
     if live_network:
         signals = fetch_reddit_signals() + fetch_kr_rss_signals()
         new_leads = extract_new_model_leads(signals, catalog, rejected_keys)
+        leads_found = len(new_leads)
         queue_path = data_dir / "discovery_queue.json"
         existing_queue = json.loads(queue_path.read_text(encoding="utf-8")) if queue_path.exists() else []
         merged_q = {item["lead_key"]: item for item in existing_queue}
@@ -279,7 +293,7 @@ def collect_candidates(project_root: Path, live_network: bool = False) -> dict:
         "collected_at": datetime.now(timezone.utc).isoformat(),
         "candidates": list(by_id.values()),
         "trend_signals_count": len(signals),
-        "new_model_leads_found": len(new_leads),
+        "new_model_leads_found": leads_found,
         # Full pass-through: every fetched Reddit + Ppomppu signal reaches the sniper and the benchmark harvester.
         "trend_signals": signals,
         # Compact human-readable sample only; never use this slice as pipeline input.

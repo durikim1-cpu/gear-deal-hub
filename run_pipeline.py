@@ -38,11 +38,10 @@ def parse_sitemap_urls(xml_text: str) -> list[str]:
 def collect_indexnow_urls(base_url: str, dist_dir: Path, fetch=None) -> list[str]:
     """Full canonical URL list for IndexNow.
 
-    Source order: the freshly built dist/sitemap.xml, then the deployed sitemap (the post-deploy CI job has
-    no dist/ checkout), then a minimal core list. Only URLs on the site's own host are submitted.
+    Source order: the sitemap from this build, the deployed sitemap, then a minimal core list.
+    Only URLs within this site's base URL are submitted.
     """
     base = base_url.rstrip("/")
-    host = urllib.parse.urlparse(base).hostname or ""
     urls: list[str] = []
     local = Path(dist_dir) / "sitemap.xml"
     if local.exists():
@@ -63,7 +62,7 @@ def collect_indexnow_urls(base_url: str, dist_dir: Path, fetch=None) -> list[str
             f"{base}/ko/tools/ali-promo-calculator/", f"{base}/en/tools/ali-promo-calculator/",
             f"{base}/ko/guides/", f"{base}/en/guides/", f"{base}/ko/vs/", f"{base}/en/vs/",
         ]
-    return [u for u in urls if (urllib.parse.urlparse(u).hostname or "") == host]
+    return [u for u in urls if u.startswith(f"{base}/")]
 
 
 def submit_indexnow(base_url: str, key: str, urls: list[str], post=None) -> list[int]:
@@ -99,7 +98,7 @@ def select_live_signals(staged: dict) -> list[dict]:
     `trend_signals` carries every Reddit + Ppomppu item; `trend_signals_preview` is only an 8-item
     human-readable sample and is used solely as a fallback for staged files written by older builds.
     """
-    return staged.get("trend_signals") or staged.get("trend_signals_preview", [])
+    return staged.get("trend_signals", staged.get("trend_signals_preview", []))
 
 
 def main() -> int:
@@ -144,8 +143,8 @@ def main() -> int:
         idx_key = (cfg.get("site", {}).get("indexnow_key") or "").strip()
         base_url = cfg["site"]["base_url"].rstrip("/")
         if idx_key:
-            idx_urls = collect_indexnow_urls(base_url, dist_dir)
             try:
+                idx_urls = collect_indexnow_urls(base_url, dist_dir)
                 for status in submit_indexnow(base_url, idx_key, idx_urls):
                     print(f"IndexNow ping status           : HTTP {status} ({len(idx_urls)} sitemap URLs submitted)")
             except (urllib.error.URLError, TimeoutError, OSError) as exc:
@@ -168,6 +167,7 @@ def main() -> int:
     from src.ali_api import refresh_official_offers
     from src.auto_discover import auto_grow_catalog
     from src.collector import collect_candidates
+    from src.coupang_api import refresh_coupang_links
     from src.deal_sniper import harvest_community_benchmarks, load_live_offers, snipe_hot_deals
     from src.pin_generator import build_pinterest_and_rss_feeds
     from src.site_builder import build_site
@@ -183,13 +183,14 @@ def main() -> int:
     if args.auto_grow > 0:
         grow_stats = auto_grow_catalog(project_root, cfg, max_new=args.auto_grow)
         if grow_stats["added"] > 0:
-            staged = collect_candidates(project_root, live_network=False)
+            staged = collect_candidates(project_root, prior_stage=staged)
 
     candidates = staged["candidates"]
 
     # Step 2: Gatekeeper verification (enforces zero static prices, cons presence, and verbatim Amazon disclosure)
     approved, audit_entries = verify_batch(candidates, cfg)
     rejected = [e for e in audit_entries if not e["passed"]]
+    coupang_stats = refresh_coupang_links(approved, cfg)
 
     # Step 2b: Live offer cache. Tier 2 (official AliExpress API, only when app key/secret are configured) swaps in
     # s.click promotion links; Tier 1 harvests floor-checked community deal benchmarks with a 48h expiry.
@@ -241,6 +242,7 @@ def main() -> int:
         "site_stats": site_stats,
         "pinterest_rss_stats": pin_stats,
         "live_offer_stats": {"community_benchmark": benchmark_stats, "ali_official_api": api_stats},
+        "coupang_deeplink_stats": coupang_stats,
         "sniper_social_stats": social_stats,
         "alert_stats": alert_stats,
     }
@@ -252,6 +254,7 @@ def main() -> int:
     print("=== GearCompare Hub Unified Consensus Pipeline Summary ===")
     print(f"Candidates scanned   : {len(candidates)} (new leads queued: {staged.get('new_model_leads_found', 0)})")
     print(f"Approved products    : {len(approved)} | Blocked by Gatekeeper: {len(rejected)}")
+    print(f"Coupang deeplinks    : {coupang_stats['links_swapped']} generated")
     print(
         f"Static pages built   : {site_stats['total_html_pages']} "
         f"(incl. {site_stats['tools_rendered']} tool pages, {site_stats['guides_rendered']} guide pages, "

@@ -45,6 +45,9 @@ def test_collector_passes_every_signal_not_only_the_preview(tmp_path, monkeypatc
     assert staged["trend_signals_preview"] == (reddit + kr)[:8], "the preview stays a compact 8-item sample"
     on_disk = json.loads((tmp_path / "data" / "candidates_staged.json").read_text(encoding="utf-8"))
     assert len(on_disk["trend_signals"]) == 37
+    refreshed = collector.collect_candidates(tmp_path, prior_stage=staged)
+    assert refreshed["trend_signals"] == reddit + kr
+    assert refreshed["new_model_leads_found"] == staged["new_model_leads_found"]
 
 
 def test_pipeline_reads_full_signal_list_with_preview_fallback():
@@ -53,10 +56,30 @@ def test_pipeline_reads_full_signal_list_with_preview_fallback():
     full = [{"title": f"s{i}"} for i in range(30)]
     assert run_pipeline.select_live_signals({"trend_signals": full, "trend_signals_preview": full[:8]}) == full
     assert run_pipeline.select_live_signals({"trend_signals_preview": full[:8]}) == full[:8]
+    assert run_pipeline.select_live_signals({"trend_signals": [], "trend_signals_preview": full[:8]}) == []
     assert run_pipeline.select_live_signals({}) == []
     source = (ROOT / "run_pipeline.py").read_text(encoding="utf-8")
     assert "live_signals = select_live_signals(staged)" in source
-    assert 'staged.get("trend_signals") or staged.get("trend_signals_preview", [])' in source
+
+
+def test_sniper_matches_current_prices_and_codes_after_the_preview(tmp_path, approved, cfg):
+    from src.deal_sniper import snipe_hot_deals
+
+    sample = [_sig(f"unrelated {i}") for i in range(8)]
+    sample.extend([
+        _sig("AULA F75 Pro keyboard promo code WRONG20 $59.99"),
+        dict(_sig("Anker Prime 100W A2688 charger $49.99"), destination_url="https://amzn.to/example"),
+        _sig("Anker Prime 100W A2688 charger coupon works"),
+        dict(_sig("Anker Prime 100W A2688 charger coupon SAVE20 $49.99"), published_at="2000-01-01T00:00:00Z"),
+        _sig("[알리] 독거미 F75 키보드 59000원", source="ppomppu_kr"),
+    ])
+    picks = snipe_hot_deals(approved, sample, tmp_path, cfg)["ko_picks"]
+    assert [p["id"] for p in picks] == ["aula-f75-wireless-keyboard"]
+    assert picks[0]["sniper"]["promo_code"] is None
+
+    sample.append(_sig("[알리] 독거미 F75 키보드 쿠폰 코드 KRBF07", source="ppomppu_kr"))
+    picks = snipe_hot_deals(approved, sample, tmp_path, cfg)["ko_picks"]
+    assert [p["sniper"]["promo_code"] for p in picks] == ["KRBF07"]
 
 
 def test_offline_collect_has_empty_signal_list(tmp_path):
@@ -74,8 +97,11 @@ def test_offline_collect_has_empty_signal_list(tmp_path):
         ("[Keyboard] AULA F75 - $49.99 ($69.99 - $20 coupon)", 49.99, None),
         ("USB-C cable option from $2.99", 2.99, None),
         ("$20 off coupon: AULA F75 now $55", 55.0, None),
+        ("$20.50 off coupon: AULA F75 now $55.99", 55.99, None),
+        ("AULA F75 now $55.99, shipped", 55.99, None),
         ("Beelink SER8 $1,049.00 shipped", 1049.0, None),
         ("[알리] 독거미 F75 키보드 (45,000원/무료)", None, 45000),
+        ("[알리] 독거미 F75 키보드 (45000원/무료)", None, 45000),
         ("5,000원 할인 쿠폰 적용 독거미 62,000원", None, 62000),
         ("no price here", None, None),
     ],
@@ -142,6 +168,25 @@ def test_harvest_writes_floor_checked_benchmarks_with_48h_ttl(tmp_path, catalog,
         expires = datetime.fromisoformat(e["expires_at"])
         assert observed == NOW
         assert expires - observed == timedelta(hours=48) == timedelta(hours=COMMUNITY_TTL_HOURS)
+
+
+def test_only_deal_boards_supply_price_benchmarks(tmp_path, catalog, cfg):
+    discussion = [
+        _sig("Is the [Mini PC] Beelink SER8 Ryzen 7 8745HS 32GB/1TB worth $499?", source="reddit/MiniPCs"),
+        _sig("[Keyboard] AULA F75 75% Wireless - $49.99", source="reddit/MechanicalKeyboards"),
+    ]
+    stats = harvest_community_benchmarks(catalog, discussion, tmp_path, cfg=cfg, now=NOW)
+    assert stats["matched"] == 0 and stats["written"] == 0
+    assert load_live_offers(tmp_path, now=NOW)["offers"] == {}, "discussion-subreddit prices are not deal benchmarks"
+
+    deals = [
+        _sig("[Mini PC] Beelink SER8 Ryzen 7 8745HS 32GB/1TB $499", source="reddit/buildapcsales"),
+        _sig("[알리] 독거미 F75 키보드 (59,000원/무료)", source="ppomppu_kr", url="https://www.ppomppu.co.kr/x/3"),
+    ]
+    harvest_community_benchmarks(catalog, deals, tmp_path, cfg=cfg, now=NOW)
+    offers = load_live_offers(tmp_path, now=NOW)["offers"]
+    assert [(e["currency"], e["price"]) for e in offers["beelink-ser8-8745hs-minipc"]] == [("USD", 499.0)]
+    assert [(e["currency"], e["price"]) for e in offers["aula-f75-wireless-keyboard"]] == [("KRW", 59000)]
 
 
 def test_floor_uses_configured_min_price_ratio(tmp_path, catalog, cfg):

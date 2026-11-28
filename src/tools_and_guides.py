@@ -486,7 +486,8 @@ DOCK_TOOL_JS = r"""
     } catch (e) {}
   }
 
-  function evaluate() {
+  let completionTracked = false;
+  function evaluate(userChanged = false) {
     const chip = chipSel.value;
     const mons = monSel.value;
     const lid = lidSel.value;
@@ -584,11 +585,19 @@ DOCK_TOOL_JS = r"""
 
     // Re-apply dynamic channel tracking on newly injected store links
     if (window.__gchApplyAttribution) window.__gchApplyAttribution(out);
-    track('check_complete', { chip, mons, lid, hdcp, status });
+    if (userChanged && !completionTracked) {
+      completionTracked = true;
+      track('check_complete', { chip, mons, lid, hdcp, status });
+    }
   }
 
-  [chipSel, monSel, lidSel, hdcpSel].forEach(el => el.addEventListener('change', evaluate));
-  track('tool_view', { tool: 'macbook-dock-checker' });
+  [chipSel, monSel, lidSel, hdcpSel].forEach(el => el.addEventListener('change', () => evaluate(true)));
+  const logToolView = () => track('tool_view', { tool: 'macbook-dock-checker' });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', logToolView, { once: true });
+  } else {
+    logToolView();
+  }
   evaluate();
 })();
 """
@@ -1408,8 +1417,8 @@ PROMO_TOOL_JS = r"""
     const krwLine = rate ? `<span class="krw num" data-net-krw>${esc(fmt(T.approx_krw, { v: Math.round(c.net * rate).toLocaleString('ko-KR') }))}</span>` : '';
     const go = p
       ? `<p class="calc-go-name">${esc(p.name)}</p><div class="calc-cta">` +
-        `<a class="btn btn-ali is-first" data-aff="ali" data-store="aliexpress" href="${esc(p.ali)}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>${esc(T.btn_ali)}</a>` +
-        `<a class="btn btn-${esc(D.dom_cls)}" data-aff="dom" data-store="${esc(D.dom_cls)}" href="${esc(p.dom)}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>${esc(T.btn_dom)}</a>` +
+        `<a class="btn btn-ali is-first" data-aff="ali" data-store="aliexpress" data-pid="${esc(p.id)}" href="${esc(p.ali)}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>${esc(T.btn_ali)}</a>` +
+        `<a class="btn btn-${esc(D.dom_cls)}" data-aff="dom" data-store="${esc(D.dom_cls)}" data-pid="${esc(p.id)}" href="${esc(p.dom)}" target="_blank" rel="nofollow sponsored noopener"><span class="sdot"></span>${esc(T.btn_dom)}</a>` +
         `</div><p class="calc-go-more"><a class="text-link" href="../../p/${esc(p.slug)}/">${esc(T.detail)}</a></p><p class="btn-disc">${esc(T.btn_disc)}</p>`
       : `<p class="field-hint">${esc(T.go_hint)}</p>`;
 

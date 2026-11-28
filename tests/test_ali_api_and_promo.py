@@ -150,6 +150,37 @@ def test_affiliate_builder_supports_direct_deep_links(cfg):
     assert links["aliexpress"] == "https://s.click.aliexpress.com/e/_xyz", "API promotion links pass through untouched"
     assert links["amazon"] == "https://www.amazon.com/dp/B0ABCDEFGH?tag=gearcomparehu-20"
 
+    product = dict(base, urls=dict(base["urls"], amazon_asin="B09GK8LBWS", amazon_direct="https://wrong.example/dp/B0ABCDEFGH"))
+    assert build_affiliate_links(product, cfg["affiliate"])["amazon"] == "https://www.amazon.com/dp/B09GK8LBWS?tag=gearcomparehu-20"
+    storefront = dict(base, urls=dict(base["urls"], amazon_direct="https://www.amazon.com/stores/name?page=one&tag=old-20#main"))
+    assert build_affiliate_links(storefront, cfg["affiliate"])["amazon"] == "https://www.amazon.com/stores/name?page=one&tag=gearcomparehu-20#main"
+
+
+def test_coupang_refresh_uses_the_official_link_for_the_exact_product(monkeypatch, approved, cfg):
+    import io
+    from src import coupang_api
+
+    monkeypatch.setenv("COUPANG_ACCESS_KEY", "fake-access")
+    monkeypatch.setenv("COUPANG_SECRET_KEY", "fake-secret")
+    original = next(it for it in approved if it["id"] == "caldigit-ts4-thunderbolt4-dock")
+    item = dict(original, affiliate_links=dict(original["affiliate_links"]))
+    source = item["urls"]["coupang_product_url"]
+    issued = "https://link.coupang.com/a/issued"
+
+    def fake_urlopen(request, timeout):
+        assert request.get_method() == "POST" and request.full_url == coupang_api.DEEPLINK_URL
+        assert request.get_header("Authorization").startswith("CEA algorithm=HmacSHA256, access-key=fake-access,")
+        assert json.loads(request.data) == {"coupangUrls": [source], "subId": "gch_ko_direct"}
+        return io.BytesIO(json.dumps({"rCode": "0", "data": [
+            {"originalUrl": source, "shortenUrl": issued},
+            {"originalUrl": "https://www.coupang.com/vp/products/0", "shortenUrl": "https://link.coupang.com/a/wrong"},
+        ]}).encode())
+
+    monkeypatch.setattr(coupang_api.urllib.request, "urlopen", fake_urlopen)
+    assert coupang_api.refresh_coupang_links([item], cfg) == {"enabled": True, "links_swapped": 1}
+    assert item["affiliate_links"]["coupang"] == issued
+    assert "/re/AFFSRP" in original["affiliate_links"]["coupang"]
+
 
 # ------------------------------------------------------------------ promo tiers + traffic light
 def test_promo_tier_file_has_reference_ladder_and_honest_notice():

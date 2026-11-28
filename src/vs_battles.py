@@ -227,8 +227,8 @@ def render_vs_detail(*, lang: str, pair: dict, pairs: list[dict], items_by_id: d
           {ui.live(it, lang)}
           {ui.anchor(it, lang, calc_base)}
           <div class="actions">
-            <a class="btn btn-{d['dom_key']}{' is-first' if dom_first else ''}" data-aff="dom" data-store="{d['dom_store_id']}" href="{_esc(d['dom_url'])}" {rel} aria-label="{t['btn_dom']} · {_esc(name)}"><span class="sdot"></span>{t['btn_dom']} {ui.icon('out', 15)}</a>
-            <a class="btn btn-ali{'' if dom_first else ' is-first'}" data-aff="ali" data-store="aliexpress" href="{_esc(d['ali_url'])}" {rel} aria-label="{t['btn_ali']} · {_esc(name)}"><span class="sdot"></span>{t['btn_ali']} {ui.icon('out', 15)}</a>
+            <a class="btn btn-{d['dom_key']}{' is-first' if dom_first else ''}" data-aff="dom" data-store="{d['dom_store_id']}" data-pid="{_esc(it['id'])}" href="{_esc(d['dom_url'])}" {rel} aria-label="{t['btn_dom']} · {_esc(name)}"><span class="sdot"></span>{t['btn_dom']} {ui.icon('out', 15)}</a>
+            <a class="btn btn-ali{'' if dom_first else ' is-first'}" data-aff="ali" data-store="aliexpress" data-pid="{_esc(it['id'])}" href="{_esc(d['ali_url'])}" {rel} aria-label="{t['btn_ali']} · {_esc(name)}"><span class="sdot"></span>{t['btn_ali']} {ui.icon('out', 15)}</a>
           </div>
         </div>
       </article>"""

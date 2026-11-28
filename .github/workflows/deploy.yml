@@ -32,10 +32,26 @@ jobs:
       - name: Install Pillow for Pinterest infographic card generation
         run: python -m pip install --upgrade pip pillow
 
+      - name: Restore recent broadcast history
+        uses: actions/cache/restore@v4
+        with:
+          path: data/sent_deals_history.json
+          key: broadcast-history-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: broadcast-history-v1-
+
+      - name: Restore unexpired offer cache
+        uses: actions/cache/restore@v4
+        with:
+          path: data/live_offers_cache.json
+          key: live-offers-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: live-offers-v1-
+
       - name: Build Gatekeeper-Verified Hub, Tools, KO/EN Guides, VS Battles & Pinterest RSS
         env:
           SITE_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
           COUPANG_PARTNERS_ID: ${{ secrets.COUPANG_PARTNERS_ID }}
+          COUPANG_ACCESS_KEY: ${{ secrets.COUPANG_ACCESS_KEY }}
+          COUPANG_SECRET_KEY: ${{ secrets.COUPANG_SECRET_KEY }}
           ALIEXPRESS_TRACKING_ID: ${{ secrets.ALIEXPRESS_TRACKING_ID }}
           ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
           ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
@@ -45,20 +61,32 @@ jobs:
           NAVER_VERIFY_CODE: ${{ secrets.NAVER_VERIFY_CODE }}
           BING_VERIFY_CODE: ${{ secrets.BING_VERIFY_CODE }}
           LIVE_OFFERS_ENDPOINT: ${{ secrets.LIVE_OFFERS_ENDPOINT }}
+          ANALYTICS_BEACON_URL: ${{ vars.ANALYTICS_BEACON_URL }}
         run: |
           python run_pipeline.py --live-network --auto-grow 3
+
+      - name: Save unexpired offer cache
+        if: ${{ !cancelled() && hashFiles('data/live_offers_cache.json') != '' }}
+        uses: actions/cache/save@v4
+        with:
+          path: data/live_offers_cache.json
+          key: live-offers-v1-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
-      - name: Upload staged broadcast queue
+      - name: Upload staged broadcast queue and sitemap
         uses: actions/upload-artifact@v4
         with:
           name: pending-broadcast
-          path: ./data/pending_broadcast.json
-          retention-days: 1
+          path: |
+            data/pending_broadcast.json
+            dist/sitemap.xml
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 3
 
   deploy:
     environment:
@@ -83,11 +111,18 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Download staged broadcast queue
+      - name: Download staged broadcast queue and sitemap
         uses: actions/download-artifact@v4
         with:
           name: pending-broadcast
-          path: ./data
+          path: .
+
+      - name: Restore recent broadcast history
+        uses: actions/cache/restore@v4
+        with:
+          path: data/sent_deals_history.json
+          key: broadcast-history-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: broadcast-history-v1-
 
       - name: Verify live public URLs (HTTP 200) and dispatch idempotent alerts
         env:
@@ -102,3 +137,10 @@ jobs:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
         run: |
           python run_pipeline.py --dispatch-deployed --send-telegram --publish-social
+
+      - name: Save broadcast history for future runs
+        if: ${{ !cancelled() && hashFiles('data/sent_deals_history.json') != '' }}
+        uses: actions/cache/save@v4
+        with:
+          path: data/sent_deals_history.json
+          key: broadcast-history-v1-${{ github.run_id }}-${{ github.run_attempt }}
